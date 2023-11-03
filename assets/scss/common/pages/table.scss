@@ -1,0 +1,39 @@
+.table-page {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  .search-area {
+    margin: 10px 0px 10px 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .table-pagging {
+    align-items: center;
+    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(25px);
+    background: rgba(0, 0, 0, 0.35);
+    border-top: 1px solid hsla(0, 0%, 100%, 0.06);
+    display: flex;
+    height: 72px;
+    justify-content: center;
+    left: 1px;
+    padding: 0 20px;
+    margin-top: 40px;
+    position: sticky;
+    .pagging {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      width: 100%;
+      .pagging-btn {
+        width: 100%;
+        flex: 1 1 auto;
+        margin: auto;
+      }
+    }
+  }
+}

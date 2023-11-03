@@ -1,0 +1,431 @@
+$white: #fff !default;
+$gray-100: #f7f7f7 !default;
+$gray-200: #f0f3f5 !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ebebeb !default;
+$gray-500: #afabab !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+$secondary: #a5a8ab !default;
+
+$grays: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$grays: map-merge(
+  (
+    '100': $gray-100,
+    '200': $gray-200,
+    '300': $gray-300,
+    '400': $gray-400,
+    '500': $gray-500,
+    '600': $gray-600,
+    '700': $gray-700,
+    '800': $gray-800,
+    '900': $gray-900
+  ),
+  $grays
+);
+
+$grays: () !default;
+
+$blue: #37659e !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$red: #dc3642 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffb931 !default;
+$teal: #20c997 !default;
+$cyan: #17a2b8 !default;
+$darkGreen: #5e7347 !default;
+$lightGreen: #8ad040 !default;
+$green: #519d00 !default;
+$green2: #67c800 !default;
+$green3: #29b56e !default;
+$green4: #207349 !default;
+$blue2: #1a74ea !default;
+$blue3: #37659e !default;
+$dusty-gray: #9c9c9c !default;
+$alto: #dfdfdf !default;
+$dodger-blue: #556afe !default;
+$wild-sand: #f6f6f6 !default;
+$porcelain: #ecf0f1;
+$colors: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$colors: map-merge(
+  (
+    'blue': $blue,
+    'indigo': $indigo,
+    'purple': $purple,
+    'pink': $pink,
+    'red': $red,
+    'orange': $orange,
+    'yellow': $yellow,
+    'green': $green,
+    'teal': $teal,
+    'cyan': $cyan,
+    'white': $white,
+    'gray': $gray-600,
+    'gray-dark': $gray-800,
+    'darkGreen': $darkGreen,
+    'lightGreen': $lightGreen
+  ),
+  $colors
+);
+
+$primary: $blue !default;
+$secondary: $secondary !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $gray-100 !default;
+$dark: $gray-800 !default;
+$darkGreen: $darkGreen !default;
+$lightGreen: $lightGreen !default;
+
+$theme-colors: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$theme-colors: map-merge(
+  (
+    'gray-100': $gray-100,
+    'gray-200': $gray-200,
+    'gray-300': $gray-300,
+    'gray-400': $gray-400,
+    'gray-500': $gray-500,
+    'gray-600': $gray-600,
+    'gray-700': $gray-700,
+    'gray-800': $gray-800,
+    'gray-900': $gray-900,
+    'primary': $primary,
+    'secondary': $secondary,
+    'gray': $gray-600,
+    'success': $success,
+    'info': $info,
+    'warning': $warning,
+    'danger': $red,
+    'light': $light,
+    'dark': $dark,
+    'darkGreen': $darkGreen,
+    'lightGreen': $lightGreen,
+    'green2': $green2,
+    'green3': $green3,
+    'green4': $green4,
+    'blue': $blue
+  ),
+  $theme-colors
+);
+
+@function theme-color($key) {
+  @return map-get($theme-colors, $key);
+}
+
+// Generate alert modifier classes
+@each $color, $value in $theme-colors {
+  .bg-#{$color} {
+    background-color: $value !important;
+  }
+  .border-#{$color} {
+    border-color: $value !important;
+  }
+  .text-#{$color} {
+    color: $value !important;
+  }
+}
+
+// Fonts
+$font-family-base: 'Noto Sans JP', serif !default;
+$font-family-base2: 'Noto Serif JP', serif !default;
+
+$font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
+$font-size-xl: ($font-size-base * 1.5);
+$font-size-lg: ($font-size-base * 1.25);
+$font-size-sm: ($font-size-base * 0.875);
+$font-size-xs: ($font-size-base * 0.75);
+
+$transition-base: all 0.15s ease !default;
+$transition-fade: opacity 0.15s linear !default;
+$transition-collapse: height 0.35s ease !default;
+
+$font-weight-normal: 400 !default;
+$font-weight-base: $font-weight-normal !default;
+$line-height-base: 1.5 !default;
+$gray-900: #212529 !default;
+$body-color: $gray-900 !default;
+$body-bg: $white !default;
+$height-section: 100vh !default;
+$height-section-md: ($height-section * 0.6);
+$height-section-xs: ($height-section * 0.75);
+$shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+$transition-time-base: 0.5s;
+
+$res_240320: 'only screen and (min-width: 240px) and (max-width: 320px)';
+$res_320374: 'only screen and (min-width: 320px) and (max-width: 374px)';
+$res_375424: 'only screen and (min-width: 375px) and (max-width: 424px)';
+$res_356567: 'only screen and (min-width: 356px) and (max-width: 567px)';
+$res_767991: 'only screen and (min-width: 767px) and (max-width: 991px)';
+$res_9921400: 'only screen and (min-width: 992px) and (max-width: 1400px)';
+$res_355: 'only screen and (max-width: 355px)';
+$res_413: 'only screen and (max-width: 413px)';
+$res_424: 'only screen and (max-width: 424px)';
+$res_480: 'only screen and (max-width: 480px)';
+$res_425767: 'only screen and (min-width: 425px) and (max-width: 767px)';
+$res_534: 'only screen and (max-width: 534px)';
+$res_767: 'only screen and (max-width: 767px)';
+$res_768: 'only screen and (min-width: 768px)';
+$res_z: 'only screen and (min-width: 768px) and (max-width: 991px)';
+$res_535600: 'only screen and (min-width: 535px) and (max-width: 600px)';
+$res_535768: 'only screen and (min-width: 535px) and (max-width: 768px)';
+$res_991: 'only screen and (max-width: 991px)';
+$res_992: 'only screen and (min-width: 992px)';
+$res_1767: 'only screen and (max-width: 768px) and (orientation: portrait)';
+$res_992767: 'only screen and (max-width: 767px) and (orientation: landscape)';
+$res_1024768: 'only screen and (min-width: 768px) and (orientation: landscape)';
+$res_9921023: 'only screen and (min-width: 992px) and (max-width: 1023px)';
+$res_10241365: 'only screen and (min-width: 1024px) and (max-width: 1365px)';
+$res_0102401366: 'only screen and (min-width: 1024px) and (min-height: 1366px)';
+$res_01199: 'only screen and (max-width: 1199px)';
+$res_1200: 'only screen and (min-width: 1200px)';
+$res_01023: 'only screen and (max-width: 1023px)';
+$res_1024: 'only screen and (min-width: 1024px)';
+$res_01365: 'only screen and (max-width: 1365px)';
+$res_1366: 'only screen and (min-width: 1366px)';
+$res_1366768: 'only screen and (max-width: 1366px) and (max-height:768px)';
+$res_1400: 'only screen and (min-width: 1400px)';
+$res_11399: 'only screen and (max-width: 1400px)';
+$res_1480: 'only screen and (max-width: 1480px)';
+$res_1000: 'only screen and (max-width: 1000px)';
+$res_1600: 'only screen and (min-width: 1600px)';
+$res_12001599: 'only screen and (min-width: 1200px) and (max-width: 1599px)';
+$res_12001480: 'only screen and (min-width: 1200px) and (max-width: 1480px)';
+$res_700992: 'only screen and (min-height: 700px) and (max-width: 567px)';
+$res_1900: 'only screen and (max-width: 1900px)';
+$res_1901: 'only screen and (min-width: 1900px)';
+$res_2500: 'only screen and (min-width: 2500px)';
+$res_14401700: 'only screen and (min-width: 1440px) and (max-width: 1700px)';
+
+// mixin screen responsive
+@mixin screen($point) {
+  @if $point==240320 {
+    @media #{$res_240320} {
+      @content;
+    }
+  }
+  @if $point==320374 {
+    @media #{$res_320374} {
+      @content;
+    }
+  }
+  @if $point==375424 {
+    @media #{$res_375424} {
+      @content;
+    }
+  }
+  @if $point==413 {
+    @media #{$res_413} {
+      @content;
+    }
+  }
+  @if $point==424 {
+    @media #{$res_424} {
+      @content;
+    }
+  }
+  @if $point==424 {
+    @media #{$res_424} {
+      @content;
+    }
+  }
+  @if $point==480 {
+    @media #{$res_480} {
+      @content;
+    }
+  }
+  @if $point==425767 {
+    @media #{$res_425767} {
+      @content;
+    }
+  }
+  @if $point==767 {
+    @media #{$res_767} {
+      @content;
+    }
+  }
+  @if $point==768 {
+    @media #{$res_768} {
+      @content;
+    }
+  }
+  @if $point==991 {
+    @media #{$res_991} {
+      @content;
+    }
+  }
+  @if $point==992 {
+    @media #{$res_992} {
+      @content;
+    }
+  }
+  @if $point==534 {
+    @media #{$res_534} {
+      @content;
+    }
+  }
+  @if $point==535600 {
+    @media #{$res_535600} {
+      @content;
+    }
+  }
+  @if $point==535768 {
+    @media #{$res_535768} {
+      @content;
+    }
+  }
+  @if $point==1767 {
+    @media #{$res_1767} {
+      @content;
+    }
+  }
+  @if $point==992767 {
+    @media #{$res_992767} {
+      @content;
+    }
+  }
+  @if $point==1024768 {
+    @media #{$res_1024768} {
+      @content;
+    }
+  }
+  @if $point==9921023 {
+    @media #{$res_9921023} {
+      @content;
+    }
+  }
+  @if $point==01023 {
+    @media #{$res_01023} {
+      @content;
+    }
+  }
+  @if $point==1024 {
+    @media #{$res_1024} {
+      @content;
+    }
+  }
+  @if $point==10241365 {
+    @media #{$res_10241365} {
+      @content;
+    }
+  }
+  @if $point==0102401366 {
+    @media #{$res_0102401366} {
+      @content;
+    }
+  }
+  @if $point==01199 {
+    @media #{$res_01199} {
+      @content;
+    }
+  }
+  @if $point==1200 {
+    @media #{$res_1200} {
+      @content;
+    }
+  }
+  @if $point==01365 {
+    @media #{$res_01365} {
+      @content;
+    }
+  }
+  @if $point==01365 {
+    @media #{$res_01365} {
+      @content;
+    }
+  }
+  @if $point==1366 {
+    @media #{$res_1366} {
+      @content;
+    }
+  }
+  @if $point==1366768 {
+    @media #{$res_1366768} {
+      @content;
+    }
+  }
+  @if $point==11399 {
+    @media #{$res_11399} {
+      @content;
+    }
+  }
+  @if $point==1400 {
+    @media #{$res_1400} {
+      @content;
+    }
+  }
+  @if $point==1600 {
+    @media #{$res_1600} {
+      @content;
+    }
+  }
+  @if $point==12001480 {
+    @media #{$res_12001480} {
+      @content;
+    }
+  }
+  @if $point==12001599 {
+    @media #{$res_12001599} {
+      @content;
+    }
+  }
+  @if $point==767991 {
+    @media #{$res_767991} {
+      @content;
+    }
+  }
+  @if $point==9921400 {
+    @media #{$res_9921400} {
+      @content;
+    }
+  }
+  @if $point==1480 {
+    @media #{$res_1480} {
+      @content;
+    }
+  }
+  @if $point==1000 {
+    @media #{$res_1000} {
+      @content;
+    }
+  }
+  @if $point==356567 {
+    @media #{$res_356567} {
+      @content;
+    }
+  }
+  @if $point==355 {
+    @media #{$res_355} {
+      @content;
+    }
+  }
+  @if $point== 700992 {
+    @media #{$res_700992} {
+      @content;
+    }
+  }
+  @if $point== 1900 {
+    @media #{$res_1900} {
+      @content;
+    }
+  }
+  @if $point== 1901 {
+    @media #{$res_1901} {
+      @content;
+    }
+  }
+  @if $point== 14401700 {
+    @media #{$res_14401700} {
+      @content;
+    }
+  }
+}

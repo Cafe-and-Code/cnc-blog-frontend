@@ -1,0 +1,40 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "husky install && nuxt prepare",
+    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "lint:prettier": "prettier --check .",
+    "lint": "yarn lint:js && yarn lint:prettier",
+    "lintfix": "prettier --write --list-different . && yarn lint:js --fix",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.22.15",
+    "@nuxt/devtools": "latest",
+    "@nuxt/eslint-config": "^0.2.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.0",
+    "nuxt": "^3.8.0",
+    "prettier": "^3.0.3",
+    "vue": "^3.3.6",
+    "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
+    "@vuestic/nuxt": "^1.0.16",
+    "axios": "^1.6.0",
+    "node-sass": "^9.0.0",
+    "pinia": "^2.1.7",
+    "sass": "^1.69.4",
+    "sass-loader": "^13.3.2"
+  }
+}
