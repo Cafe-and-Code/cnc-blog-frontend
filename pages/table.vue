@@ -18,7 +18,7 @@
           <BasePagging v-bind:current-page="currentPage" v-bind:total-page="totalPage" />
         </div>
         <div class="pagging-btn">
-          <BaseButton v-on:click="handleCreate">New Create test</BaseButton>
+          <BaseButton v-on:click="handleCreate">New Create</BaseButton>
         </div>
       </div>
     </div>
