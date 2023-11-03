@@ -1,0 +1,51 @@
+.base-table {
+  overflow: auto;
+  position: relative;
+}
+.va-table td {
+  white-space: nowrap;
+}
+.thead tr th:last-child {
+  position: sticky;
+  right: 0;
+  background: $wild-sand;
+}
+.tbody {
+  .table-action {
+    position: sticky;
+    right: 0;
+    padding: 0;
+    background: $wild-sand;
+    box-shadow: -3.5px 4px 4px 0 $porcelain;
+    &.custom {
+      background: $porcelain;
+    }
+    .action-table {
+      display: flex;
+      flex-direction: row;
+      padding: 0;
+      .edit-icon {
+        width: 36px;
+        height: 36px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+          background-color: black;
+          color: white !important;
+        }
+      }
+      .delete-icon {
+        width: 36px;
+        height: 36px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+          background-color: black;
+          color: white !important;
+        }
+      }
+    }
+  }
+}

@@ -1,25 +1,24 @@
 <template>
-  <input type="text" v-model="message" @input="handleInput()" />
+  <va-input v-model="inputText" v-bind:placeholder="placeholder" />
 </template>
-<script setup lang="ts">
-import { ref } from "vue";
-const message = ref<string>("");
-interface Props {
-  messageProps: string;
-}
-// onMounted(() => {
-//   message.value = props.message;
-// });
-const props = withDefaults(defineProps<Props>(), {
-  messageProps: "",
-});
-const emits = defineEmits(["input"]);
-const handleInput = () => {
-  emits("input", message.value);
-  // console.log(props.messageProps, message.value);
-};
-watch(message, (val) => {
-  message.value = val;
-  console.log(val);
-});
+<script setup>
+const props = defineProps({
+  message: {
+    type: String,
+    default: ''
+  },
+  placeholder: {
+    type: String,
+    default: ''
+  }
+})
+const emits = defineEmits(['input'])
+const inputText = computed({
+  get() {
+    return props.message
+  },
+  set(value) {
+    emits('input', value)
+  }
+})
 </script>
