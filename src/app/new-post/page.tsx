@@ -27,8 +27,7 @@ function QuillEditor() {
         }}
       />
       <div className="html-content">
-        <h2>HTML Content:</h2>
-        {document.getElementsByClassName('ql-editor')[0]?.innerHTML }
+        <h2>HTML Content: <br/> {content}</h2>
       </div>
     </div>
   );
