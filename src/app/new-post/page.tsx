@@ -5,10 +5,13 @@ import 'react-quill/dist/quill.snow.css';
 
 function QuillEditor() {
   const [content, setContent] = useState('');
+  const [htmlContent, setHtmlContent] = useState('');
 
   const handleContentChange = (value: any) => {
-    console.log(value)
+    console.log(value);
     setContent(value);
+    console.log(document.getElementsByClassName('ql-editor')[0]?.innerHTML);
+    setHtmlContent(document.getElementsByClassName('ql-editor')[0]?.innerHTML);
   };
 
   return (
