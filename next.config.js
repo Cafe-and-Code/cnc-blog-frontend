@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+/* tslint:disable no-var-requires */
 const path = require("path");
 
 const nextConfig = {

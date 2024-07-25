@@ -6,10 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lintfix": "eslint --fix ."
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.16.4",
     "next": "14.2.4",
+    "next-transpile-modules": "^10.0.1",
     "react": "^18",
     "react-dom": "^18",
     "react-quill": "^2.0.0",
