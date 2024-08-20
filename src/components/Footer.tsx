@@ -2,6 +2,6 @@ import '@/styles/components/footer.scss'
 
 export default function Footer() {
     return (
-        <div className="cnc-footer">Footer</div>
+        <div className="cnc-footer"></div>
     )
 }
