@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { Lora } from 'next/font/google'
+import { ThemeProvider } from "@/components/theme-provider"
 
 import '@/styles/globals.scss'
 
@@ -20,10 +21,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Header/>
-        {children}
-        <Footer/>
+      <body>
+        <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+          <Header/>
+          {children}
+          <Footer/>
+        </ThemeProvider>
       </body>
     </html>
   )
