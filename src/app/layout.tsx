@@ -1,9 +1,13 @@
 import { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Lora } from 'next/font/google'
+import { ThemeProvider } from "@/components/theme-provider"
 
 import '@/styles/globals.scss'
 
-const inter = Inter({ subsets: ['latin'] })
+import Footer from "@/components/Footer"
+import Header from "@/components/Header"
+
+const inter = Lora({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'cnc-blog',
@@ -17,7 +21,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+          <Header/>
+          {children}
+          <Footer/>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

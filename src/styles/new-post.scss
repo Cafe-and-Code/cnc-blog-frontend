@@ -1,0 +1,23 @@
+.new-post {
+    
+    .edit-post {
+        display: flex;
+        .quill {
+            width: 50%;
+            min-height: 320px;
+            border: 1px solid #e5e7eb;
+            .ql-toolbar.ql-snow{
+                border: none;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            .ql-container.ql-snow {
+                border: none
+            }
+        }
+        .editor-content {
+            width: 50%;
+            min-height: 320px;
+            border: 1px solid #e5e7eb;
+        }
+    }
+}
