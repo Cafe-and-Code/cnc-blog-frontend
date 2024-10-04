@@ -3,6 +3,7 @@ import { Lora } from 'next/font/google'
 import { ThemeProvider } from "@/components/theme-provider"
 
 import '@/styles/globals.scss'
+import '@/styles/_variable.scss'
 
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
@@ -20,14 +21,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body>
         <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              enableSystem
-              disableTransitionOnChange
-            >
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <Header/>
           {children}
           <Footer/>

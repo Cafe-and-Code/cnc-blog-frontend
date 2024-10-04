@@ -1,15 +1,13 @@
 .header-cnc {
     position: sticky;
     top: 0;
-    background: var(--black-01);
     padding: 20px;
-    box-shadow: rgb(204, 219, 232) 1px 1px 3px 0px inset, rgba(255, 255, 255, 0.5) -1px -1px 3px 1px inset;
     display: flex;
     align-items: center;
     justify-content: space-between;
     .cnc-logo-area {
         font-size: 30px;
-        color: var(--orange-01);
+        color: var(--color-01);
     }
     .cnc-navigation {
         width: 50%;
@@ -17,12 +15,12 @@
         justify-content: center;
         gap: 100px;
         .cnc-page {
-            color: var(--black-02);
+            color: var(--color-01);
             &:hover {
-                color: var(--orange-01); 
+                color: var(--color-01); 
             }
             &.active-navigation {
-                color: var(--orange-01);  
+                color: var(--color-01);  
             }
         }
     }
