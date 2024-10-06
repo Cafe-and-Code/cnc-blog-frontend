@@ -1,6 +1,6 @@
 'use client'
 
-import axios from 'axios';
+import axios from '@/lib/axios';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef,useState  } from 'react';
 
@@ -8,6 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import '@/styles/new-post.scss'
 
 import { API_URL } from '@/app/constant/api-config';
+import { Button } from '@/components/ui/button';
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
@@ -60,7 +61,7 @@ function QuillEditor() {
   const submitHandler = (event: any) => {
     event.preventDefault()
     const payload = {
-      id: '42683370-f8dd-4edb-eb1f-08dce2285b54',
+      authorId: '42683370-f8dd-4edb-eb1f-08dce2285b54',
       title: title,
       content: content,
       status: 1
@@ -90,7 +91,7 @@ function QuillEditor() {
           </div>
         </div>
       </div>
-        <button onClick={submitHandler}>Save</button>
+        <Button onClick={submitHandler}>Save</Button>
     </div>
   );
 }
