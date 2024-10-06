@@ -1,11 +1,13 @@
 'use client'
 
-import dynamic from 'next/dynamic';
-import { useEffect, useState, useRef  } from 'react';
 import axios from 'axios';
-import { API_URL } from '@/app/constant/api-config';
+import dynamic from 'next/dynamic';
+import { useEffect, useRef,useState  } from 'react';
+
 import 'react-quill/dist/quill.snow.css';
 import '@/styles/new-post.scss'
+
+import { API_URL } from '@/app/constant/api-config';
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
@@ -23,7 +25,7 @@ function QuillEditor() {
     setContent(value);
   };
 
-  const module = {
+  const quillModules = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote', 'code-block'],
@@ -60,12 +62,13 @@ function QuillEditor() {
     const payload = {
       id: '42683370-f8dd-4edb-eb1f-08dce2285b54',
       title: title,
-      content: content
+      content: content,
+      status: 1
     }
     try {
       axios.post(API_URL.POSTS, payload)
-    } catch(error) {
-
+    } catch (error) {
+      console.error('Error posting data:', error);
     }
     console.log(payload);
   }
@@ -81,7 +84,7 @@ function QuillEditor() {
           <ReactQuill
             value={content}
             onChange={handleContentChange}
-            modules={module}
+            modules={quillModules}
           />
           <div className='ql-editor editor-content' dangerouslySetInnerHTML={{ __html: content }}>
           </div>
