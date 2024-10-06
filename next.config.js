@@ -9,6 +9,19 @@ const nextConfig = {
   experimental: {
     typedRoutes: true,
   },
+  env: {
+    baseApi: process.env.BASE_API || 'http://localhost:5057',
+  },
+  axios: {
+    baseUrl: process.env.BASE_API,
+    credentials: true,
+    init(axios) {
+      axios.defaults.withCredentials = true
+    },
+  },
+  modules: [
+    "axios"
+  ],
 };
 
 module.exports = nextConfig;

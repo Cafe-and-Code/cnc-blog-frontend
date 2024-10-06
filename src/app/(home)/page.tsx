@@ -11,6 +11,7 @@ export default function Home() {
       <blockquote className="mt-6 border-l-2 pl-6 italic">
         "Code can't lie, comments can" 🐧
       </blockquote>
+      <div>{process.env.baseApi}</div>
     </div>
   );
 }
