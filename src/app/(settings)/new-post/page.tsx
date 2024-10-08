@@ -1,14 +1,16 @@
 'use client'
 
-import axios from '@/lib/axios';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef,useState  } from 'react';
 
 import 'react-quill/dist/quill.snow.css';
 import '@/styles/new-post.scss'
 
-import { API_URL } from '@/app/constant/api-config';
+import axios from '@/lib/axios';
+
 import { Button } from '@/components/ui/button';
+
+import { API_URL } from '@/app/constant/api-config';
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,

@@ -10,7 +10,7 @@ const nextConfig = {
     typedRoutes: true,
   },
   env: {
-    baseApi: process.env.BASE_API || 'http://localhost:5057',
+    baseApi: process.env.BASE_API || 'https://localhost:7113',
   },
   axios: {
     baseUrl: process.env.BASE_API,

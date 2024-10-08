@@ -1,51 +1,66 @@
+'use client';
+
+//import Cookies from 'js-cookie';
 import Image from 'next/image';
+import { useState } from 'react';
 
 import '@/styles/components/login-form.scss';
+
+import axios from '@/lib/axios';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent,CardFooter,CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-  //   const [dataLogin, setDataLogin] = useState<loginType>({
-  //     email: '',
-  //     password: '',
-  //     checkAgree: false
-  //   })
+import { API_URL } from '@/app/constant/api-config';
 
-  //   const router = useRouter()
-
-  //   const handleChangePassword = (e: any) => {
-  //     setDataLogin((prev) => ({ ...prev, password: e.target.value }))
-  //   }
-
-  //   const handleChangeEmail = (e: any) => {
-  //     setDataLogin((prev) => ({ ...prev, email: e.target.value }))
-  //   }
-
-  //   const handleCheckBox = (e: any) => {
-  //     setDataLogin((prev) => ({ ...prev, checkAgree: e.target.checked }))
-  //   }
-  //   const handleLogin = () => {
-  //     router.push('/')
-  //     setDataLogin({
-  //       email: '',
-  //       password: '',
-  //       checkAgree: false
-  //     })
-  //     // if (dataLogin.email && dataLogin.password && dataLogin.checkAgree) {
-  //     //     router.push('/')
-  //     //     setDataLogin({
-  //     //         email: '',
-  //     //         password: '',
-  //     //         checkAgree: false
-  //     //     })
-  //     // } else {
-  //     //     alert('Unable to log in, please check again !')
-  //     // }
-  //   }
+type loginType = {
+  username: string;
+  password: string;
+  //checkAgree: boolean;
+};
 
 export default function LoginForm() {
+  const [dataLogin, setDataLogin] = useState<loginType>({
+    username: '',
+    password: '',
+    //checkAgree: false,
+  });
+
+  //const router = useRouter();
+
+  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDataLogin((prev) => ({ ...prev, password: e.target.value }));
+  };
+
+  const handleChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDataLogin((prev) => ({ ...prev, username: e.target.value }));
+  };
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const payload = {
+      username: dataLogin.username,
+      password: dataLogin.password
+    }
+    try {
+      const response = await axios.post(API_URL.LOGIN, payload);
+      const data = response.data;
+
+      const token = data;
+      localStorage.setItem('authToken', token);
+      window.location.href = '/new-post';
+      setDataLogin({
+        username: '',
+        password: '',
+        //checkAgree: false,
+      });
+    } catch (error) {
+      console.error('Error posting data:', error);
+    }
+  };
+
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -57,8 +72,8 @@ export default function LoginForm() {
           className="mx-auto h-10 w-auto"
         />
         <h2 
-          className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight" 
           style={{ color: 'var(--next-theme-color)' }}
+          className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
         >
           Sign in to your account
         </h2>
@@ -67,32 +82,34 @@ export default function LoginForm() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <Card>
           <CardHeader>
-            <h2 
-              className="text-center text-2xl font-bold leading-9 tracking-tight" 
+            <h2
               style={{ color: 'var(--next-theme-color)' }}
+              className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
             >
               Sign in to your account
             </h2>
           </CardHeader>
           <CardContent>
-            <form action="#" method="POST" className="space-y-6">
+            <form onSubmit={handleLogin} className="space-y-6">
               <div>
                 <Label 
-                  htmlFor="email" 
-                  className="block text-sm font-medium leading-6" 
+                  htmlFor="username"
                   style={{ color: 'var(--next-theme-color)' }}
+                  className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Email address
+                  Username
                 </Label>
                 <div className="mt-2">
                   <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  style={{ color: 'var(--next-theme-color)' }}
+                    id="username"
+                    name="username"
+                    type="text"
+                    required
+                    autoComplete="username"
+                    value={dataLogin.username}
+                    onChange={handleChangeUsername}
+                    style={{ color: 'var(--next-theme-color)' }}
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -101,8 +118,8 @@ export default function LoginForm() {
                 <div className="flex items-center justify-between">
                   <Label
                     htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
                     style={{ color: 'var(--next-theme-color)' }}
+                    className="block text-sm font-medium leading-6 text-gray-900"
                   >
                     Password
                   </Label>
@@ -119,8 +136,10 @@ export default function LoginForm() {
                     type="password"
                     required
                     autoComplete="current-password"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={dataLogin.password}
+                    onChange={handleChangePassword}
                     style={{ color: 'var(--next-theme-color)' }}
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -137,10 +156,7 @@ export default function LoginForm() {
             </form>
           </CardContent>
           <CardFooter>
-            <p 
-              className="mt-10 text-center text-sm text-gray-500"
-              style={{ color: 'var(--next-theme-color)' }}
-            >
+            <p className="mt-10 text-center text-sm text-gray-500" style={{ color: 'var(--next-theme-color)' }}>
               Not a member?{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                 Start a 14 day free trial
