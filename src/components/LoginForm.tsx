@@ -56,7 +56,10 @@ export default function LoginForm() {
           src="/next.svg"
           className="mx-auto h-10 w-auto"
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight" style={{ color: 'var(--next-theme-color)' }}>
+        <h2 
+          className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight" 
+          style={{ color: 'var(--next-theme-color)' }}
+        >
           Sign in to your account
         </h2>
       </div>
@@ -64,14 +67,21 @@ export default function LoginForm() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <Card>
           <CardHeader>
-            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight" style={{ color: 'var(--next-theme-color)' }}>
+            <h2 
+              className="text-center text-2xl font-bold leading-9 tracking-tight" 
+              style={{ color: 'var(--next-theme-color)' }}
+            >
               Sign in to your account
             </h2>
           </CardHeader>
           <CardContent>
             <form action="#" method="POST" className="space-y-6">
               <div>
-                <Label htmlFor="email" className="block text-sm font-medium leading-6" style={{ color: 'var(--next-theme-color)' }}>
+                <Label 
+                  htmlFor="email" 
+                  className="block text-sm font-medium leading-6" 
+                  style={{ color: 'var(--next-theme-color)' }}
+                >
                   Email address
                 </Label>
                 <div className="mt-2">
@@ -97,9 +107,7 @@ export default function LoginForm() {
                     Password
                   </Label>
                   <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500"
-                      style={{ color: 'var(--next-theme-color)' }}
-                    >
+                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                       Forgot password?
                     </a>
                   </div>
@@ -129,7 +137,10 @@ export default function LoginForm() {
             </form>
           </CardContent>
           <CardFooter>
-            <p className="mt-10 text-center text-sm text-gray-500" style={{ color: 'var(--next-theme-color)' }}>
+            <p 
+              className="mt-10 text-center text-sm text-gray-500"
+              style={{ color: 'var(--next-theme-color)' }}
+            >
               Not a member?{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                 Start a 14 day free trial
