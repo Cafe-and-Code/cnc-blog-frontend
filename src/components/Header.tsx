@@ -18,8 +18,8 @@ export default function Header() {
     };
     const router = usePathname();
     const menuList = [
-        { name: 'Home', path: '/' },
         { name: 'Blog', path: '/blog' },
+        { name: 'Newsletter', path: '/new-post' },
         { name: 'Login', path: '/login' }
     ]
 
@@ -32,11 +32,11 @@ export default function Header() {
     return (
         <div className='header-cnc'>
             <div className='cnc-logo-area'>
-                Cnc Blog
+                <Link href={{pathname:'/'}}>Cnc Blog</Link>
             </div>
             <div className='cnc-navigation'>
                 {menuList.map((item, index) => (
-                   <div key={index} className={`cnc-page ${activeLink === item.path? 'active-navigation' : ''}`}><Link href={{pathname:item.path}} onClick={() => handleLinkClick(item.path)}>{item.name}</Link></div>
+                   <div key={index} className={`cnc-page ${activeLink === item.path? 'active-navigation' : ''}`}><Link className='cnc-navigator' href={{pathname:item.path}} onClick={() => handleLinkClick(item.path)}>{item.name}</Link></div>
                 ))}
                 <div><button onClick={toggle}>Toggle</button></div>
             </div>
