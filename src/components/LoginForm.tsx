@@ -62,7 +62,7 @@ export default function LoginForm() {
         //checkAgree: false,
       });
       const userId = '123'; // Thay thế bằng ID thật từ API
-      dispatch(login('sadsadsadsadsad'));
+      dispatch(login(userId));
     } catch (error) {
       console.error('Error posting data:', error);
     }
