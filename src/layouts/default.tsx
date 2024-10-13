@@ -15,25 +15,25 @@ export const metadata: Metadata = {
   description: 'cnc-blog'
 }
 
-export default function DefaultLayout({
+export default function MainLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header/>
-          {children}
-          <Footer/>
-        </ThemeProvider>
-      </body>
-    </html>
+      <html lang="en" suppressHydrationWarning={true}>
+        <body>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            {children}
+            <Footer />
+          </ThemeProvider>
+        </body>
+      </html>
   )
 }

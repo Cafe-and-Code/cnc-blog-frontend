@@ -1,11 +1,13 @@
 'use client';
 
 //import Cookies from 'js-cookie';
+import React from 'react';
 import Image from 'next/image';
 import { useState } from 'react';
-
+import { useCookies } from 'react-cookie';
 import '@/styles/components/login-form.scss';
-
+import { useDispatch } from 'react-redux';
+import { login } from '@/store/auth';
 import axios from '@/lib/axios';
 
 import { Button } from '@/components/ui/button';
@@ -27,6 +29,9 @@ export default function LoginForm() {
     password: '',
     //checkAgree: false,
   });
+  const dispatch = useDispatch();
+  
+  const [cookies, setCookie] = useCookies(['token']);
 
   //const router = useRouter();
 
@@ -49,13 +54,15 @@ export default function LoginForm() {
       const data = response.data;
 
       const token = data;
-      localStorage.setItem('authToken', token);
-      window.location.href = '/new-post';
+      setCookie('token', token)
+      window.location.href = '/';
       setDataLogin({
         username: '',
         password: '',
         //checkAgree: false,
       });
+      const userId = '123'; // Thay thế bằng ID thật từ API
+      dispatch(login('sadsadsadsadsad'));
     } catch (error) {
       console.error('Error posting data:', error);
     }
