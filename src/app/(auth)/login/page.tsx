@@ -1,8 +1,7 @@
 'use client';
 
-//import Cookies from 'js-cookie';
 import React from 'react';
-import Image from 'next/image';
+import Link from 'next/link'
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import '@/styles/components/login-form.scss';
@@ -23,7 +22,7 @@ type loginType = {
   //checkAgree: boolean;
 };
 
-export default function LoginForm() {
+export default function LoginPage() {
   const [dataLogin, setDataLogin] = useState<loginType>({
     username: '',
     password: '',
@@ -32,8 +31,6 @@ export default function LoginForm() {
   const dispatch = useDispatch();
   
   const [cookies, setCookie] = useCookies(['token']);
-
-  //const router = useRouter();
 
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDataLogin((prev) => ({ ...prev, password: e.target.value }));
@@ -62,28 +59,16 @@ export default function LoginForm() {
         //checkAgree: false,
       });
       const userId = '123'; // Thay thế bằng ID thật từ API
-      dispatch(login('sadsadsadsadsad'));
+      dispatch(login(userId));
     } catch (error) {
       console.error('Error posting data:', error);
     }
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Image
-          width={12}
-          height={12}
-          alt="Your Company"
-          src="/next.svg"
-          className="mx-auto h-10 w-auto"
-        />
-        <h2 
-          style={{ color: 'var(--next-theme-color)' }}
-          className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
-        >
-          Sign in to your account
-        </h2>
+        <h1 className='text-center text-4xl font-bold'>CNC BLOG</h1>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -91,7 +76,7 @@ export default function LoginForm() {
           <CardHeader>
             <h2
               style={{ color: 'var(--next-theme-color)' }}
-              className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+              className="text-center text-xl font-bold leading-9 tracking-tight text-gray-900"
             >
               Sign in to your account
             </h2>
@@ -131,9 +116,9 @@ export default function LoginForm() {
                     Password
                   </Label>
                   <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    <Link href={{pathname:'/forgot-password'}} className="font-semibold text-indigo-600 hover:text-indigo-500">
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="mt-2">
@@ -165,9 +150,9 @@ export default function LoginForm() {
           <CardFooter>
             <p className="mt-10 text-center text-sm text-gray-500" style={{ color: 'var(--next-theme-color)' }}>
               Not a member?{' '}
-              <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                Start a 14 day free trial
-              </a>
+              <Link href={{pathname:'/create-account'}} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                create account
+              </Link>
             </p>
           </CardFooter>
         </Card>

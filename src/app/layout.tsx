@@ -1,5 +1,4 @@
 'use client';
-import { Metadata } from 'next'
 import { Lora } from 'next/font/google'
 import { ThemeProvider } from "@/components/theme-provider"
 
@@ -21,18 +20,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const router = usePathname()
-  const listNotHeader = ['/login']
+  const listIsHeader = ['/', '/blog', '/new-post']
   const checkLayout = () => {
-    return listNotHeader.includes(router)
+    return listIsHeader.includes(router)
   }
-  console.log(checkLayout())
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
         <title>cnc-blog</title>
         <meta name="cnc-blog" content="cnc-blog" />
       </head>
-      <body style={{ overflow: 'hidden' }}>
+      <body className={inter.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -41,9 +39,9 @@ export default function RootLayout({
         >
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              {!checkLayout() && <Header />}
+              {checkLayout() && <Header />}
               {children}
-              <Footer />
+              {checkLayout() && <Footer />}
             </PersistGate>
           </Provider>
         </ThemeProvider>

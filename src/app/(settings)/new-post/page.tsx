@@ -24,7 +24,6 @@ function QuillEditor() {
 
 
   const handleContentChange = (value: any) => {
-    console.log(value);
     setContent(value);
   };
 
@@ -73,7 +72,6 @@ function QuillEditor() {
     } catch (error) {
       console.error('Error posting data:', error);
     }
-    console.log(payload);
   }
 
   return (

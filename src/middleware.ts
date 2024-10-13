@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 export function middleware(req:any) {
   // Kiểm tra token hoặc thông tin xác thực
   const token = req.cookies.get('token'); // Thay đổi theo cách bạn lưu trữ token
-    console.log(token);
     
   // Nếu không có token và người dùng đang cố truy cập trang home
   if (!token && req.nextUrl.pathname !== '/login') {
