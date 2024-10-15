@@ -19,7 +19,6 @@
             display: flex;
             .quill {
                 width: 50%;
-                min-height: 320px;
                 border-right: 1px solid var(--color-01);
                 .ql-toolbar.ql-snow {
                     border: none;
@@ -38,15 +37,11 @@
                 }
                 .ql-container.ql-snow {
                     border: none;
-                    height: calc(100% - 65px);
-                    .ql-editor {
-                        height: 100%;
-                    }
+                    height: auto;
                 }
             }
             .editor-content {
                 width: 50%;
-                min-height: 320px;
             }
         }
     }

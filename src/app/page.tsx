@@ -1,5 +1,9 @@
+'use client'
 import '@/styles/home.scss'
+import { useSelector } from 'react-redux';
 export default function Home() {
+  const userId = useSelector((state: any) => state.user.userId);
+
   return (
     <div className='text-center'>
       <h1 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
@@ -12,6 +16,10 @@ export default function Home() {
         "Code can't lie, comments can" 🐧
       </blockquote>
       <div>{process.env.baseApi}</div>
-    </div>
+      <h2>Thông Tin Người Dùng</h2>
+      {userId && (
+        <div>User ID: {userId}</div>
+      )}</div>
+
   );
 }
