@@ -5,8 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import '@/styles/globals.scss'
 import '@/styles/_variable.scss'
 
-import Footer from "@/components/Footer"
-import Header from "@/components/Header"
+import Footer from "@/app/templates/Footer"
+import Header from "@/app/templates/Header"
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '@/store/auth';
