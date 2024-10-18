@@ -1,12 +1,14 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useState, useEffect } from 'react';
 import { useTheme } from "next-themes"
+import React, { useEffect,useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
-import { logout } from '@/store/auth';
+
 import '@/styles/components/header.scss'
+
+import { logout } from '@/store/auth';
 
 export default function Header() {
   const dispatch = useDispatch();

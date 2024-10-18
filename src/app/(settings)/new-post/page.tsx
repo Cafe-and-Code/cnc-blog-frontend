@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useRef,useState  } from 'react';
+import { Cookies } from 'react-cookie';
 
 import 'react-quill/dist/quill.snow.css';
 import '@/styles/new-post.scss'
@@ -61,8 +62,9 @@ function QuillEditor() {
 
   const submitHandler = (event: any) => {
     event.preventDefault()
+    const cookies = new Cookies();
     const payload = {
-      authorId: '42683370-f8dd-4edb-eb1f-08dce2285b54',
+      authorId: cookies.get('userId'),
       title: title,
       content: content,
       status: 1

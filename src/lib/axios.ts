@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
 const axiosInstance = axios.create({
   baseURL: process.env.baseApi, // Replace with your API base URL
@@ -9,10 +10,9 @@ const axiosInstance = axios.create({
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   function (config) {
-    // Do something before the request is sent
-    // For example, add an authentication token to the headers
-    const token = localStorage.getItem('authToken'); // Retrieve auth token from localStorage
-    
+    const cookies = new Cookies();
+    const token = cookies.get('token'); // Retrieve auth token from cookies
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
