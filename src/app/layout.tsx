@@ -1,17 +1,18 @@
 'use client';
 import { Lora } from 'next/font/google'
-import { ThemeProvider } from "@/components/theme-provider"
+import { usePathname } from 'next/navigation';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import '@/styles/globals.scss'
 import '@/styles/_variable.scss'
 
+import { ThemeProvider } from "@/components/theme-provider"
+
+import { persistor,store } from '@/store/auth';
+
 import Footer from "@/app/templates/Footer"
 import Header from "@/app/templates/Header"
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from '@/store/auth';
-
-import { usePathname } from 'next/navigation';
 const inter = Lora({ subsets: ['latin'] })
  
 export default function RootLayout({
