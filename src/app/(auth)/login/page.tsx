@@ -100,7 +100,7 @@ export default function LoginPage() {
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="relative">
-                <UserRound className="absolute inset-y-2 left-2 flex items-center"/>
+                <UserRound className="absolute inset-y-2 left-2"/>
                 <Input
                   id="username"
                   name="username"
@@ -114,7 +114,7 @@ export default function LoginPage() {
                 />
               </div>
               <div className="relative">
-                <Lock className="absolute inset-y-2 left-2 flex items-center"/>
+                <Lock className="absolute inset-y-2 left-2"/>
                 <Input
                   id="password"
                   name="password"
