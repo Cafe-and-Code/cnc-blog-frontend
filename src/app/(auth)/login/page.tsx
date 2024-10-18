@@ -34,7 +34,7 @@ export default function LoginPage() {
   });
   const dispatch = useDispatch();
 
-  const [cookies, setCookie] = useCookies(['token']);
+  const [cookies, setCookie] = useCookies(['token', 'userId', 'userRole']);
 
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDataLogin((prev) => ({ ...prev, password: e.target.value }));
@@ -64,15 +64,20 @@ export default function LoginPage() {
       const response = await axios.post(API_URL.LOGIN, payload);
       const data = response.data;
 
-      const token = data;
-      setCookie('token', token)
+      const token = data.token;
+      const userId = data.userId;
+      const userRole = data.userRole;
+
+      setCookie('token', token);
+      setCookie('userId', userId);
+      setCookie('userRole', userRole);
+      
       window.location.href = '/';
       setDataLogin({
         username: '',
         password: '',
-        //checkAgree: false,
       });
-      const userId = '123'; // Thay thế bằng ID thật từ API
+      
       dispatch(login(userId));
     } catch (error) {
       console.error('Error posting data:', error);
