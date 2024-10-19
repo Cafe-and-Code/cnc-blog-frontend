@@ -96,7 +96,7 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <Card>
+        <Card className="shadow-2xl backdrop-blur-md">
           <CardHeader>
             <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-[var(--color-01)]">
               Sign in to your account
@@ -105,57 +105,57 @@ export default function LoginPage() {
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="relative">
-                <UserRound className="absolute inset-y-2 left-2"/>
-                <Input
-                  id="username"
-                  name="username"
-                  type="text"
-                  required
-                  placeholder="Username"
-                  autoComplete="username"
-                  value={dataLogin.username}
-                  onChange={handleChangeUsername}
-                  className="pl-10"
-                />
+          <UserRound className="absolute inset-y-2 left-2"/>
+          <Input
+            id="username"
+            name="username"
+            type="text"
+            required
+            placeholder="Username"
+            autoComplete="username"
+            value={dataLogin.username}
+            onChange={handleChangeUsername}
+            className="pl-10"
+          />
               </div>
               <div className="relative">
-                <Lock className="absolute inset-y-2 left-2"/>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  placeholder="Password"
-                  autoComplete="current-password"
-                  value={dataLogin.password}
-                  onChange={handleChangePassword}
-                  className="pl-10"
-                />
+          <Lock className="absolute inset-y-2 left-2"/>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            required
+            placeholder="Password"
+            autoComplete="current-password"
+            value={dataLogin.password}
+            onChange={handleChangePassword}
+            className="pl-10"
+          />
               </div>
               <div>
-                <Button type="submit" size="full">
-                  Sign in
-                </Button>
+          <Button type="submit" size="full">
+            Sign in
+          </Button>
               </div>
             </form>
           </CardContent>
           <CardFooter>
             <div className="justify-center">
               <Link
-                href={{ pathname: '/forgot-password' }} 
-                className="mt-10 text-center text-sm text-[var(--color-01)] hover:underline"
+          href={{ pathname: '/forgot-password' }} 
+          className="mt-10 text-center text-sm text-[var(--color-01)] hover:underline"
               >
-                Forget Password?
+          Forget Password?
               </Link>
-                <p className="text-sm text-gray-500 dark:text-dark-6">
-                <span className="pr-0.5">Not a member yet? </span>
-                <Link
-                  href={{ pathname: '/create-account' }}
-                  className="text-primary hover:underline"
-                >
-                  Sign Up
-                </Link>
-                </p>
+          <p className="text-sm text-gray-500 dark:text-dark-6">
+          <span className="pr-0.5">Not a member yet? </span>
+          <Link
+            href={{ pathname: '/create-account' }}
+            className="text-primary hover:underline"
+          >
+            Sign Up
+          </Link>
+          </p>
             </div>
           </CardFooter>
         </Card>
