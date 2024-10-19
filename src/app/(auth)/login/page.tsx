@@ -1,6 +1,6 @@
 'use client';
 
-import { Lock,UserRound } from 'lucide-react';
+import { Lock, UserRound } from 'lucide-react';
 import Link from 'next/link'
 import React from 'react';
 import { useState } from 'react';
@@ -67,13 +67,13 @@ export default function LoginPage() {
       setCookie('token', token);
       setCookie('userId', userId);
       setCookie('userRole', userRole);
-      
+
       window.location.href = '/';
       setDataLogin({
         username: '',
         password: '',
       });
-      
+
       dispatch(login(userId));
     } catch (error) {
       console.error('Error posting data:', error);
@@ -84,7 +84,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
           CNC BLOG
@@ -92,7 +92,7 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <Card>
+        <Card className="shadow-2xl backdrop-blur-md">
           <CardHeader>
             <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-[var(--color-01)]">
               Sign in to your account
@@ -101,7 +101,7 @@ export default function LoginPage() {
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="relative">
-                <UserRound className="absolute inset-y-2 left-2"/>
+                <UserRound className="absolute inset-y-2 left-2" />
                 <Input
                   id="username"
                   name="username"
@@ -115,7 +115,7 @@ export default function LoginPage() {
                 />
               </div>
               <div className="relative">
-                <Lock className="absolute inset-y-2 left-2"/>
+                <Lock className="absolute inset-y-2 left-2" />
                 <Input
                   id="password"
                   name="password"
@@ -138,12 +138,12 @@ export default function LoginPage() {
           <CardFooter>
             <div className="justify-center">
               <Link
-                href={{ pathname: '/forgot-password' }} 
+                href={{ pathname: '/forgot-password' }}
                 className="mt-10 text-center text-sm text-[var(--color-01)] hover:underline"
               >
                 Forget Password?
               </Link>
-                <p className="text-sm text-gray-500 dark:text-dark-6">
+              <p className="text-sm text-gray-500 dark:text-dark-6">
                 <span className="pr-0.5">Not a member yet? </span>
                 <Link
                   href={{ pathname: '/create-account' }}
@@ -151,14 +151,14 @@ export default function LoginPage() {
                 >
                   Sign Up
                 </Link>
-                </p>
+              </p>
             </div>
           </CardFooter>
         </Card>
       </div>
-      <BaseDialog 
-        title={title} 
-        visible={isOpen} 
+      <BaseDialog
+        title={title}
+        visible={isOpen}
         message={message}
         submitBtn='Submit'
         onSubmit={handleSubmit}

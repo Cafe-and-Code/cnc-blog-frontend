@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button"
 
 
-interface DialogProps {
+interface DialogType {
   visible: boolean,
   message: string,
   title: string,
@@ -19,7 +19,7 @@ interface DialogProps {
   onCancel?: () => void,
   onSubmit?: () => void,
 }
-export default function BaseDialog({ message, visible, title, cancelBtn, submitBtn, onCancel = () => {}, onSubmit = () => {} }: DialogProps) {
+export default function BaseDialog({ message, visible, title, cancelBtn, submitBtn, onCancel = () => {}, onSubmit = () => {} }: DialogType) {
   
   const handleCancel = () => {
     onCancel();
