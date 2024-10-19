@@ -36,12 +36,8 @@ export default function LoginPage() {
 
   const [cookies, setCookie] = useCookies(['token', 'userId', 'userRole']);
 
-  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDataLogin((prev) => ({ ...prev, password: e.target.value }));
-  };
-
-  const handleChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDataLogin((prev) => ({ ...prev, username: e.target.value }));
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    setDataLogin((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -114,7 +110,7 @@ export default function LoginPage() {
                   placeholder="Username"
                   autoComplete="username"
                   value={dataLogin.username}
-                  onChange={handleChangeUsername}
+                  onChange={e => handleChangeInput(e, 'username')}
                   className="pl-10"
                 />
               </div>
@@ -128,7 +124,7 @@ export default function LoginPage() {
                   placeholder="Password"
                   autoComplete="current-password"
                   value={dataLogin.password}
-                  onChange={handleChangePassword}
+                  onChange={e => handleChangeInput(e, 'password')}
                   className="pl-10"
                 />
               </div>

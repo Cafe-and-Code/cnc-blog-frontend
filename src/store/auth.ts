@@ -1,6 +1,6 @@
 // store.ts
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
+// import storage from 'redux-persist/lib/storage'; // Sử dụng localStorage
 import {
   persistStore,
   persistReducer,
@@ -12,24 +12,31 @@ import {
   REGISTER,
 } from 'redux-persist'
 
-const createNoopStorage = () => {
-  return {
-     getItem(_key: any) {
+import createWebStorage from "redux-persist/es/storage/createWebStorage";
+
+export function createPersistStore() {
+  const isServer = typeof window === "undefined";
+  if (isServer) {
+    return {
+      getItem() {
         return Promise.resolve(null);
-     },
-     setItem(_key: any, value: any) {
-        return Promise.resolve(value);
-     },
-     removeItem(_key: any) {
+      },
+      setItem() {
         return Promise.resolve();
-     },
-  };
-};
-const storage = typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage();
+      },
+      removeItem() {
+        return Promise.resolve();
+      },
+    };
+  }
+  return createWebStorage("local");
+}
+const storage = typeof window !== "undefined"
+    ? createWebStorage("local")
+    : createPersistStore();
 
 const persistConfig = {
   key: 'root',
-  version: 1,
   storage,
 };
 
