@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server';
 
 // Giả sử bạn lưu thông tin xác thực trong cookie hoặc sessionStorage
 export function middleware(req:NextRequest) {
