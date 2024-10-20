@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic';
-import { useEffect, useRef,useState  } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Cookies } from 'react-cookie';
 
 import 'react-quill/dist/quill.snow.css';
@@ -54,10 +54,10 @@ function QuillEditor() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-      // Đặt focus cho input khi component được render
-      if (inputRef.current) {
-          inputRef.current.focus();
-      }
+    // Đặt focus cho input khi component được render
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }, []);
 
   const submitHandler = (event: any) => {
@@ -80,7 +80,7 @@ function QuillEditor() {
     <div className='new-post'>
       <div className='editor-newsletter'>
         <div className='title-input'>
-          <input ref={inputRef} value={title} type="text" placeholder='Title' onChange={e => setTitle(e.target.value)}/>
+          <input ref={inputRef} value={title} type="text" placeholder='Title' onChange={e => setTitle(e.target.value)} />
         </div>
         <div className='edit-post'>
           <h1></h1>
@@ -93,7 +93,7 @@ function QuillEditor() {
           </div>
         </div>
       </div>
-        <Button onClick={submitHandler}>Save</Button>
+      <Button onClick={submitHandler}>Save</Button>
     </div>
   );
 }
