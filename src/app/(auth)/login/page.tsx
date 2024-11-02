@@ -32,6 +32,9 @@ export default function LoginPage() {
     password: '',
     //checkAgree: false,
   });
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('')
+  const [title, setTilte] = useState('')
   const dispatch = useDispatch();
 
   const [cookies, setCookie] = useCookies(['token', 'userId', 'userRole']);
@@ -39,12 +42,6 @@ export default function LoginPage() {
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     setDataLogin((prev) => ({ ...prev, [field]: e.target.value }));
   };
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [message, setMessage] = useState('')
-
-  const [title, setTilte] = useState('')
 
   const handleSubmit = () => {
     setIsOpen(false)
@@ -78,8 +75,13 @@ export default function LoginPage() {
     } catch (error) {
       console.error('Error posting data:', error);
       setIsOpen(true)
-    setTilte('Error')
+      setTilte('Error')
       setMessage(`Error posting data: ${error}`)
+      // const data = error?.response?.data
+      // const messages = data?.errors.join('\n')
+      // setIsOpen(true)
+      // setTilte('Error')
+      // setMessage(messages)
     }
   };
 

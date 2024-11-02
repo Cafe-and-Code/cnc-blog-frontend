@@ -1,6 +1,7 @@
 'use client'
-import '@/styles/home.scss'
 import { useSelector } from 'react-redux';
+
+import '@/styles/home.scss'
 export default function Home() {
   const userId = useSelector((state: any) => state.user.userId);
 

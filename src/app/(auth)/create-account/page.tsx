@@ -28,7 +28,6 @@ type CreateAccountType = {
 };
 
 export default function CreateAccountPage() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('')
   const [title, setTilte] = useState('')
@@ -48,10 +47,6 @@ export default function CreateAccountPage() {
     setDataCreateAccount((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const changeDate = (e: any) => {
-    setDate(e)
-  }
-
   const handleSubmit = () => {
     setIsOpen(false)
   }
@@ -70,10 +65,12 @@ export default function CreateAccountPage() {
         }
       )
       setDataCreateAccount((prev) => ({...prev, avatarImageUrl: response?.data?.filePath}))
-      } catch (error) {
+      } catch (error:any) {
+        const data = error?.response?.data
+        const messages = data?.errors.join('\n')
         setIsOpen(true)
         setTilte('Error')
-        setMessage(`Error posting data: ${error}`)
+        setMessage(messages)
       }
     }
   }
@@ -89,7 +86,6 @@ export default function CreateAccountPage() {
       dateOfBirth: dayjs(dataCreateAccount.dateOfBirth).format(DATE_FORMAT.SERVER_DATE),
       avatarImageUrl: dataCreateAccount.avatarImageUrl
     }
-    console.log(payload);
     try {
       const response = await axios.post(API_URL.CREATE_USER, payload);
       const data = response.data;
@@ -103,9 +99,12 @@ export default function CreateAccountPage() {
         dateOfBirth: '',
         avatarImageUrl: ''
       });
-    } catch (error) {
-      console.log(error);
-      
+    } catch (error:any) {
+      const data = error?.response?.data
+      const messages = data?.errors.join('\n')
+      setIsOpen(true)
+      setTilte('Error')
+      setMessage(messages)
     }
   };
 

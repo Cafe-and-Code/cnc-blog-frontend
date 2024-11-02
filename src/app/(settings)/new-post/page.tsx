@@ -1,13 +1,15 @@
 'use client'
 
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo,useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Cookies } from 'react-cookie';
 
 import 'react-quill/dist/quill.snow.css';
 import '@/styles/new-post.scss'
 
 import axios from '@/lib/axios';
+
+import BaseDialog from '@/components/base/BaseDialog';
 
 import { API_URL } from '@/app/constant/api-config';
 import HeaderNewPost from '@/app/templates/HeaderNewPost';
@@ -21,6 +23,9 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 export default function NewsLetter() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('')
+  const [titleDialog, setTilteDialog] = useState('')
 
   const handleContentChange = async (value: any) => {
     setContent(value)
@@ -44,7 +49,6 @@ export default function NewsLetter() {
           }
         }
         )
-        console.log(response?.data?.filePath);
         const editor = document.querySelector('#quillId .ql-container .ql-editor');
         const imageElement = document.createElement('img')
         imageElement.src = response?.data?.filePath
@@ -53,7 +57,7 @@ export default function NewsLetter() {
     };
   }
 
-  const quillModules:any = useMemo(()=>({
+  const quillModules: any = useMemo(() => ({
     toolbar: {
       container: [
         ['bold', 'italic', 'underline', 'strike'],
@@ -79,7 +83,7 @@ export default function NewsLetter() {
       // toggle to add extra line breaks when pasting HTML:
       matchVisual: false,
     },
-  }),[])
+  }), [])
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -101,8 +105,16 @@ export default function NewsLetter() {
     try {
       axios.post(API_URL.POSTS, payload)
     } catch (error) {
-      console.error('Error posting data:', error);
+      // const data = error?.response?.data
+      // const messages = data?.errors.join('\n')
+      // setIsOpen(true)
+      // setTilte('Error')
+      // setMessage(messages)
     }
+  }
+
+  const handleSubmit = () => {
+    setIsOpen(false)
   }
 
   return (
@@ -124,6 +136,13 @@ export default function NewsLetter() {
           </div>
         </div>
       </div>
+      <BaseDialog
+        title={titleDialog}
+        visible={isOpen}
+        message={message}
+        submitBtn='Submit'
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }
