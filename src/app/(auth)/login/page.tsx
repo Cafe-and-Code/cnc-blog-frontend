@@ -78,13 +78,13 @@ export default function LoginPage() {
     } catch (error) {
       console.error('Error posting data:', error);
       setIsOpen(true)
-      setTilte('Error')
+    setTilte('Error')
       setMessage(`Error posting data: ${error}`)
     }
   };
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
           CNC BLOG

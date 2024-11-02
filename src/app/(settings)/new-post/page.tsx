@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo,useRef, useState } from 'react';
 import { Cookies } from 'react-cookie';
 
 import 'react-quill/dist/quill.snow.css';
@@ -9,47 +9,77 @@ import '@/styles/new-post.scss'
 
 import axios from '@/lib/axios';
 
-import { Button } from '@/components/ui/button';
-
 import { API_URL } from '@/app/constant/api-config';
+import HeaderNewPost from '@/app/templates/HeaderNewPost';
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
 });
 
-function QuillEditor() {
+
+export default function NewsLetter() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-
-
-  const handleContentChange = (value: any) => {
-    setContent(value);
+  const handleContentChange = async (value: any) => {
+    setContent(value)
   };
 
-  const quillModules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote', 'code-block'],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-      ['link', 'image'],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      [{ 'direction': 'rtl' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],
-    ],
+  const getImage = () => {
+    const input: any = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      const file = input?.files[0];
+      if (file) {
+        const dataBody = new FormData()
+        dataBody.append('file', file)
+        dataBody.append('FileName', file.name)
+        const response = await axios.post(API_URL.UPLOAD_IMAGE, dataBody, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+        )
+        console.log(response?.data?.filePath);
+        const editor = document.querySelector('#quillId .ql-container .ql-editor');
+        const imageElement = document.createElement('img')
+        imageElement.src = response?.data?.filePath
+        editor?.appendChild(imageElement)
+      }
+    };
+  }
+
+  const quillModules:any = useMemo(()=>({
+    toolbar: {
+      container: [
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        ['link', 'image'],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'direction': 'rtl' }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+        ['clean'],
+      ],
+      handlers: {
+        image: getImage,
+      },
+    },
     clipboard: {
       // toggle to add extra line breaks when pasting HTML:
       matchVisual: false,
     },
-  }
+  }),[])
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -60,8 +90,7 @@ function QuillEditor() {
     }
   }, []);
 
-  const submitHandler = (event: any) => {
-    event.preventDefault()
+  const submitHandler = () => {
     const cookies = new Cookies();
     const payload = {
       authorId: cookies.get('userId'),
@@ -78,6 +107,7 @@ function QuillEditor() {
 
   return (
     <div className='new-post'>
+      <HeaderNewPost onPost={submitHandler} />
       <div className='editor-newsletter'>
         <div className='title-input'>
           <input ref={inputRef} value={title} type="text" placeholder='Title' onChange={e => setTitle(e.target.value)} />
@@ -85,6 +115,7 @@ function QuillEditor() {
         <div className='edit-post'>
           <h1></h1>
           <ReactQuill
+            id='quillId'
             value={content}
             onChange={handleContentChange}
             modules={quillModules}
@@ -93,9 +124,6 @@ function QuillEditor() {
           </div>
         </div>
       </div>
-      <Button onClick={submitHandler}>Save</Button>
     </div>
   );
 }
-
-export default QuillEditor;

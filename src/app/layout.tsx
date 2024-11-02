@@ -14,14 +14,16 @@ import { persistor,store } from '@/store/auth';
 import Footer from "@/app/templates/Footer"
 import Header from "@/app/templates/Header"
 const inter = Lora({ subsets: ['latin'] })
+
+interface RootLayoutProps {
+  children: React.ReactNode,
+}
  
 export default function RootLayout({
-  children
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+  children,
+}: Readonly<RootLayoutProps>) {
   const router = usePathname()
-  const listIsHeader = ['/', '/blog', '/new-post']
+  const listIsHeader = ['/', '/blog']
   const checkLayout = () => {
     return listIsHeader.includes(router)
   }

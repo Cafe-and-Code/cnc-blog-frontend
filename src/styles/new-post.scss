@@ -38,6 +38,9 @@
                 .ql-container.ql-snow {
                     border: none;
                     height: auto;
+                    .ql-editor {
+                        min-height: 50vh;
+                    }
                 }
             }
             .editor-content {

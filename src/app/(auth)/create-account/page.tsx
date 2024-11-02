@@ -1,18 +1,20 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link'
 import dayjs from 'dayjs'
+import { Calendar,Lock, Mail, UserRound, UserRoundPlus } from 'lucide-react';
+import React from 'react';
 import { useState } from 'react';
+
 import axios from '@/lib/axios';
+
+import BaseDialog from '@/components/base/BaseDialog';
+import UploadImage from '@/components/base/uploadImage';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Lock, UserRound, Mail, UserRoundPlus, Calendar } from 'lucide-react';
+
 import { API_URL } from '@/app/constant/api-config';
 import { DATE_FORMAT } from '@/app/constant/constants';
-import UploadImage from '@/components/base/uploadImage';
-import BaseDialog from '@/components/base/BaseDialog';
 
 type CreateAccountType = {
   username: string;
@@ -108,7 +110,7 @@ export default function CreateAccountPage() {
   };
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
           CNC BLOG
