@@ -1,14 +1,13 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link'
-import { useState } from 'react';
-import axios from '@/lib/axios';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Mail } from 'lucide-react';
+import React from 'react';
+import { useState } from 'react';
+
 import BaseDialog from '@/components/base/BaseDialog';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
@@ -25,7 +24,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
             CNC BLOG

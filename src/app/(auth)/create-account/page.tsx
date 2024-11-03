@@ -1,18 +1,20 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link'
 import dayjs from 'dayjs'
+import { Calendar,Lock, Mail, UserRound, UserRoundPlus } from 'lucide-react';
+import React from 'react';
 import { useState } from 'react';
+
 import axios from '@/lib/axios';
+
+import BaseDialog from '@/components/base/BaseDialog';
+import UploadImage from '@/components/base/uploadImage';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Lock, UserRound, Mail, UserRoundPlus, Calendar } from 'lucide-react';
+
 import { API_URL } from '@/app/constant/api-config';
 import { DATE_FORMAT } from '@/app/constant/constants';
-import UploadImage from '@/components/base/uploadImage';
-import BaseDialog from '@/components/base/BaseDialog';
 
 type CreateAccountType = {
   username: string;
@@ -26,7 +28,6 @@ type CreateAccountType = {
 };
 
 export default function CreateAccountPage() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('')
   const [title, setTilte] = useState('')
@@ -46,10 +47,6 @@ export default function CreateAccountPage() {
     setDataCreateAccount((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const changeDate = (e: any) => {
-    setDate(e)
-  }
-
   const handleSubmit = () => {
     setIsOpen(false)
   }
@@ -68,10 +65,12 @@ export default function CreateAccountPage() {
         }
       )
       setDataCreateAccount((prev) => ({...prev, avatarImageUrl: response?.data?.filePath}))
-      } catch (error) {
+      } catch (error:any) {
+        const data = error?.response?.data
+        const messages = data?.errors.join('\n')
         setIsOpen(true)
         setTilte('Error')
-        setMessage(`Error posting data: ${error}`)
+        setMessage(messages)
       }
     }
   }
@@ -87,7 +86,6 @@ export default function CreateAccountPage() {
       dateOfBirth: dayjs(dataCreateAccount.dateOfBirth).format(DATE_FORMAT.SERVER_DATE),
       avatarImageUrl: dataCreateAccount.avatarImageUrl
     }
-    console.log(payload);
     try {
       const response = await axios.post(API_URL.CREATE_USER, payload);
       const data = response.data;
@@ -101,14 +99,17 @@ export default function CreateAccountPage() {
         dateOfBirth: '',
         avatarImageUrl: ''
       });
-    } catch (error) {
-      console.log(error);
-      
+    } catch (error:any) {
+      const data = error?.response?.data
+      const messages = data?.errors.join('\n')
+      setIsOpen(true)
+      setTilte('Error')
+      setMessage(messages)
     }
   };
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
           CNC BLOG

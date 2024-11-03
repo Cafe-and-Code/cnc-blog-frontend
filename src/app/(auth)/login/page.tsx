@@ -32,6 +32,9 @@ export default function LoginPage() {
     password: '',
     //checkAgree: false,
   });
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('')
+  const [title, setTilte] = useState('')
   const dispatch = useDispatch();
 
   const [cookies, setCookie] = useCookies(['token', 'userId', 'userRole']);
@@ -39,12 +42,6 @@ export default function LoginPage() {
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     setDataLogin((prev) => ({ ...prev, [field]: e.target.value }));
   };
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [message, setMessage] = useState('')
-
-  const [title, setTilte] = useState('')
 
   const handleSubmit = () => {
     setIsOpen(false)
@@ -80,11 +77,16 @@ export default function LoginPage() {
       setIsOpen(true)
       setTilte('Error')
       setMessage(`Error posting data: ${error}`)
+      // const data = error?.response?.data
+      // const messages = data?.errors.join('\n')
+      // setIsOpen(true)
+      // setTilte('Error')
+      // setMessage(messages)
     }
   };
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
           CNC BLOG
