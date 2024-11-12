@@ -1,17 +1,17 @@
 'use client';
 
 import dayjs from 'dayjs'
-import { Calendar,Lock, Mail, UserRound, UserRoundPlus } from 'lucide-react';
+import { Calendar, Lock, Mail, UserRound, UserRoundPlus } from 'lucide-react';
 import React from 'react';
 import { useState } from 'react';
 
 import axios from '@/lib/axios';
 
 import BaseDialog from '@/components/base/BaseDialog';
-import UploadImage from '@/components/base/uploadImage';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import UploadImage from '@/components/uploadImage';
 
 import { API_URL } from '@/app/constant/api-config';
 import { DATE_FORMAT } from '@/app/constant/constants';
@@ -28,9 +28,12 @@ type CreateAccountType = {
 };
 
 export default function CreateAccountPage() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState('')
-  const [title, setTilte] = useState('')
+  const [dialogList, setDialogList] = useState({
+    visible: false,
+    message: '',
+    title: '',
+    submitBtn: 'Submit',
+  });
 
   const cloneCreateAccount = {
     username: '',
@@ -48,7 +51,10 @@ export default function CreateAccountPage() {
   };
 
   const handleSubmit = () => {
-    setIsOpen(false)
+    setDialogList((prev) => ({
+      ...prev,
+      visible: false,
+    }))
   }
 
   const handleUploadImage = async (event: any) => {
@@ -63,14 +69,18 @@ export default function CreateAccountPage() {
             'Content-Type': 'multipart/form-data'
           }
         }
-      )
-      setDataCreateAccount((prev) => ({...prev, avatarImageUrl: response?.data?.filePath}))
-      } catch (error:any) {
+        )
+        setDataCreateAccount((prev) => ({ ...prev, avatarImageUrl: response?.data?.filePath }))
+      } catch (error: any) {
         const data = error?.response?.data
         const messages = data?.errors.join('\n')
-        setIsOpen(true)
-        setTilte('Error')
-        setMessage(messages)
+        setDialogList((prev) => ({
+          ...prev,
+          visible: true,
+          message: messages,
+          title: 'Error',
+          submitBtn: 'Submit',
+        }))
       }
     }
   }
@@ -99,12 +109,16 @@ export default function CreateAccountPage() {
         dateOfBirth: '',
         avatarImageUrl: ''
       });
-    } catch (error:any) {
+    } catch (error: any) {
       const data = error?.response?.data
       const messages = data?.errors.join('\n')
-      setIsOpen(true)
-      setTilte('Error')
-      setMessage(messages)
+      setDialogList((prev) => ({
+        ...prev,
+        visible: true,
+        message: messages,
+        title: 'Error',
+        submitBtn: 'Submit',
+      }))
     }
   };
 
@@ -125,7 +139,7 @@ export default function CreateAccountPage() {
           <CardContent>
             <form onSubmit={handleCreateAccount} className="space-y-6">
               <div className="relative">
-                <UploadImage onChange={handleUploadImage} />
+                <UploadImage isAvatar classCustom='h-[80px] w-[80px] rounded-[50%] mb-[30px] mx-auto' onChange={handleUploadImage} />
               </div>
               <div className="relative">
                 <UserRound className="absolute inset-y-2 left-2" />
@@ -221,10 +235,7 @@ export default function CreateAccountPage() {
         </Card>
       </div>
       <BaseDialog
-        title={title}
-        visible={isOpen}
-        message={message}
-        submitBtn='Submit'
+        dialogList={dialogList}
         onSubmit={handleSubmit}
       />
     </div>

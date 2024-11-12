@@ -8,6 +8,9 @@ import { useDispatch } from 'react-redux';
 
 import '@/styles/components/header.scss'
 
+import ToggleMode from '@/components/toggle-mode';
+import { Button } from '@/components/ui/button';
+
 import { logout } from '@/store/auth';
 
 export default function Header() {
@@ -49,8 +52,8 @@ export default function Header() {
                 {menuList.map((item, index) => (
                    <div key={index} className={`cnc-page ${activeLink === item.path? 'active-navigation' : ''}`}><Link className='cnc-navigator' href={{pathname:item.path}} onClick={() => handleLinkClick(item.path)}>{item.name}</Link></div>
                 ))}
-                <button onClick={onLogout}>Log out</button>
-                <button onClick={onToggle}>Toggle</button>
+                <Button variant='outline' onClick={onLogout}>Log out</Button>
+                <ToggleMode value={mode} onChange={onToggle}/>
             </div>
         </div>
     )

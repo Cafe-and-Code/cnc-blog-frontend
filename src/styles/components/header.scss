@@ -12,15 +12,14 @@
         color: var(--color-01);
     }
     .cnc-navigation {
-        width: 50%;
+        flex: 1;
         display: flex;
-        justify-content: center;
-        gap: 100px;
+        justify-content: flex-end;
+        gap: 20px;
         .cnc-page {
             margin: 8px;
             color: var(--color-01);
             .cnc-navigator {
-                margin: 8px;
                 position: relative;
                 &::before {
                     content: "";
