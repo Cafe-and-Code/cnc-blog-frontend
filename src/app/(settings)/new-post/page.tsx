@@ -23,17 +23,18 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 
 
 export default function NewsLetter() {
-  const [itemModal, setItemModal] = useState({
+  const [itemModal, setItemModal] = useState<{ title: string, description: string, titleImageUrl: string, categoryList: string[] }>({
     title: '',
     description: '',
     titleImageUrl: '',
-    category: ''
+    categoryList: []
   })
-  const [categoryList, setCategoryList] = useState<string[]>([])
-  const [categoryMenu, setCategorymenu] = useState([])
+  const [category, setCategory] = useState<string>('')
+  const [categoryMenu, setCategorymenu] = useState<string[]>([])
   const [categoryDisable, setCategoryDisable] = useState(false)
   const [content, setContent] = useState('');
   const [disabledPublish, setDisabledPublish] = useState(false);
+  const [disabledMenuCategory, setDisabledMenuCategory] = useState(false);
   const [dialogList, setDialogList] = useState({
     visible: false,
     message: '',
@@ -111,10 +112,11 @@ export default function NewsLetter() {
   }), [])
 
   const inputRef = useRef<HTMLInputElement>(null);
-
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const categoryRef = useRef<HTMLInputElement>(null);
 
-  const submitHandler = () => {
+  const submitHandler = async() => {
+    // const response = await axios.get(API_URL.CATEGORIES)
     setModalList((prev) => ({
       ...prev,
       visible: true,
@@ -132,8 +134,8 @@ export default function NewsLetter() {
 
   const postCategory = async () => {
     try {
-      await axios.post(API_URL.CATEGORIES, {name: itemModal.category})
-    } catch (error:any) {
+      await axios.post(API_URL.CATEGORIES, { name: itemModal.categoryList })
+    } catch (error: any) {
       const data = error?.response?.data
       const messages = data?.errors.join('\n')
       setDialogList((prev) => ({
@@ -151,7 +153,7 @@ export default function NewsLetter() {
       authorId: cookies.get('userId'),
       title: itemModal.title,
       content: content,
-      category: categoryList,
+      category: itemModal.categoryList,
       description: itemModal.description,
       titleImageUrl: itemModal.titleImageUrl,
       status: 1
@@ -167,7 +169,7 @@ export default function NewsLetter() {
         visible: false,
       }))
       clearModalItem()
-    } catch (error:any) {
+    } catch (error: any) {
       setDialogList((prev) => ({
         ...prev,
         visible: false,
@@ -184,8 +186,15 @@ export default function NewsLetter() {
   }
 
   const handleSubmitDialog = async () => {
-    await postCategory()
-    postNewBlog()
+    if (!validatePayload(itemModal)) {
+      await postCategory()
+      postNewBlog()
+    } else {
+      setDialogList((prev) => ({
+        ...prev,
+        visible: false,
+      }))
+    }
   }
 
   const clearModalItem = () => {
@@ -194,9 +203,9 @@ export default function NewsLetter() {
       title: '',
       description: '',
       titleImageUrl: '',
-      category: ''
+      categoryList: []
     }))
-    setCategoryList([])
+    setCategory('')
   }
 
   const handleCancelDialog = () => {
@@ -206,13 +215,32 @@ export default function NewsLetter() {
     }))
   }
 
+  function validatePayload(payload: object) {
+    for (const [key, value] of Object.entries(payload)) {
+      if (value === undefined || value === null || value === '' || value.length === 0) {
+        return `The value of [${key}] cannot be empty.`;
+      }
+    }
+    return;
+  }
+
   const handleSubmitModal = () => {
-    setDialogList((prev) => ({
-      ...prev,
-      title: 'Confirm',
-      visible: true,
-      message: 'Are you sure, create new blog.'
-    }))
+    if (!validatePayload(itemModal)) {
+      setDialogList((prev) => ({
+        ...prev,
+        title: 'Confirm',
+        visible: true,
+        message: 'Are you sure, create new blog.'
+      }))
+    } else {
+      setDialogList((prev) => ({
+        ...prev,
+        title: 'Confirm',
+        visible: true,
+        message: `${validatePayload(itemModal)}`,
+        cancelBtn: ''
+      }))
+    }
   }
 
   const handleChangeTitle = (e: any) => {
@@ -224,19 +252,23 @@ export default function NewsLetter() {
   }
 
   const handleCategory = (e: any) => {
-    setItemModal((prev) => ({ ...prev, category: e.target.value }))
+    setCategory(e.target.value)
   }
 
-  const handleCategoryKeyDown = (event: any) => {
-    if (event.key === 'Enter' && itemModal.category.trim()) {
-      setCategoryList([...categoryList, itemModal.category]);
-      setItemModal((prev) => ({ ...prev, category: '' }))
+  const handleCategoryKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && category.trim()) {
+      const addCategoryList = [...itemModal.categoryList, category];
+      console.log(addCategoryList);
+
+      setItemModal((prev) => ({ ...prev, categoryList: addCategoryList }));
+      setCategory('');
     }
   }
 
   const deleteCategory = (index: number) => {
-    categoryList.splice(index, 1)
-    setCategoryList([...categoryList])
+    const updatedCategoryList = [...itemModal.categoryList];
+    updatedCategoryList.splice(index, 1);
+    setItemModal((prev) => ({ ...prev, categoryList: updatedCategoryList }));
   }
 
   const handleUploadImage = async (event: any) => {
@@ -280,8 +312,15 @@ export default function NewsLetter() {
 
   useEffect(() => {
     // Đặt focus cho input khi component được render
-    setCategoryDisable(categoryList.length >= 3 ? true : false)
-  }, [categoryList]);
+    setCategoryDisable(itemModal.categoryList?.length >= 3 ? true : false)
+  }, [itemModal.categoryList]);
+
+  useEffect(() => {
+    if (categoryRef?.current?.focus()) {
+      setDisabledMenuCategory(true)
+    }
+  }, [categoryRef]);
+
 
   return (
     <div className='new-post'>
@@ -315,10 +354,16 @@ export default function NewsLetter() {
           </div>
           <div className='content'>
             <div className='title'>Blog Category</div>
-            <Input disabled={categoryDisable} value={itemModal.category} placeholder='Category' onChange={handleCategory} onKeyDown={handleCategoryKeyDown} className='title-input text-area' />
-            
+            <Input ref={categoryRef} disabled={categoryDisable} value={category} placeholder='Category' onChange={handleCategory} onKeyDown={handleCategoryKeyDown} className='title-input text-area' />
+            {/* { disabledMenuCategory && <div className='category-menu'>
+              {categoryMenu?.map((item, index) => (
+                <div className='category-menu-item' key={index}>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>} */}
             <div className='category-list'>
-              {categoryList?.map((item, index) => (
+              {itemModal.categoryList?.map((item, index) => (
                 <div className='category-item' key={index}>
                   <span>{item}</span>
                   <X className="h-4 w-4 bg-[var(--color-13)] text-[var(--color-04)] rounded-full" onClick={() => deleteCategory(index)} />
