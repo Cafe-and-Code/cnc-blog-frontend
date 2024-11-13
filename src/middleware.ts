@@ -12,7 +12,7 @@ export function middleware(req:NextRequest) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  if (token && req.nextUrl.pathname === '/login') {
+  if (token && authScreens.includes(req.nextUrl.pathname)) {
     return NextResponse.redirect(new URL('/', req.url)); // Chuyển hướng về trang chính
   }
 
@@ -22,5 +22,5 @@ export function middleware(req:NextRequest) {
 
 // Định nghĩa các route mà middleware sẽ áp dụng
 export const config = {
-  matcher: '/((?!_next|api|login).*)', // Thay đổi theo các route bạn muốn bảo vệ
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'], // Bỏ qua các route không cần xác thực
 };

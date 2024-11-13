@@ -7,13 +7,17 @@ import { useDispatch } from 'react-redux';
 
 import '@/styles/components/header.scss'
 
+import ToggleMode from '@/components/toggle-mode';
+import { Button } from '@/components/ui/button';
+
 import { logout } from '@/store/auth';
 
 interface HeaderOtherType {
+    disabledPublish?: boolean,
     onPost?: () => void
 }
 
-export default function HeaderNewPost({onPost}:HeaderOtherType) {
+export default function HeaderNewPost({onPost, disabledPublish}:HeaderOtherType) {
   const dispatch = useDispatch();
     const { setTheme, resolvedTheme } = useTheme();
     const [mode, setMode] = useState(resolvedTheme || 'light');
@@ -38,9 +42,9 @@ export default function HeaderNewPost({onPost}:HeaderOtherType) {
                 <Link href={{pathname:'/'}}>Cnc Blog</Link>
             </div>
             <div className='cnc-navigation'>
-                <button onClick={onPost}>Publish</button>
-                <button onClick={onLogout}>Log out</button>
-                <button onClick={onToggle}>Toggle</button>
+                <Button variant={disabledPublish ? 'disabled' : 'default'} onClick={onPost}>Publish</Button>
+                <Button variant='outline' onClick={onLogout}>Log out</Button>
+                <ToggleMode value={mode} onChange={onToggle}/>
             </div>
         </div>
     )

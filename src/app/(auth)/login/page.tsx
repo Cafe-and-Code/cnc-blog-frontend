@@ -32,9 +32,12 @@ export default function LoginPage() {
     password: '',
     //checkAgree: false,
   });
-  const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState('')
-  const [title, setTilte] = useState('')
+  const [dialogList, setDialogList] = useState({
+    visible: false,
+    message: '',
+    title: '',
+    submitBtn: 'Submit',
+  });
   const dispatch = useDispatch();
 
   const [cookies, setCookie] = useCookies(['token', 'userId', 'userRole']);
@@ -44,7 +47,10 @@ export default function LoginPage() {
   };
 
   const handleSubmit = () => {
-    setIsOpen(false)
+    setDialogList((prev) => ({
+      ...prev,
+      visible: false,
+    }))
   }
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +62,6 @@ export default function LoginPage() {
     try {
       const response = await axios.post(API_URL.LOGIN, payload);
       const data = response.data;
-
       const token = data.token;
       const userId = data.userId;
       const userRole = data.userRole;
@@ -72,16 +77,16 @@ export default function LoginPage() {
       });
 
       dispatch(login(userId));
-    } catch (error) {
-      console.error('Error posting data:', error);
-      setIsOpen(true)
-      setTilte('Error')
-      setMessage(`Error posting data: ${error}`)
-      // const data = error?.response?.data
-      // const messages = data?.errors.join('\n')
-      // setIsOpen(true)
-      // setTilte('Error')
-      // setMessage(messages)
+    } catch (error: any) {
+      const data = error?.response?.data
+      const messages = data?.errors.join('\n')
+      setDialogList((prev) => ({
+        ...prev,
+        visible: true,
+        message: messages,
+        title: 'Error',
+        submitBtn: 'Submit',
+      }))
     }
   };
 
@@ -159,10 +164,7 @@ export default function LoginPage() {
         </Card>
       </div>
       <BaseDialog
-        title={title}
-        visible={isOpen}
-        message={message}
-        submitBtn='Submit'
+        dialogList={dialogList}
         onSubmit={handleSubmit}
       />
     </div>

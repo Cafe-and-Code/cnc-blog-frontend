@@ -10,7 +10,7 @@ const nextConfig = {
     typedRoutes: true,
   },
   env: {
-    baseApi: process.env.BASE_API || 'https://localhost:7113',
+    baseApi: process.env.BASE_API || 'https://apitesting.cafencode.ddns.net',
   }
 };
 
