@@ -34,7 +34,6 @@ export default function NewsLetter() {
   const [categoryDisable, setCategoryDisable] = useState(false)
   const [content, setContent] = useState('');
   const [disabledPublish, setDisabledPublish] = useState(false);
-  const [showMenuCategory, setShowMenuCategory] = useState(false);
   const [dialogList, setDialogList] = useState({
     visible: false,
     message: '',
@@ -323,7 +322,6 @@ export default function NewsLetter() {
   useEffect(() => {
     if (!category) {
       setCategorymenu([])
-      setShowMenuCategory(false)
     } else {
       try {
         axios.get(`${API_URL.CATEGORIES}/${category}`).then(response => {
@@ -331,11 +329,6 @@ export default function NewsLetter() {
           if (itemModal.categoryList.length > 0) {
             const filterCategory = response?.data?.filter((item: string) => !itemModal.categoryList.includes(item))
             setCategorymenu(filterCategory)
-          }
-          if (response?.data.length > 0) {
-            setShowMenuCategory(true)
-          } else {
-            setShowMenuCategory(false)
           }
         })
       } catch (error) {
@@ -377,7 +370,7 @@ export default function NewsLetter() {
           <div className='content'>
             <div className='title'>Blog Category</div>
             <Input ref={categoryRef} disabled={categoryDisable} value={category} placeholder='Category' onChange={handleCategory} onKeyDown={handleCategoryKeyDown} className='title-input text-area' />
-            {showMenuCategory && <div className='category-menu'>
+            {categoryMenu.length > 0 && <div className='category-menu'>
               {categoryMenu?.map((item, index) => (
                 <div className='category-menu-item' key={index}>
                   <Button variant='outline'
@@ -385,14 +378,14 @@ export default function NewsLetter() {
                 </div>
               ))}
             </div>}
-            <div className='category-list'>
+            {itemModal.categoryList.length > 0 && <div className='category-list'>
               {itemModal.categoryList?.map((item, index) => (
                 <div className='category-item' key={index}>
                   <span>{item}</span>
                   <X className="h-4 w-4 bg-[var(--color-13)] text-[var(--color-04)] rounded-full" onClick={() => deleteCategory(index)} />
                 </div>
               ))}
-            </div>
+            </div>}
           </div>
           <div className='content'>
             <div className='title'>Blog Image</div>
