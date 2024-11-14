@@ -2,10 +2,10 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server';
 
 // Giả sử bạn lưu thông tin xác thực trong cookie hoặc sessionStorage
-export function middleware(req:NextRequest) {
+export function middleware(req: NextRequest) {
   // Kiểm tra token hoặc thông tin xác thực
   const token = req.cookies.get('token'); // Thay đổi theo cách bạn lưu trữ token
-  const authScreens = ['/login', '/create-account', '/forgot-password']
+  const authScreens = ['/login', '/create-account', '/forgot-password', '/blog']
   // Nếu không có token và người dùng đang cố truy cập vào các trang không phải trang auth
   if (!token && !authScreens.includes(req.nextUrl.pathname)) {
     // Chuyển hướng về trang đăng nhập
@@ -22,5 +22,5 @@ export function middleware(req:NextRequest) {
 
 // Định nghĩa các route mà middleware sẽ áp dụng
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'], // Bỏ qua các route không cần xác thực
+  matcher: ['/((?!api|_next/static|.*\svg|.*\png|.*\jpg|.*\jpeg|.*\gif|.*\webp|_next/image|favicon.ico).*)',],
 };
