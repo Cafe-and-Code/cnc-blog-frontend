@@ -8,7 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import '@/styles/new-post.scss'
 
 import axios from '@/lib/axios';
-
+import { Button } from '@/components/ui/button';
 import BaseDialog from '@/components/base/BaseDialog';
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -34,7 +34,7 @@ export default function NewsLetter() {
   const [categoryDisable, setCategoryDisable] = useState(false)
   const [content, setContent] = useState('');
   const [disabledPublish, setDisabledPublish] = useState(false);
-  const [disabledMenuCategory, setDisabledMenuCategory] = useState(false);
+  const [showMenuCategory, setShowMenuCategory] = useState(false);
   const [dialogList, setDialogList] = useState({
     visible: false,
     message: '',
@@ -115,8 +115,7 @@ export default function NewsLetter() {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const categoryRef = useRef<HTMLInputElement>(null);
 
-  const submitHandler = async() => {
-    // const response = await axios.get(API_URL.CATEGORIES)
+  const submitHandler = async () => {
     setModalList((prev) => ({
       ...prev,
       visible: true,
@@ -255,6 +254,12 @@ export default function NewsLetter() {
     setCategory(e.target.value)
   }
 
+  const handleAddItemCategoryMenu = (item: string) => {
+    const addCategoryList = [...itemModal.categoryList, item];
+    setItemModal((prev) => ({ ...prev, categoryList: addCategoryList }));
+    setCategory('');
+  }
+
   const handleCategoryKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && category.trim()) {
       const addCategoryList = [...itemModal.categoryList, category];
@@ -316,11 +321,28 @@ export default function NewsLetter() {
   }, [itemModal.categoryList]);
 
   useEffect(() => {
-    if (categoryRef?.current?.focus()) {
-      setDisabledMenuCategory(true)
+    if (!category) {
+      setCategorymenu([])
+      setShowMenuCategory(false)
+    } else {
+      try {
+        axios.get(`${API_URL.CATEGORIES}/${category}`).then(response => {
+          setCategorymenu(response?.data)
+          if (itemModal.categoryList.length > 0) {
+            const filterCategory = response?.data?.filter((item: string) => !itemModal.categoryList.includes(item))
+            setCategorymenu(filterCategory)
+          }
+          if (response?.data.length > 0) {
+            setShowMenuCategory(true)
+          } else {
+            setShowMenuCategory(false)
+          }
+        })
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, [categoryRef]);
-
+  }, [category, itemModal.categoryList])
 
   return (
     <div className='new-post'>
@@ -355,13 +377,14 @@ export default function NewsLetter() {
           <div className='content'>
             <div className='title'>Blog Category</div>
             <Input ref={categoryRef} disabled={categoryDisable} value={category} placeholder='Category' onChange={handleCategory} onKeyDown={handleCategoryKeyDown} className='title-input text-area' />
-            {/* { disabledMenuCategory && <div className='category-menu'>
+            {showMenuCategory && <div className='category-menu'>
               {categoryMenu?.map((item, index) => (
                 <div className='category-menu-item' key={index}>
-                  <span>{item}</span>
+                  <Button variant='outline'
+                    onClick={() => handleAddItemCategoryMenu(item)}>{item}</Button>
                 </div>
               ))}
-            </div>} */}
+            </div>}
             <div className='category-list'>
               {itemModal.categoryList?.map((item, index) => (
                 <div className='category-item' key={index}>
