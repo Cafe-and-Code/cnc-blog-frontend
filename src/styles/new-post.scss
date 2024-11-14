@@ -64,6 +64,14 @@
                 outline: none;
             }
         }
+        .category-menu {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            .category-menu-item {
+                cursor: pointer;
+            }
+        }
         .category-list {
             display: flex;
             align-items: center;
