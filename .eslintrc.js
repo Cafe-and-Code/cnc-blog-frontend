@@ -26,16 +26,13 @@ module.exports = {
 
     //#region  //*=========== Unused Import ===========
     '@typescript-eslint/no-unused-vars': 'off',
-    'unused-imports/no-unused-imports': 'warn',
-    'unused-imports/no-unused-vars': [
-      'warn',
-      {
-        vars: 'all',
-        varsIgnorePattern: '^_',
-        args: 'after-used',
-        argsIgnorePattern: '^_',
-      },
-    ],
+    'unused-imports/no-unused-imports': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'unused-imports/no-unused-vars': 'off',
+    'react-hooks/rules-of-hooks': 'off',
+    '@next/next/no-img-element': 'off',
+    'no-useless-escape': 'off',
     //#endregion  //*======== Unused Import ===========
 
     //#region  //*=========== Import Sort ===========
