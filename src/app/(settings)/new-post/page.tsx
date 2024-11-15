@@ -1,5 +1,6 @@
 'use client'
 
+import { X } from "lucide-react"
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Cookies } from 'react-cookie';
@@ -8,12 +9,13 @@ import 'react-quill/dist/quill.snow.css';
 import '@/styles/new-post.scss'
 
 import axios from '@/lib/axios';
-import { Button } from '@/components/ui/button';
+
 import BaseDialog from '@/components/base/BaseDialog';
+import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import UploadImage from '@/components/uploadImage';
-import { X } from "lucide-react"
+
 import { API_URL } from '@/app/constant/api-config';
 import HeaderNewPost from '@/app/templates/HeaderNewPost';
 const ReactQuill = dynamic(() => import('react-quill'), {
@@ -151,11 +153,13 @@ export default function NewsLetter() {
       authorId: cookies.get('userId'),
       title: itemModal.title,
       content: content,
-      category: itemModal.categoryList,
+      categories: itemModal.categoryList,
       description: itemModal.description,
       titleImageUrl: itemModal.titleImageUrl,
       status: 1
     }
+    console.log(payload);
+
     try {
       axios.post(API_URL.POSTS, payload)
       setDialogList((prev) => ({
@@ -167,6 +171,7 @@ export default function NewsLetter() {
         visible: false,
       }))
       clearModalItem()
+      setContent('')
     } catch (error: any) {
       setDialogList((prev) => ({
         ...prev,
@@ -183,9 +188,8 @@ export default function NewsLetter() {
     }
   }
 
-  const handleSubmitDialog = async () => {
+  const handleSubmitDialog = () => {
     if (!validatePayload(itemModal)) {
-      await postCategory()
       postNewBlog()
     } else {
       setDialogList((prev) => ({
@@ -228,7 +232,9 @@ export default function NewsLetter() {
         ...prev,
         title: 'Confirm',
         visible: true,
-        message: 'Are you sure, create new blog.'
+        message: 'Are you sure, create new blog.',
+        cancelBtn: 'Cancel',
+        submitBtn: 'OK'
       }))
     } else {
       setDialogList((prev) => ({
@@ -275,32 +281,8 @@ export default function NewsLetter() {
     setItemModal((prev) => ({ ...prev, categoryList: updatedCategoryList }));
   }
 
-  const handleUploadImage = async (event: any) => {
-    const file = event.target.files[0]
-    if (file) {
-      try {
-        const dataBody = new FormData()
-        dataBody.append('file', file)
-        dataBody.append('FileName', file.name)
-        const response = await axios.post(API_URL.UPLOAD_IMAGE, dataBody, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-        )
-        setItemModal((prev) => ({ ...prev, titleImageUrl: response?.data?.filePath }))
-      } catch (error: any) {
-        const data = error?.response?.data
-        const messages = data?.errors.join('\n')
-        setDialogList((prev) => ({
-          ...prev,
-          visible: true,
-          message: messages,
-          title: 'Error',
-          submitBtn: 'Submit',
-        }))
-      }
-    }
+  const handleUploadImage = async (file: any) => {
+    setItemModal((prev) => ({ ...prev, titleImageUrl: file }))
   }
 
   useEffect(() => {
@@ -348,7 +330,8 @@ export default function NewsLetter() {
             onChange={handleContentChange}
             modules={quillModules}
           />
-          <div className='ql-editor editor-content' dangerouslySetInnerHTML={{ __html: content }}>
+          <div className='ql-snow editor-content'>
+            <div className="ql-editor w-full" dangerouslySetInnerHTML={{ __html: content }}></div>
           </div>
         </div>
       </div>

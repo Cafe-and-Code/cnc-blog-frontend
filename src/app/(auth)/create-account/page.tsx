@@ -57,32 +57,8 @@ export default function CreateAccountPage() {
     }))
   }
 
-  const handleUploadImage = async (event: any) => {
-    const file = event.target.files[0]
-    if (file) {
-      try {
-        const dataBody = new FormData()
-        dataBody.append('file', file)
-        dataBody.append('FileName', file.name)
-        const response = await axios.post(API_URL.UPLOAD_IMAGE, dataBody, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-        )
-        setDataCreateAccount((prev) => ({ ...prev, avatarImageUrl: response?.data?.filePath }))
-      } catch (error: any) {
-        const data = error?.response?.data
-        const messages = data?.errors.join('\n')
-        setDialogList((prev) => ({
-          ...prev,
-          visible: true,
-          message: messages,
-          title: 'Error',
-          submitBtn: 'Submit',
-        }))
-      }
-    }
+  const handleUploadImage = async (file: any) => {
+    setDataCreateAccount((prev) => ({ ...prev, avatarImageUrl: file }))
   }
 
   const handleCreateAccount = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,8 +73,7 @@ export default function CreateAccountPage() {
       avatarImageUrl: dataCreateAccount.avatarImageUrl
     }
     try {
-      const response = await axios.post(API_URL.CREATE_USER, payload);
-      const data = response.data;
+      await axios.post(API_URL.CREATE_USER, payload);
       window.location.href = '/login';
       setDataCreateAccount({
         username: '',
@@ -123,7 +98,7 @@ export default function CreateAccountPage() {
   };
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
           CNC BLOG

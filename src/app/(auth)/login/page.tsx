@@ -91,7 +91,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
           CNC BLOG
