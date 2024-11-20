@@ -4,7 +4,25 @@
         align-items: center;
         justify-content: center;
         color: var(--color-12);
-        padding: 0 14px;
+        font-size: 180px;
         font-weight: bold;
+        border-bottom: 1px solid var(--border-color-01);
+        border-top: 1px solid var(--border-color-01);
+    }
+}
+
+.layout-tablet {
+    .blog-page {
+        .blog-header {
+            font-size: 110px;
+        } 
+    }
+}
+
+.layout-mobile {
+    .blog-page {
+        .blog-header {
+            font-size: 65px;
+        } 
     }
 }
