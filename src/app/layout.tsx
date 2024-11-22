@@ -29,7 +29,7 @@ export default function RootLayout({
     return listIsHeader.includes(router)
   }
 
-  const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState(0);
   const layoutClass = () => {
     if (width < 600) {
       return 'layout-mobile'
@@ -44,6 +44,7 @@ export default function RootLayout({
     setWidth(window.innerWidth);
   };
   useEffect(() => {
+    handleResize()
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
