@@ -1,0 +1,35 @@
+.toggle-input {
+    display: none;
+}
+.toggle-mode {
+    min-width: 96px;
+    height: 40px;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-12);
+    border-radius: 29px;
+    gap: 16px;
+    position: relative;
+    cursor: pointer;
+    .icon {
+        width: 24px;
+        height: 24px;
+        filter: var(--filter-02);
+        &:hover {
+            scale: 1.1;
+        }
+    }
+    .circle {
+        position: absolute;
+        left: 56px;
+        width: 24px;
+        height: 24px;
+        border-radius: 20px;
+        background: var(--color-11);
+        &.circle-dark-mode {
+            left: 16px;
+        }
+    }
+}

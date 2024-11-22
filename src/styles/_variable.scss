@@ -1,0 +1,40 @@
+:root {
+    --color-01: #1a1a1a;
+    --color-02: #6941c6;
+    --color-03: #3538cd;
+    --color-04: #c11574;
+    --color-05: #667085;
+    --color-06: #026aa2;
+    --color-07: #c4320a;
+    --color-08: #027a48;
+    --color-09: #c01048;
+    --color-10: #363f72;
+    --color-11: #ffffff;
+    --color-12: #090d1f;
+    --color-13: #ecf0f1;
+    --color-11-opacity: rgb(255, 255, 255, 0.5);
+    --border-color-01: rgb(0, 0, 0, 0.34);
+    --filter-01: unset;
+    --filter-02: brightness(100);
+}
+
+.dark {
+    --color-01: #ffffff;
+    --color-02: #6941c6;
+    --color-03: #3538cd;
+    --color-04: #c11574;
+    --color-05: #667085;
+    --color-06: #026aa2;
+    --color-07: #c4320a;
+    --color-08: #027a48;
+    --color-09: #c01048;
+    --color-10: #363f72;
+    --color-11: #090d1f;
+    --color-12: #ffffff;
+    --color-13: #ecf0f1;
+    --color-11-opacity: rgb(9, 13, 31, 0.5);
+    --border-color-01: #ffffff;
+    --filter-01: brightness(100);
+    --filter-02: brightness(0) saturate(100%) invert(6%) sepia(17%) saturate(3006%) hue-rotate(196deg) brightness(94%)
+        contrast(101%);
+}

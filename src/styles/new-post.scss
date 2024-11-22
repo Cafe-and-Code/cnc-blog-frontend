@@ -1,0 +1,90 @@
+.new-post {
+    .editor-newsletter {
+        border: 1px solid var(--color-01);
+        .edit-post {
+            display: flex;
+            .quill {
+                width: 50%;
+                border-right: 1px solid var(--color-01);
+                .ql-toolbar.ql-snow {
+                    border: none;
+                    .ql-formats {
+                        svg {
+                            filter: var(--filter-01);
+                        }
+                        .ql-picker {
+                            .ql-picker-label {
+                                &::before {
+                                    color: var(--color-01);
+                                }
+                            }
+                        }
+                    }
+                }
+                .ql-container.ql-snow {
+                    border: none;
+                    height: auto;
+                    .ql-editor {
+                        min-height: 50vh;
+                    }
+                }
+            }
+            .editor-content {
+                width: 50%;
+                pre {
+                    min-height: 28px;
+                    background-color: #23241f;
+                    color: #f8f8f2;
+                    overflow: visible;
+                    white-space: pre-wrap;
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+                    padding: 5px 10px;
+                }
+            }
+        }
+    }
+}
+.new-post-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 30px;
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        padding: 0 20px;
+        .title-input {
+            width: 100%;
+            font-size: 20px;
+            font-weight: 500;
+            background: var(--color-11);
+            &:focus-visible {
+                outline: none;
+            }
+        }
+        .category-menu {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            .category-menu-item {
+                cursor: pointer;
+            }
+        }
+        .category-list {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            .category-item {
+                padding: 4px 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: var(--color-12);
+                color: var(--color-11);
+                border-radius: 8px;
+            }
+        }
+    }
+}
