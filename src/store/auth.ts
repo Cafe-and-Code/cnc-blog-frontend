@@ -31,8 +31,8 @@ export function createPersistStore() {
   return createWebStorage("local");
 }
 const storage = typeof window !== "undefined"
-    ? createWebStorage("local")
-    : createPersistStore();
+  ? createWebStorage("local")
+  : createPersistStore();
 
 const persistConfig = {
   key: 'root',
@@ -43,6 +43,10 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     userId: null as string | null,
+    postId: {
+      id: null as string | null,
+      name: null as string | null
+    }
   },
   reducers: {
     login: (state, action) => {
@@ -51,11 +55,14 @@ const userSlice = createSlice({
     logout: (state) => {
       state.userId = null;
     },
+    updatePostId: (state, action) => {
+      state.postId = action.payload;
+    }
   },
 });
 
 // Xuất actions và reducer
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updatePostId } = userSlice.actions;
 const persistedReducer = persistReducer(persistConfig, userSlice.reducer);
 
 export const store = configureStore({

@@ -7,6 +7,11 @@
                 width: 50%;
                 border-right: 1px solid var(--color-01);
                 .ql-toolbar.ql-snow {
+                    position: sticky;
+                    top: 85px;
+                    background: var(--color-11);
+                    z-index: 2;
+                    box-shadow: 1px 1px 10px -5px var(--color-01);
                     border: none;
                     .ql-formats {
                         svg {

@@ -1,4 +1,4 @@
-.header-cnc {
+.header-new-post-cnc {
     position: sticky;
     top: 0;
     padding: 20px;
@@ -21,8 +21,8 @@
         justify-content: flex-end;
         gap: 20px;
         .cnc-item {
-            padding: 8px;
             cursor: pointer;
+            margin: 8px;
             color: var(--color-01);
             .cnc-navigator {
                 position: relative;
@@ -60,7 +60,7 @@
 }
 
 .layout-tablet {
-    .header-cnc {
+    .header-new-post-cnc {
         .cnc-navigation-mobile {
             display: none;
         } 
@@ -68,11 +68,15 @@
 }
 
 .layout-mobile {
-    .header-cnc {
+    .header-new-post-cnc {
         .menu-nav {
-            display: block;
-            cursor: pointer;
-            filter: var(--filter-03);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            .icon-menu {
+                cursor: pointer;
+                filter: var(--filter-03);
+            }
         }
         .cnc-navigation {
             display: none;
