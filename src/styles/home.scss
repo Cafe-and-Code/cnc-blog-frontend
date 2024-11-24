@@ -34,20 +34,20 @@
                     grid-area: content1;
                     flex-direction: column;
                     justify-content: flex-start;
-                    .post-image {
-                        max-width: 600px;
-                    }
                 }
                 .post-1 {
                     grid-area: content2;
                     .post-image {
-                        max-width: 400px;
+                        max-width: 320px;
+                        width: auto;
                     }
                 }
                 .post-2 {
+          
                     grid-area: content3;
                     .post-image {
-                        max-width: 400px;
+                        max-width: 320px;
+                        width: auto;
                     }
                 }
             }

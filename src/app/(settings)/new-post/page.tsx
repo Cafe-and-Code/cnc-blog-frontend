@@ -96,7 +96,6 @@ export default function NewsLetter() {
         [{ 'indent': '-1' }, { 'indent': '+1' }],
         [{ 'direction': 'rtl' }],
         [{ 'size': ['small', false, 'large', 'huge'] }],
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         [{ 'color': [] }, { 'background': [] }],
         [{ 'font': [] }],
         [{ 'align': [] }],
@@ -329,6 +328,8 @@ export default function NewsLetter() {
             value={content}
             onChange={handleContentChange}
             modules={quillModules}
+            scrollingContainer='html'
+            theme="snow"
           />
           <div className='ql-snow editor-content'>
             <div className="ql-editor w-full" dangerouslySetInnerHTML={{ __html: content }}></div>
