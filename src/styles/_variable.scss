@@ -12,10 +12,13 @@
     --color-11: #ffffff;
     --color-12: #090d1f;
     --color-13: #ecf0f1;
+    --color-14: #121212;
     --color-11-opacity: rgb(255, 255, 255, 0.5);
     --border-color-01: rgb(0, 0, 0, 0.34);
     --filter-01: unset;
     --filter-02: brightness(100);
+    --filter-03: brightness(0) saturate(100%) invert(6%) sepia(17%) saturate(3006%) hue-rotate(196deg) brightness(94%)
+    contrast(101%);;
 }
 
 .dark {
@@ -32,9 +35,11 @@
     --color-11: #090d1f;
     --color-12: #ffffff;
     --color-13: #ecf0f1;
+    --color-14: #121212;
     --color-11-opacity: rgb(9, 13, 31, 0.5);
     --border-color-01: #ffffff;
     --filter-01: brightness(100);
     --filter-02: brightness(0) saturate(100%) invert(6%) sepia(17%) saturate(3006%) hue-rotate(196deg) brightness(94%)
         contrast(101%);
+    --filter-03: brightness(100);
 }
