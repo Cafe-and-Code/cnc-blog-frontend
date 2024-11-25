@@ -24,6 +24,11 @@
                                 }
                             }
                         }
+                        .ql-picker-options {
+                            svg {
+                                filter: unset;
+                            }
+                        }
                     }
                 }
                 .ql-container.ql-snow {

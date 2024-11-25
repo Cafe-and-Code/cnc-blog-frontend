@@ -24,9 +24,9 @@ export default function RootLayout({
   children,
 }: Readonly<RootLayoutProps>) {
   const router = usePathname()
-  const listIsHeader = ['/new-post']
+  const listNoHeader = ['/new-post', '/login', '/create-account', '/forgot-password']
   const checkLayout = () => {
-    return !listIsHeader.includes(router)
+    return !listNoHeader.includes(router)
   }
 
   const [width, setWidth] = useState(0);
