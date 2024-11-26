@@ -31,9 +31,9 @@ export default function RootLayout({
 
   const [width, setWidth] = useState(0);
   const layoutClass = () => {
-    if (width < 600) {
+    if (width < 800) {
       return 'layout-mobile'
-    } else if (width < 1180 && width > 599) {
+    } else if (width < 1180 && width > 799) {
       return 'layout-tablet'
     } else {
       return 'layout-desktop'
