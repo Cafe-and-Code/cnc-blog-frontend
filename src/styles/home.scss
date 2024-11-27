@@ -144,16 +144,21 @@
                     "content1"
                     "content2"
                     "content3";
-                    gap: 20px;
                     .post-1 {
                         grid-area: content2;
                         flex-direction: column;
                         justify-content: flex-start;
+                        .post-image {
+                            max-width: 100%;
+                        }
                     }
                     .post-2 {
                         grid-area: content3;
                         flex-direction: column;
                         justify-content: flex-start;
+                        .post-image {
+                            max-width: 100%;
+                        }
                     }
                 }
             }
@@ -170,11 +175,12 @@
                     "content4"
                     "content5"
                     "content6";
-                    .post-1 {
-                        grid-area: content2;
-                    }
-                    .post-2 {
-                        grid-area: content3;
+                    .post {
+                        max-width: unset;
+                        .post-image {
+                            max-width: unset;
+                            height: unset;
+                        }
                     }
                 }
             }

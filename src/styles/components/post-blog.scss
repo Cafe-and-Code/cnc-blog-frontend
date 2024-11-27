@@ -47,18 +47,6 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            .category-item {
-                padding: 2px 10px;
-                font-size: 14px;
-                font-weight: 500;
-                line-height: 20px;
-                border-radius: 16px;
-            }
         }
-    }
-}
-.layout-mobile {
-    .post {
-        padding: 10px;
     }
 }

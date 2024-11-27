@@ -1,6 +1,8 @@
 import dayjs from 'dayjs'
 
 import '@/styles/components/post-blog.scss'
+
+import BaseTab from './base/BaseTab'
 interface PostType {
     postItems: {
         id?: number | string,
@@ -18,21 +20,6 @@ export default function PostBlog({ postItems, customClass, onClick = () => { } }
         return dayjs(date).format('dddd, D MMM YYYY')
     }
 
-    const getRandomColor = () => {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    };
-
-    const RandomColorBox = () => {
-        const randomColor = getRandomColor();
-        const rgbaBackgroundColor = `${randomColor}2A`;
-        return { color: randomColor, background: rgbaBackgroundColor }
-    }
-
     return (
         <div className={`post ${customClass}`} onClick={onClick}>
             {postItems.titleImageUrl && <img className='post-image' src={postItems.titleImageUrl} alt={postItems.titleImageUrl} />}
@@ -42,7 +29,7 @@ export default function PostBlog({ postItems, customClass, onClick = () => { } }
                 {postItems.description && <div className='post-description'>{postItems.description}</div>}
                 <div className='post-category'>
                     {postItems?.categories?.map((item, index) => (
-                        <div key={index} style={RandomColorBox()} className='category-item'>{item}</div>
+                        <BaseTab key={index} name={item} />
                     ))}
                 </div>
             </div>
