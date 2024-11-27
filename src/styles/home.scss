@@ -175,11 +175,12 @@
                     "content4"
                     "content5"
                     "content6";
-                    .post-1 {
-                        grid-area: content2;
-                    }
-                    .post-2 {
-                        grid-area: content3;
+                    .post {
+                        max-width: unset;
+                        .post-image {
+                            max-width: unset;
+                            height: unset;
+                        }
                     }
                 }
             }
