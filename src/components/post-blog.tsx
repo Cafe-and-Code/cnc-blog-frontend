@@ -25,8 +25,8 @@ export default function PostBlog({ postItems, customClass, onClick = () => { } }
             {postItems.titleImageUrl && <img className='post-image' src={postItems.titleImageUrl} alt={postItems.titleImageUrl} />}
             <div className='post-content'>
                 {postItems.createdAt && <div className='post-date-time'>{formatDate(postItems.createdAt)}</div>}
-                {postItems.title && <div className='post-title'>{postItems.title}</div>}
-                {postItems.description && <div className='post-description'>{postItems.description}</div>}
+                {postItems.title && <div className='post-title' title={postItems.title}>{postItems.title}</div>}
+                {postItems.description && <div className='post-description' title={postItems.description}>{postItems.description}</div>}
                 <div className='post-category'>
                     {postItems?.categories?.map((item, index) => (
                         <BaseTab key={index} name={item} />
