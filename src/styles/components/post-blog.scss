@@ -20,15 +20,14 @@
             font-size: 14px;
             font-weight: 600;
             line-height: 20px;
-            word-break: break-all;
         }
         .post-title {
             font-size: 24px;
             font-weight: 600;
             line-height: 32px;
             color: var(--color-01);
-            word-break: break-all;
             overflow: hidden;
+            max-height: 70px;
             text-overflow: ellipsis;
         }
         .post-description {
@@ -40,7 +39,7 @@
             word-break: break-all;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-height: 100px;
+            max-height: 50px;
         }
         .post-category {
             margin-top: 12px;

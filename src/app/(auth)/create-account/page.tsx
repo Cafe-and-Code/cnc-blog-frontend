@@ -1,7 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs'
-import { Calendar, Lock, Mail, UserRound, UserRoundPlus } from 'lucide-react';
+import { Calendar, Lock, Mail, UserRound, UserRoundPlus, Users } from 'lucide-react';
 import React from 'react';
 import { useState } from 'react';
 
@@ -11,6 +11,14 @@ import BaseDialog from '@/components/base/BaseDialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import UploadImage from '@/components/uploadImage';
 
 import { API_URL } from '@/app/constant/api-config';
@@ -26,6 +34,11 @@ type CreateAccountType = {
   avatarImageUrl: string
   //checkAgree: boolean;
 };
+
+type GenderType = {
+  name: string,
+  value: string
+}
 
 export default function CreateAccountPage() {
   const [dialogList, setDialogList] = useState({
@@ -44,6 +57,13 @@ export default function CreateAccountPage() {
     dateOfBirth: '',
     avatarImageUrl: ''
   }
+
+  const listGender = [
+    { name: 'Male', value: 'Male' },
+    { name: 'Female', value: 'Female' },
+    { name: 'LGBT', value: 'LGBT' },
+  ]
+
   const [dataCreateAccount, setDataCreateAccount] = useState<CreateAccountType>({ ...cloneCreateAccount });
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
@@ -129,6 +149,21 @@ export default function CreateAccountPage() {
                   onChange={e => handleChangeInput(e, 'username')}
                   className="pl-10"
                 />
+              </div>
+              <div className="relative">
+                <Users className="absolute inset-y-2 left-2" />
+                <Select>
+                  <SelectTrigger className="w-full pl-10">
+                    <SelectValue placeholder="Select a gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {listGender.map((item: GenderType, index) => (
+                        <SelectItem key={index} value={item.value}>{item.name}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="relative">
                 <UserRoundPlus className="absolute inset-y-2 left-2" />

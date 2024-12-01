@@ -4,7 +4,6 @@ import { useTheme } from "next-themes"
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 
 import '@/styles/components/header.scss'
 
@@ -22,7 +21,6 @@ export default function Header() {
   const dispatch = useDispatch();
   const pathName = usePathname();
   const router = useRouter()
-  const userId = useSelector((state: any) => state.user.userId);
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
@@ -80,7 +78,7 @@ export default function Header() {
         {menuList.map((item: PathType, index: number) => (
           <div key={index} className={`cnc-item ${activeLink === item.path ? 'active-navigation' : ''}`} onClick={() => handleChangePath(item.path)}><div className='cnc-navigator'>{item.name}</div></div>
         ))}
-        <Button variant='outline' onClick={onLogoutLogIn}>{userId ? 'Log out' : 'Log In'}</Button>
+        <Button variant='outline' onClick={onLogoutLogIn}>{cookies.token ? 'Log out' : 'Log In'}</Button>
         <ToggleMode value={mode} onChange={onToggle} />
       </div>
       {/* menu nav */}
@@ -92,7 +90,7 @@ export default function Header() {
         {menuMobileList.map((item: PathType, index: number) => (
           <div key={index} className={`cnc-item-mobile ${activeLink === item.path ? 'active-navigation' : ''}`} onClick={() => handleChangePath(item.path)}><div className='cnc-navigator-mobile'>{item.name}</div></div>
         ))}
-        <Button variant='outline' onClick={onLogoutLogIn}>{userId ? 'Log out' : 'Log In'}</Button>
+        <Button variant='outline' onClick={onLogoutLogIn}>{cookies.token ? 'Log out' : 'Log In'}</Button>
         <ToggleMode value={mode} onChange={onToggle} />
         <img className="close-nav" src="/images/icon/close.svg" alt="" onClick={handleCloseMenu} />
       </div>}
