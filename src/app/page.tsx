@@ -18,7 +18,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { Skeleton } from "@/components/ui/skeleton";
 
 import { updatePostId } from '@/store/auth';
 
@@ -35,9 +34,10 @@ interface PostItem {
 export default function Home() {
   const router = useRouter()
   const dispatch = useDispatch();
+  const [recentPosts, setRecentPots] = useState([])
   const [listPost, setListPost] = useState([])
-  const [page, setPage] = useState(1)
-  const [perPage, setPerPage] = useState(6)
+  const [activeCurrentPage, setActiveCurrentPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(1)
   const [userInfo, setUserInfo] = useState({ id: 0, name: '' });
   const [dialogList, setDialogList] = useState({
     visible: false,
@@ -47,10 +47,32 @@ export default function Home() {
     cancelBtn: 'Cancel'
   });
 
-  const getPosts = async () => {
+  const getRecentPosts = async () => {
     try {
       const response = await axios.get(API_URL.POSTS);
-      setListPost(response.data);
+      setRecentPots(response?.data?.posts)
+    } catch (error: any) {
+      setDialogList((prev) => ({
+        ...prev,
+        visible: false,
+      }));
+      const data = error?.response?.data;
+      const messages = data.errors.join('\n');
+      setDialogList((prev) => ({
+        ...prev,
+        title: 'Error',
+        visible: true,
+        message: messages,
+      }));
+    }
+  }
+
+  const getPosts = async (page = 1, perPage = 6) => {
+    try {
+      const response = await axios.get(API_URL.POSTS, { params: { pageNumber: page, pageSize: perPage } });
+      setListPost(response?.data?.posts);
+      const mathPerpage = Math.ceil(response?.data?.totalPosts / 6)
+      setTotalPage(mathPerpage)
     } catch (error: any) {
       setDialogList((prev) => ({
         ...prev,
@@ -67,8 +89,33 @@ export default function Home() {
     }
   };
 
+  const changePage = (index: number) => {
+    getPosts(index + 1, 6)
+    sessionStorage.setItem('currentPage', `${index + 1}`);
+    setActiveCurrentPage(index + 1)
+  }
+
+  const prevPage = () => {
+    getPosts(activeCurrentPage - 1, 6)
+    sessionStorage.setItem('currentPage', `${activeCurrentPage - 1}`);
+    setActiveCurrentPage(activeCurrentPage - 1)
+  }
+
+  const nextPage = () => {
+    getPosts(activeCurrentPage + 1, 6)
+    sessionStorage.setItem('currentPage', `${activeCurrentPage + 1}`);
+    setActiveCurrentPage(activeCurrentPage + 1)
+  }
+
   useEffect(() => {
-    getPosts();
+    getRecentPosts()
+    const storedValue = sessionStorage.getItem('currentPage');
+    if (storedValue) {
+      getPosts(Number(storedValue), 6);
+      setActiveCurrentPage(Number(storedValue))
+    } else {
+      getPosts();
+    }
   }, [])
 
   const handleBlogDetail = (title: string, id: number) => {
@@ -95,11 +142,11 @@ export default function Home() {
       <div className="blog-header">
         THE BLOG
       </div>
-      {listPost && <div className='blog-body'>
+      <div className='blog-body'>
         <div className='recent-blog-post'>
           <div className='title'>Recent blog posts</div>
           <div className='recent-content'>
-            {listPost?.map((item: PostItem, index: number) => (
+            {recentPosts?.map((item: PostItem, index: number) => (
               index < 3 && <PostBlog key={index} postItems={item} customClass={`post-${index}`} onClick={() => handleBlogDetail(item.title, item.id)} />
             ))}
           </div>
@@ -114,29 +161,24 @@ export default function Home() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious href="#" />
+                <PaginationPrevious className={
+                  activeCurrentPage <= 1 ? "pointer-events-none opacity-50" : undefined
+                } onClick={prevPage} />
               </PaginationItem>
+              {Array.from({ length: totalPage }).map((_, index) => (
+                <PaginationItem key={index}>
+                  <PaginationLink isActive={activeCurrentPage === index + 1 ? true : false} onClick={() => changePage(index)}>{index + 1}</PaginationLink>
+                </PaginationItem>
+              ))}
               <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#" isActive>
-                  2
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
+                <PaginationNext className={
+                  activeCurrentPage >= totalPage ? "pointer-events-none opacity-50" : undefined
+                } onClick={nextPage} />
               </PaginationItem>
             </PaginationContent>
           </Pagination>
         </div>
-      </div>}
+      </div>
     </div>
   )
 }
