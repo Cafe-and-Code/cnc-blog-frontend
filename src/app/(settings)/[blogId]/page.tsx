@@ -1,6 +1,6 @@
 'use client'
 import dayjs from 'dayjs'
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -37,6 +37,7 @@ interface PostItemDetail {
 
 export default function BlogDetail() {
     const router = useRouter()
+    const parrams = useParams()
     const dispatch = useDispatch();
     const [listPost, setListPost] = useState([])
     const postBlogId = useSelector((state: any) => state.user.postId);
@@ -75,7 +76,10 @@ export default function BlogDetail() {
 
     const getPostDetail = useCallback(async () => {
         try {
-            const api = `${API_URL.POSTS}/${postBlogId.id}`;
+            const parramDetail = postBlogId.name !== parrams?.blogId ? parrams?.blogId : postBlogId.name
+            console.log(parramDetail);
+
+            const api = `${API_URL.POSTS}/${parramDetail}`;
             const response = await axios.get(api);
             setListPostDetail(response.data);
         } catch (error: any) {
@@ -92,21 +96,15 @@ export default function BlogDetail() {
                 message: messages,
             }));
         }
-    }, [postBlogId.id]);
+    }, [postBlogId.name, parrams.blogId]);
 
     const handleBlogDetail = (title: string, id: number) => {
         const updatedUserInfo = {
             id: id,
             name: title,
         };
-        dispatch(updatePostId({...updatedUserInfo}));
-        let endpoint
-        if (title.trim().split(' ').length > 1) {
-            endpoint = title.replace(/ /g, '-');
-        } else {
-            endpoint = title
-        }
-        router.push(`/${endpoint}`)
+        dispatch(updatePostId({ ...updatedUserInfo }));
+        router.push(`/${title}`)
     }
 
     useEffect(() => {

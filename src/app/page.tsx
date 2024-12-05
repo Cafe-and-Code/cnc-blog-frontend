@@ -38,7 +38,6 @@ export default function Home() {
   const [listPost, setListPost] = useState([])
   const [activeCurrentPage, setActiveCurrentPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
-  const [userInfo, setUserInfo] = useState({ id: 0, name: '' });
   const [dialogList, setDialogList] = useState({
     visible: false,
     message: '',
@@ -119,22 +118,12 @@ export default function Home() {
   }, [])
 
   const handleBlogDetail = (title: string, id: number) => {
-    setUserInfo((prev) => {
-      const updatedUserInfo = {
-        ...prev,
-        id: id,
-        name: title,
-      };
-      dispatch(updatePostId(updatedUserInfo));
-      return updatedUserInfo;
-    });
-    let endpoint
-    if (title.trim().split(' ').length > 1) {
-      endpoint = title.replace(/ /g, '-');
-    } else {
-      endpoint = title
-    }
-    router.push(`/${endpoint}`)
+    const updatedUserInfo = {
+      id: id,
+      name: title,
+    };
+    dispatch(updatePostId(updatedUserInfo));;
+    router.push(`/${title}`)
   }
 
   return (
@@ -165,11 +154,13 @@ export default function Home() {
                   activeCurrentPage <= 1 ? "pointer-events-none opacity-50" : undefined
                 } onClick={prevPage} />
               </PaginationItem>
-              {Array.from({ length: totalPage }).map((_, index) => (
-                <PaginationItem key={index}>
-                  <PaginationLink isActive={activeCurrentPage === index + 1 ? true : false} onClick={() => changePage(index)}>{index + 1}</PaginationLink>
-                </PaginationItem>
-              ))}
+              <div className='pagination'>
+                {Array.from({ length: totalPage }).map((_, index) => (
+                  <PaginationItem key={index}>
+                    <PaginationLink isActive={activeCurrentPage === index + 1 ? true : false} onClick={() => changePage(index)}>{index + 1}</PaginationLink>
+                  </PaginationItem>
+                ))}
+              </div>
               <PaginationItem>
                 <PaginationNext className={
                   activeCurrentPage >= totalPage ? "pointer-events-none opacity-50" : undefined
