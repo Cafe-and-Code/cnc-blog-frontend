@@ -1,6 +1,6 @@
 'use client'
 import dayjs from 'dayjs'
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -37,11 +37,11 @@ interface PostItemDetail {
 
 export default function BlogDetail() {
     const router = useRouter()
+    const parrams = useParams()
     const dispatch = useDispatch();
     const [listPost, setListPost] = useState([])
     const postBlogId = useSelector((state: any) => state.user.postId);
     const [listPostDetail, setListPostDetail] = useState<PostItemDetail>()
-    const [userInfo, setUserInfo] = useState({ id: 0, name: '' });
     const [dialogList, setDialogList] = useState({
         visible: false,
         message: '',
@@ -57,7 +57,7 @@ export default function BlogDetail() {
     const getPosts = async () => {
         try {
             const response = await axios.get(API_URL.POSTS);
-            setListPost(response.data);
+            setListPost(response?.data?.posts);
         } catch (error: any) {
             setDialogList((prev) => ({
                 ...prev,
@@ -76,7 +76,10 @@ export default function BlogDetail() {
 
     const getPostDetail = useCallback(async () => {
         try {
-            const api = `${API_URL.POSTS}/${postBlogId.id}`;
+            const parramDetail = postBlogId.name !== parrams?.blogId ? parrams?.blogId : postBlogId.name
+            console.log(parramDetail);
+
+            const api = `${API_URL.POSTS}/${parramDetail}`;
             const response = await axios.get(api);
             setListPostDetail(response.data);
         } catch (error: any) {
@@ -93,25 +96,15 @@ export default function BlogDetail() {
                 message: messages,
             }));
         }
-    }, [postBlogId.id]);
+    }, [postBlogId.name, parrams.blogId]);
 
     const handleBlogDetail = (title: string, id: number) => {
-        setUserInfo((prev) => {
-            const updatedUserInfo = {
-                ...prev,
-                id: id,
-                name: title,
-            };
-            dispatch(updatePostId(updatedUserInfo));
-            return updatedUserInfo;
-        });
-        let endpoint
-        if (title.trim().split(' ').length > 1) {
-            endpoint = title.replace(/ /g, '-');
-        } else {
-            endpoint = title
-        }
-        router.push(`/${endpoint}`)
+        const updatedUserInfo = {
+            id: id,
+            name: title,
+        };
+        dispatch(updatePostId({ ...updatedUserInfo }));
+        router.push(`/${title}`)
     }
 
     useEffect(() => {

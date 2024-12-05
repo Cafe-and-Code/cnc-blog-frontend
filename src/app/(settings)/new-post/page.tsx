@@ -297,7 +297,7 @@ export default function NewsLetter() {
 
   useEffect(() => {
     // Đặt focus cho input khi component được render
-    setCategoryDisable(itemModal.categoryList?.length >= 3 ? true : false)
+    setCategoryDisable(itemModal.categoryList?.length >= 5 ? true : false)
   }, [itemModal.categoryList]);
 
   useEffect(() => {
