@@ -41,7 +41,6 @@ export default function BlogDetail() {
     const [listPost, setListPost] = useState([])
     const postBlogId = useSelector((state: any) => state.user.postId);
     const [listPostDetail, setListPostDetail] = useState<PostItemDetail>()
-    const [userInfo, setUserInfo] = useState({ id: 0, name: '' });
     const [dialogList, setDialogList] = useState({
         visible: false,
         message: '',
@@ -96,15 +95,11 @@ export default function BlogDetail() {
     }, [postBlogId.id]);
 
     const handleBlogDetail = (title: string, id: number) => {
-        setUserInfo((prev) => {
-            const updatedUserInfo = {
-                ...prev,
-                id: id,
-                name: title,
-            };
-            dispatch(updatePostId(updatedUserInfo));
-            return updatedUserInfo;
-        });
+        const updatedUserInfo = {
+            id: id,
+            name: title,
+        };
+        dispatch(updatePostId({...updatedUserInfo}));
         let endpoint
         if (title.trim().split(' ').length > 1) {
             endpoint = title.replace(/ /g, '-');
