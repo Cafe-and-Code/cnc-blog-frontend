@@ -50,7 +50,7 @@ export default function Home() {
   const getPosts = async () => {
     try {
       const response = await axios.get(API_URL.POSTS);
-      setListPost(response.data);
+      setListPost(response.data.posts);
     } catch (error: any) {
       setDialogList((prev) => ({
         ...prev,
