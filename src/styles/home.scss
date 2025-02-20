@@ -90,15 +90,12 @@
                         max-width: 400px;
                         height: 240px;
                     }
-                    .post-content {
-                        .post-title {
-                            height: 70px;
-                        }
-                        .post-description {
-                            height: 60px;
-                        }   
-                    }
                 }
+            }
+            .pagination {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
     }
