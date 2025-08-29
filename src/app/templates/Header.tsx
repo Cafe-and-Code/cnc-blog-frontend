@@ -23,7 +23,7 @@ export default function Header() {
   const router = useRouter()
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['token', 'userId', 'userRole']);
   const [showMenu, setShowMenu] = useState(false)
   const [activeLink, setActiveLink] = useState(pathName);
 
@@ -42,8 +42,10 @@ export default function Header() {
     setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
-  const onLogoutLogIn = () => {
+  const logOut = () => {
     removeCookie('token', { path: '/' })
+    removeCookie('userId', { path: '/' })
+    removeCookie('userRole', { path: '/' })
     dispatch(logout());
     window.location.href = '/login';
   }
@@ -78,7 +80,7 @@ export default function Header() {
         {menuList.map((item: PathType, index: number) => (
           <div key={index} className={`cnc-item ${activeLink === item.path ? 'active-navigation' : ''}`} onClick={() => handleChangePath(item.path)}><div className='cnc-navigator'>{item.name}</div></div>
         ))}
-        <Button variant='outline' onClick={onLogoutLogIn}>{cookies.token ? 'Log out' : 'Log In'}</Button>
+        <Button variant='outline' onClick={logOut}>{cookies.token ? 'Log out' : 'Log In'}</Button>
         <ToggleMode value={mode} onChange={onToggle} />
       </div>
       {/* menu nav */}
@@ -90,7 +92,7 @@ export default function Header() {
         {menuMobileList.map((item: PathType, index: number) => (
           <div key={index} className={`cnc-item-mobile ${activeLink === item.path ? 'active-navigation' : ''}`} onClick={() => handleChangePath(item.path)}><div className='cnc-navigator-mobile'>{item.name}</div></div>
         ))}
-        <Button variant='outline' onClick={onLogoutLogIn}>{cookies.token ? 'Log out' : 'Log In'}</Button>
+        <Button variant='outline' onClick={logOut}>{cookies.token ? 'Log out' : 'Log In'}</Button>
         <ToggleMode value={mode} onChange={onToggle} />
         <img className="close-nav" src="/images/icon/close.svg" alt="" onClick={handleCloseMenu} />
       </div>}

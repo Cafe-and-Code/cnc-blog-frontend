@@ -106,7 +106,7 @@ export default function CreateAccountPage() {
       });
     } catch (error: any) {
       const data = error?.response?.data
-      const messages = data?.errors.join('\n')
+      const messages = data?.message
       setDialogList((prev) => ({
         ...prev,
         visible: true,

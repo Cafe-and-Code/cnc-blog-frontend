@@ -3,7 +3,10 @@
 const path = require("path");
 
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true, // Bắt bug sớm
+  ssr: false,
+  swcMinify: true, // Dùng SWC minify (rất nhanh)
+  poweredByHeader: false, // Ẩn X-Powered-By: Next.js (tăng bảo mật)
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },

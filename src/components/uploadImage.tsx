@@ -58,7 +58,7 @@ export default function uploadImage({ isAvatar, classCustom, onChange }: uploadI
                 }
             } catch (error: any) {
                 const data = error?.response?.data
-                const messages = data?.errors.join('\n')
+                const messages = data?.message
                 setDialogList((prev) => ({
                     ...prev,
                     visible: true,

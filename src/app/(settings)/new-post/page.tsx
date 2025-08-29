@@ -136,7 +136,7 @@ export default function NewsLetter() {
       await axios.post(API_URL.CATEGORIES, { name: itemModal.categoryList })
     } catch (error: any) {
       const data = error?.response?.data
-      const messages = data?.errors.join('\n')
+      const messages = data?.message
       setDialogList((prev) => ({
         ...prev,
         title: 'Error',
@@ -177,7 +177,7 @@ export default function NewsLetter() {
         visible: false,
       }))
       const data = error?.response?.data
-      const messages = data?.errors.join('\n')
+      const messages = data?.message
       setDialogList((prev) => ({
         ...prev,
         title: 'Error',
@@ -297,7 +297,7 @@ export default function NewsLetter() {
 
   useEffect(() => {
     // Đặt focus cho input khi component được render
-    setCategoryDisable(itemModal.categoryList?.length >= 3 ? true : false)
+    setCategoryDisable(itemModal.categoryList?.length >= 5 ? true : false)
   }, [itemModal.categoryList]);
 
   useEffect(() => {

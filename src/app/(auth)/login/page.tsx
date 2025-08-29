@@ -79,7 +79,7 @@ export default function LoginPage() {
       dispatch(login(userId));
     } catch (error: any) {
       const data = error?.response?.data
-      const messages = data?.errors.join('\n')
+      const messages = data?.message
       setDialogList((prev) => ({
         ...prev,
         visible: true,
