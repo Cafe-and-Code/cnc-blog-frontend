@@ -25,10 +25,10 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 
 
 export default function NewsLetter() {
-  const [itemModal, setItemModal] = useState<{ title: string, description: string, titleImageUrl: string, categoryList: string[] }>({
+  const [itemModal, setItemModal] = useState<{ title: string, description: string, image: string, categoryList: string[] }>({
     title: '',
     description: '',
-    titleImageUrl: '',
+    image: '',
     categoryList: []
   })
   const [category, setCategory] = useState<string>('')
@@ -149,12 +149,12 @@ export default function NewsLetter() {
   const postNewBlog = () => {
     const cookies = new Cookies();
     const payload = {
-      authorId: cookies.get('userId'),
+      user_id: cookies.get('userId'),
       title: itemModal.title,
       content: content,
       categories: itemModal.categoryList,
       description: itemModal.description,
-      titleImageUrl: itemModal.titleImageUrl,
+      image: itemModal.image,
       status: 1
     }
     console.log(payload);
@@ -203,7 +203,7 @@ export default function NewsLetter() {
       ...prev,
       title: '',
       description: '',
-      titleImageUrl: '',
+      image: '',
       categoryList: []
     }))
     setCategory('')
@@ -281,7 +281,7 @@ export default function NewsLetter() {
   }
 
   const handleUploadImage = async (file: any) => {
-    setItemModal((prev) => ({ ...prev, titleImageUrl: file }))
+    setItemModal((prev) => ({ ...prev, image: file }))
   }
 
   useEffect(() => {

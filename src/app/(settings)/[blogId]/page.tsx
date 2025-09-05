@@ -108,12 +108,12 @@ export default function BlogDetail() {
     }
 
     useEffect(() => {
-        getPosts();
-    }, [])
-
-    useEffect(() => {
         getPostDetail();
     }, [getPostDetail]);
+
+    useEffect(() => {
+        getPosts();
+    }, [])
 
     return <div className='blog-detail'>
         <div className='recent-post'>

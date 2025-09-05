@@ -9,7 +9,7 @@ interface PostType {
         createdAt?: string,
         title?: string,
         description?: string,
-        titleImageUrl?: string,
+        image?: string,
         categories?: string[]
     },
     customClass?: string,
@@ -22,7 +22,7 @@ export default function PostBlog({ postItems, customClass, onClick = () => { } }
 
     return (
         <div className={`post ${customClass}`} onClick={onClick}>
-            {postItems.titleImageUrl && <img className='post-image' src={postItems.titleImageUrl} alt={postItems.titleImageUrl} />}
+            {postItems.image && <img className='post-image' src={postItems.image} alt={postItems.image} />}
             <div className='post-content'>
                 {postItems.createdAt && <div className='post-date-time'>{formatDate(postItems.createdAt)}</div>}
                 {postItems.title && <div className='post-title' title={postItems.title}>{postItems.title}</div>}

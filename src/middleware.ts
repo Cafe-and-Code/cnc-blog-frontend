@@ -7,13 +7,14 @@ export function middleware(req: NextRequest) {
   const token = req.cookies.get('token'); // Thay đổi theo cách bạn lưu trữ token
   const authScreens = ['/login', '/create-account', '/forgot-password']
   const noAlowAccess = ['/new-post']
+  const { pathname } = req.nextUrl
   // Nếu không có token và người dùng đang cố truy cập vào các trang không phải trang auth
-  if (!token && !authScreens.includes(req.nextUrl.pathname) && noAlowAccess.includes(req.nextUrl.pathname)) {
+  if (!token && !authScreens.includes(pathname) && noAlowAccess.includes(pathname)) {
     // Chuyển hướng về trang đăng nhập
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  if (token && authScreens.includes(req.nextUrl.pathname) && !noAlowAccess.includes(req.nextUrl.pathname)) {
+  if (token && authScreens.includes(pathname) && !noAlowAccess.includes(pathname)) {
     return NextResponse.redirect(new URL('/', req.url)); // Chuyển hướng về trang chính
   }
 
