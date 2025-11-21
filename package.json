@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lintfix": "eslint --fix .",
-    "prepare": "husky"
+    "lintfix": "eslint --fix ."
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -46,8 +45,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
     "@types/node": "^20",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18",
@@ -60,21 +57,11 @@
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^12.5.0",
     "postcss": "^8",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.5.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
-  },
-  "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "eslint --max-warnings=0",
-      "prettier -w"
-    ],
-    "**/*.{json,css,scss,md,webmanifest}": [
-      "prettier -w"
-    ]
   }
 }
