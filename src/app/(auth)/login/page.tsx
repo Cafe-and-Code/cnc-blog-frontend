@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 
-import '@/styles/components/login-form.scss';
+import '@/styles/components/login-form.scss';   
 
 import axios from '@/lib/axios';
 
@@ -40,7 +40,7 @@ export default function LoginPage() {
   });
   const dispatch = useDispatch();
 
-  const [cookies, setCookie] = useCookies(['token', 'userId', 'userRole']);
+  const [cookies, setCookie] = useCookies(['accessToken', 'refreshToken', 'userId', 'userRole']);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     setDataLogin((prev) => ({ ...prev, [field]: e.target.value }));
@@ -57,16 +57,18 @@ export default function LoginPage() {
     e.preventDefault();
     const payload = {
       username: dataLogin.username,
-      password: dataLogin.password
+      password: dataLogin.password,
     }
     try {
       const response = await axios.post(API_URL.LOGIN, payload);
       const data = response.data;
-      const token = data.token;
+      const accessToken = data.accessToken;
+      const refreshToken = data.refreshToken;
       const userId = data.userId;
       const userRole = data.userRole;
 
-      setCookie('token', token);
+      setCookie('accessToken', accessToken);
+      setCookie('refreshToken', refreshToken);
       setCookie('userId', userId);
       setCookie('userRole', userRole);
 

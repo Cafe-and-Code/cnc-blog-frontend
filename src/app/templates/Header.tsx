@@ -4,13 +4,18 @@ import { useTheme } from "next-themes"
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import '@/styles/components/header.scss'
+
+import axios from '@/lib/axios';
 
 import ToggleMode from '@/components/toggle-mode';
 import { Button } from '@/components/ui/button';
 
 import { logout } from '@/store/auth';
+
+import { API_URL } from '@/app/constant/api-config';
 
 interface PathType {
   name: string,
@@ -23,9 +28,12 @@ export default function Header() {
   const router = useRouter()
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');
-  const [cookies, setCookie, removeCookie] = useCookies(['token', 'userId', 'userRole']);
+  const userId = useSelector((state: any) => state.user.userId);
+  const [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken', 'userId', 'userRole']);
   const [showMenu, setShowMenu] = useState(false)
   const [activeLink, setActiveLink] = useState(pathName);
+
+  console.log(cookies);
 
   const menuList = [
     { name: 'About', path: '/about' },
@@ -42,12 +50,19 @@ export default function Header() {
     setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
-  const logOut = () => {
-    removeCookie('token', { path: '/' })
-    removeCookie('userId', { path: '/' })
-    removeCookie('userRole', { path: '/' })
-    dispatch(logout());
-    window.location.href = '/login';
+  const logOut = async () => {
+    try {
+      await axios.post(API_URL.LOG_OUT);
+      removeCookie('accessToken', { path: '/' }),
+      removeCookie('refreshToken', { path: '/' })
+      removeCookie('userId', { path: '/' })
+      removeCookie('userRole', { path: '/' })
+      dispatch(logout());
+      window.location.href = '/login';
+    } catch (error: any) {
+      const data = error?.response?.data
+      const messages = data?.message
+    }
   }
 
   const handleOpenMenu = () => {
@@ -80,7 +95,7 @@ export default function Header() {
         {menuList.map((item: PathType, index: number) => (
           <div key={index} className={`cnc-item ${activeLink === item.path ? 'active-navigation' : ''}`} onClick={() => handleChangePath(item.path)}><div className='cnc-navigator'>{item.name}</div></div>
         ))}
-        <Button variant='outline' onClick={logOut}>{cookies.token ? 'Log out' : 'Log In'}</Button>
+        <Button variant='outline' onClick={logOut}>{userId ? 'Log out' : 'Log In'}</Button>
         <ToggleMode value={mode} onChange={onToggle} />
       </div>
       {/* menu nav */}
@@ -92,7 +107,7 @@ export default function Header() {
         {menuMobileList.map((item: PathType, index: number) => (
           <div key={index} className={`cnc-item-mobile ${activeLink === item.path ? 'active-navigation' : ''}`} onClick={() => handleChangePath(item.path)}><div className='cnc-navigator-mobile'>{item.name}</div></div>
         ))}
-        <Button variant='outline' onClick={logOut}>{cookies.token ? 'Log out' : 'Log In'}</Button>
+        <Button variant='outline' onClick={logOut}>{userId ? 'Log out' : 'Log In'}</Button>
         <ToggleMode value={mode} onChange={onToggle} />
         <img className="close-nav" src="/images/icon/close.svg" alt="" onClick={handleCloseMenu} />
       </div>}

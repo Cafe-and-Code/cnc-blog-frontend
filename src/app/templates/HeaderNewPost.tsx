@@ -30,7 +30,7 @@ export default function HeaderNewPost({ onPost, disabledPublish }: HeaderOtherTy
   const userId = useSelector((state: any) => state.user.userId);
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] =  useCookies(['accessToken','refreshToken', 'userId', 'userRole']);
   const [showMenu, setShowMenu] = useState(false)
   const [activeLink, setActiveLink] = useState(pathName);
 
@@ -45,7 +45,10 @@ export default function HeaderNewPost({ onPost, disabledPublish }: HeaderOtherTy
   };
 
   const onLogoutLogIn = () => {
-    removeCookie('token', { path: '/' })
+    removeCookie('accessToken', { path: '/' }),
+    removeCookie('refreshToken', { path: '/' })
+    removeCookie('userId', { path: '/' })
+    removeCookie('userRole', { path: '/' })
     dispatch(logout());
     window.location.href = '/login';
   }

@@ -1,7 +1,8 @@
 export const API_URL = {
-    LOGIN: '/api/Users/Login',
-    POSTS: '/api/Posts',
-    CREATE_USER: '/api/Users',
-    UPLOAD_IMAGE: '/api/Upload/Images',
-    CATEGORIES: '/api/Categories'
+    LOGIN: '/api/users/login',
+    LOG_OUT: '/api/users/log-out',
+    POSTS: '/api/posts',
+    CREATE_USER: '/api/users',
+    UPLOAD_IMAGE: '/api/upload/images',
+    CATEGORIES: '/api/categories'
 }

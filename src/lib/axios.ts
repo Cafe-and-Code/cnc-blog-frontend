@@ -4,17 +4,18 @@ import { Cookies } from 'react-cookie';
 const axiosInstance = axios.create({
   baseURL: process.env.baseApi, // Replace with your API base URL
   timeout: 60000,
-  headers: { 'Content-Type': 'application/json' }
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   function (config) {
     const cookies = new Cookies();
-    const token = cookies.get('token'); // Retrieve auth token from cookies
+    const accessToken = cookies.get('accessToken'); // Retrieve auth token from cookies
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
