@@ -16,8 +16,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import UploadImage from '@/components/uploadImage';
 
-import { API_URL } from '@/app/constant/api-config';
-import HeaderNewPost from '@/app/templates/HeaderNewPost';
+import { API_URL } from '@/constants/api-config';
+import HeaderNewPost from '@/templates/HeaderNewPost';
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
   loading: () => <p>Loading ...</p>,

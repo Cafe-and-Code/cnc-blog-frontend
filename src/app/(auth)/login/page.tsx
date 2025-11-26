@@ -23,7 +23,9 @@ import { Input } from '@/components/ui/input';
 
 import { login } from '@/store/auth';
 
-import { API_URL } from '@/app/constant/api-config';
+import { API_URL } from '@/constants/api-config';
+
+import { IErrorResponse } from '@/types/error';
 
 type loginType = {
   username: string;
@@ -45,12 +47,7 @@ export default function LoginPage() {
   });
   const dispatch = useDispatch();
 
-  const [cookies, setCookie] = useCookies([
-    'accessToken',
-    'refreshToken',
-    'userId',
-    'userRole',
-  ]);
+  const [cookies, setCookie] = useCookies(['userId', 'userRole']);
 
   const handleChangeInput = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -75,13 +72,9 @@ export default function LoginPage() {
     try {
       const response = await axios.post(API_URL.LOGIN, payload);
       const data = response.data;
-      const accessToken = data.accessToken;
-      const refreshToken = data.refreshToken;
       const userId = data.userId;
       const userRole = data.userRole;
 
-      setCookie('accessToken', accessToken);
-      setCookie('refreshToken', refreshToken);
       setCookie('userId', userId);
       setCookie('userRole', userRole);
 
@@ -93,8 +86,7 @@ export default function LoginPage() {
 
       dispatch(login(userId));
     } catch (error: any) {
-      const data = error?.response?.data;
-      const messages = data?.message;
+      const messages = error?.message;
       setDialogList((prev) => ({
         ...prev,
         visible: true,

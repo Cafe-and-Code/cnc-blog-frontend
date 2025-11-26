@@ -7,7 +7,7 @@ import axios from '@/lib/axios';
 import BaseDialog from '@/components/base/BaseDialog';
 import { Input } from '@/components/ui/input';
 
-import { API_URL } from '@/app/constant/api-config';
+import { API_URL } from '@/constants/api-config';
 
 type uploadImageType = {
   isAvatar?: boolean;

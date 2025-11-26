@@ -14,7 +14,7 @@ import PostBlog from '@/components/post-blog';
 
 import { updatePostId } from '@/store/auth';
 
-import { API_URL } from '@/app/constant/api-config';
+import { API_URL } from '@/constants/api-config';
 
 interface PostItem {
   id: number;
