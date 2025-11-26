@@ -1,10 +1,11 @@
-'use client'
+'use client';
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import '@/styles/home.scss'
+import '@/styles/home.scss';
 
 import axios from '@/lib/axios';
 
@@ -17,39 +18,34 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
+} from '@/components/ui/pagination';
 
 import { updatePostId } from '@/store/auth';
 
-import { API_URL } from '@/app/constant/api-config';
-interface PostItem {
-  id: number,
-  createdAt: string,
-  title: string,
-  description: string,
-  titleImageUrl: string,
-  categories: string[]
-}
+import { API_URL } from '@/constants/api-config';
+
+import { IPostItem } from '@/types/model/posts';
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
-  const [recentPosts, setRecentPots] = useState([])
-  const [listPost, setListPost] = useState([])
-  const [activeCurrentPage, setActiveCurrentPage] = useState(1)
-  const [totalPage, setTotalPage] = useState(1)
+  const [recentPosts, setRecentPots] = useState([]);
+  const [listPost, setListPost] = useState([]);
+  const [activeCurrentPage, setActiveCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [dialogList, setDialogList] = useState({
     visible: false,
     message: '',
     title: '',
     submitBtn: 'OK',
-    cancelBtn: 'Cancel'
+    cancelBtn: 'Cancel',
   });
 
   const getRecentPosts = async () => {
     try {
       const response = await axios.get(API_URL.POSTS);
-      setRecentPots(response?.data?.posts)
+      setRecentPots(response?.data?.posts);
     } catch (error: any) {
       setDialogList((prev) => ({
         ...prev,
@@ -64,14 +60,16 @@ export default function Home() {
         message: messages,
       }));
     }
-  }
+  };
 
   const getPosts = async (page = 1, perPage = 6) => {
     try {
-      const response = await axios.get(API_URL.POSTS, { params: { pageNumber: page, pageSize: perPage } });
+      const response = await axios.get(API_URL.POSTS, {
+        params: { pageNumber: page, pageSize: perPage },
+      });
       setListPost(response?.data?.posts);
-      const mathPerpage = Math.ceil(response?.data?.totalPosts / 6)
-      setTotalPage(mathPerpage)
+      const mathPerpage = Math.ceil(response?.data?.totalPosts / 6);
+      setTotalPage(mathPerpage);
     } catch (error: any) {
       setDialogList((prev) => ({
         ...prev,
@@ -89,87 +87,113 @@ export default function Home() {
   };
 
   const changePage = (index: number) => {
-    getPosts(index + 1, 6)
+    getPosts(index + 1, 6);
     sessionStorage.setItem('currentPage', `${index + 1}`);
-    setActiveCurrentPage(index + 1)
-  }
+    setActiveCurrentPage(index + 1);
+  };
 
   const prevPage = () => {
-    getPosts(activeCurrentPage - 1, 6)
+    getPosts(activeCurrentPage - 1, 6);
     sessionStorage.setItem('currentPage', `${activeCurrentPage - 1}`);
-    setActiveCurrentPage(activeCurrentPage - 1)
-  }
+    setActiveCurrentPage(activeCurrentPage - 1);
+  };
 
   const nextPage = () => {
-    getPosts(activeCurrentPage + 1, 6)
+    getPosts(activeCurrentPage + 1, 6);
     sessionStorage.setItem('currentPage', `${activeCurrentPage + 1}`);
-    setActiveCurrentPage(activeCurrentPage + 1)
-  }
+    setActiveCurrentPage(activeCurrentPage + 1);
+  };
 
   useEffect(() => {
-    getRecentPosts()
+    getRecentPosts();
     const storedValue = sessionStorage.getItem('currentPage');
     if (storedValue) {
       getPosts(Number(storedValue), 6);
-      setActiveCurrentPage(Number(storedValue))
+      setActiveCurrentPage(Number(storedValue));
     } else {
       getPosts();
     }
-  }, [])
+  }, []);
 
   const handleBlogDetail = (title: string, id: number) => {
     const updatedUserInfo = {
       id: id,
       name: title,
     };
-    dispatch(updatePostId(updatedUserInfo));;
-    router.push(`/${title}`)
-  }
+    dispatch(updatePostId(updatedUserInfo));
+    router.push(`/${title}`);
+  };
 
   return (
-    <div className='blog-page'>
-      <div className="blog-header">
-        THE BLOG
-      </div>
-      <div className='blog-body'>
-        <div className='recent-blog-post'>
-          <div className='title'>Recent blog posts</div>
-          <div className='recent-content'>
-            {recentPosts?.map((item: PostItem, index: number) => (
-              index < 3 && <PostBlog key={index} postItems={item} customClass={`post-${index}`} onClick={() => handleBlogDetail(item.title, item.id)} />
-            ))}
+    <div className="blog-page">
+      <div className="blog-header">THE BLOG</div>
+      <div className="blog-body">
+        <div className="recent-blog-post">
+          <div className="title">{t('pages.posts.recent_blog_posts')}</div>
+          <div className="recent-content">
+            {recentPosts?.map(
+              (item: IPostItem, index: number) =>
+                index < 3 && (
+                  <PostBlog
+                    key={index}
+                    postItems={item}
+                    customClass={`post-${index}`}
+                    onClick={() => handleBlogDetail(item.title, item.id)}
+                  />
+                ),
+            )}
           </div>
         </div>
-        <div className='all-blog-post'>
-          <div className='title'>All blog posts</div>
-          <div className='all-content'>
-            {listPost?.map((item: PostItem, index: number) => (
-              <PostBlog key={index} postItems={item} customClass={`post-${index}`} onClick={() => handleBlogDetail(item.title, item.id)} />
+        <div className="all-blog-post">
+          <div className="title">All blog posts</div>
+          <div className="all-content">
+            {listPost?.map((item: IPostItem, index: number) => (
+              <PostBlog
+                key={index}
+                postItems={item}
+                customClass={`post-${index}`}
+                onClick={() => handleBlogDetail(item.title, item.id)}
+              />
             ))}
           </div>
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious className={
-                  activeCurrentPage <= 1 ? "pointer-events-none opacity-50" : undefined
-                } onClick={prevPage} />
+                <PaginationPrevious
+                  className={
+                    activeCurrentPage <= 1
+                      ? 'pointer-events-none opacity-50'
+                      : undefined
+                  }
+                  onClick={prevPage}
+                />
               </PaginationItem>
-              <div className='pagination'>
+              <div className="pagination">
                 {Array.from({ length: totalPage }).map((_, index) => (
                   <PaginationItem key={index}>
-                    <PaginationLink isActive={activeCurrentPage === index + 1 ? true : false} onClick={() => changePage(index)}>{index + 1}</PaginationLink>
+                    <PaginationLink
+                      isActive={activeCurrentPage === index + 1 ? true : false}
+                      onClick={() => changePage(index)}
+                    >
+                      {index + 1}
+                    </PaginationLink>
                   </PaginationItem>
                 ))}
               </div>
               <PaginationItem>
-                <PaginationNext className={
-                  activeCurrentPage >= totalPage ? "pointer-events-none opacity-50" : undefined
-                } onClick={nextPage} />
+                <PaginationNext
+                  className={
+                    activeCurrentPage >= totalPage
+                      ? 'pointer-events-none opacity-50'
+                      : undefined
+                  }
+                  onClick={nextPage}
+                />
               </PaginationItem>
             </PaginationContent>
           </Pagination>
         </div>
       </div>
     </div>
-  )
+  );
 }

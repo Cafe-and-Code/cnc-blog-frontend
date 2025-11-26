@@ -1,7 +1,14 @@
 'use client';
 
-import dayjs from 'dayjs'
-import { Calendar, Lock, Mail, UserRound, UserRoundPlus, Users } from 'lucide-react';
+import dayjs from 'dayjs';
+import {
+  Calendar,
+  Lock,
+  Mail,
+  UserRound,
+  UserRoundPlus,
+  Users,
+} from 'lucide-react';
 import React from 'react';
 import { useState } from 'react';
 
@@ -18,27 +25,27 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 import UploadImage from '@/components/uploadImage';
 
-import { API_URL } from '@/app/constant/api-config';
-import { DATE_FORMAT } from '@/app/constant/constants';
+import { API_URL } from '@/constants/api-config';
+import { DATE_FORMAT } from '@/constants/date-format';
 
 type CreateAccountType = {
   username: string;
   password: string | number;
-  confirmPassword: string | number,
-  fullName: string,
-  email: string,
-  dateOfBirth: string,
-  avatarImageUrl: string
+  confirmPassword: string | number;
+  fullName: string;
+  email: string;
+  dateOfBirth: string;
+  avatarImageUrl: string;
   //checkAgree: boolean;
 };
 
 type GenderType = {
-  name: string,
-  value: string
-}
+  name: string;
+  value: string;
+};
 
 export default function CreateAccountPage() {
   const [dialogList, setDialogList] = useState({
@@ -55,18 +62,23 @@ export default function CreateAccountPage() {
     fullName: '',
     email: '',
     dateOfBirth: '',
-    avatarImageUrl: ''
-  }
+    avatarImageUrl: '',
+  };
 
   const listGender = [
     { name: 'Male', value: 'Male' },
     { name: 'Female', value: 'Female' },
     { name: 'LGBT', value: 'LGBT' },
-  ]
+  ];
 
-  const [dataCreateAccount, setDataCreateAccount] = useState<CreateAccountType>({ ...cloneCreateAccount });
+  const [dataCreateAccount, setDataCreateAccount] = useState<CreateAccountType>(
+    { ...cloneCreateAccount },
+  );
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+  const handleChangeInput = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string,
+  ) => {
     setDataCreateAccount((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
@@ -74,12 +86,12 @@ export default function CreateAccountPage() {
     setDialogList((prev) => ({
       ...prev,
       visible: false,
-    }))
-  }
+    }));
+  };
 
   const handleUploadImage = async (file: any) => {
-    setDataCreateAccount((prev) => ({ ...prev, avatarImageUrl: file }))
-  }
+    setDataCreateAccount((prev) => ({ ...prev, avatarImageUrl: file }));
+  };
 
   const handleCreateAccount = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,9 +101,11 @@ export default function CreateAccountPage() {
       confirmPassword: dataCreateAccount.confirmPassword,
       fullName: dataCreateAccount.fullName,
       email: dataCreateAccount.email,
-      dateOfBirth: dayjs(dataCreateAccount.dateOfBirth).format(DATE_FORMAT.SERVER_DATE),
-      avatarImageUrl: dataCreateAccount.avatarImageUrl
-    }
+      dateOfBirth: dayjs(dataCreateAccount.dateOfBirth).format(
+        DATE_FORMAT.SERVER_DATE,
+      ),
+      avatarImageUrl: dataCreateAccount.avatarImageUrl,
+    };
     try {
       await axios.post(API_URL.CREATE_USER, payload);
       window.location.href = '/login';
@@ -102,25 +116,25 @@ export default function CreateAccountPage() {
         fullName: '',
         email: '',
         dateOfBirth: '',
-        avatarImageUrl: ''
+        avatarImageUrl: '',
       });
     } catch (error: any) {
-      const data = error?.response?.data
-      const messages = data?.message
+      const data = error?.response?.data;
+      const messages = data?.message;
       setDialogList((prev) => ({
         ...prev,
         visible: true,
         message: messages,
         title: 'Error',
         submitBtn: 'Submit',
-      }))
+      }));
     }
   };
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 sm:h-screen lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
+        <h1 className="text-center text-4xl font-bold text-[var(--color-01)]">
           CNC BLOG
         </h1>
       </div>
@@ -134,7 +148,11 @@ export default function CreateAccountPage() {
           <CardContent>
             <form onSubmit={handleCreateAccount} className="space-y-6">
               <div className="relative">
-                <UploadImage isAvatar classCustom='h-[80px] w-[80px] rounded-[50%] mb-[30px] mx-auto' onChange={handleUploadImage} />
+                <UploadImage
+                  isAvatar
+                  classCustom="h-[80px] w-[80px] rounded-[50%] mb-[30px] mx-auto"
+                  onChange={handleUploadImage}
+                />
               </div>
               <div className="relative">
                 <UserRound className="absolute inset-y-2 left-2" />
@@ -146,7 +164,7 @@ export default function CreateAccountPage() {
                   placeholder="Username"
                   autoComplete="username"
                   value={dataCreateAccount.username}
-                  onChange={e => handleChangeInput(e, 'username')}
+                  onChange={(e) => handleChangeInput(e, 'username')}
                   className="pl-10"
                 />
               </div>
@@ -159,7 +177,9 @@ export default function CreateAccountPage() {
                   <SelectContent>
                     <SelectGroup>
                       {listGender.map((item: GenderType, index) => (
-                        <SelectItem key={index} value={item.value}>{item.name}</SelectItem>
+                        <SelectItem key={index} value={item.value}>
+                          {item.name}
+                        </SelectItem>
                       ))}
                     </SelectGroup>
                   </SelectContent>
@@ -175,7 +195,7 @@ export default function CreateAccountPage() {
                   placeholder="Full Name"
                   autoComplete="fullName"
                   value={dataCreateAccount.fullName}
-                  onChange={e => handleChangeInput(e, 'fullName')}
+                  onChange={(e) => handleChangeInput(e, 'fullName')}
                   className="pl-10"
                 />
               </div>
@@ -189,7 +209,7 @@ export default function CreateAccountPage() {
                   placeholder="Email"
                   autoComplete="email"
                   value={dataCreateAccount.email}
-                  onChange={e => handleChangeInput(e, 'email')}
+                  onChange={(e) => handleChangeInput(e, 'email')}
                   className="pl-10"
                 />
               </div>
@@ -203,8 +223,8 @@ export default function CreateAccountPage() {
                   placeholder="Date Of Birth"
                   autoComplete="dateOfBirth"
                   value={dataCreateAccount.dateOfBirth}
-                  onChange={e => handleChangeInput(e, 'dateOfBirth')}
-                  className="pl-10 "
+                  onChange={(e) => handleChangeInput(e, 'dateOfBirth')}
+                  className="pl-10"
                 />
               </div>
               <div className="relative">
@@ -217,7 +237,7 @@ export default function CreateAccountPage() {
                   placeholder="Password"
                   autoComplete="current-password"
                   value={dataCreateAccount.password}
-                  onChange={e => handleChangeInput(e, 'password')}
+                  onChange={(e) => handleChangeInput(e, 'password')}
                   className="pl-10"
                 />
               </div>
@@ -231,7 +251,7 @@ export default function CreateAccountPage() {
                   placeholder="Confirm Password"
                   autoComplete="confirm-password"
                   value={dataCreateAccount.confirmPassword}
-                  onChange={e => handleChangeInput(e, 'confirmPassword')}
+                  onChange={(e) => handleChangeInput(e, 'confirmPassword')}
                   className="pl-10"
                 />
               </div>
@@ -244,10 +264,7 @@ export default function CreateAccountPage() {
           </CardContent>
         </Card>
       </div>
-      <BaseDialog
-        dialogList={dialogList}
-        onSubmit={handleSubmit}
-      />
+      <BaseDialog dialogList={dialogList} onSubmit={handleSubmit} />
     </div>
   );
 }

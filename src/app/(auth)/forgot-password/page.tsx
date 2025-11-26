@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
   const [dialogList, setDialogList] = useState({
     visible: false,
     message: '',
@@ -18,21 +18,19 @@ export default function LoginPage() {
     submitBtn: 'Submit',
   });
 
-  const handleForgotPassword = () => {
-
-  }
+  const handleForgotPassword = () => {};
 
   const handleSubmit = () => {
     setDialogList((prev) => ({
       ...prev,
       visible: false,
-    }))
-  }
+    }));
+  };
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 sm:h-screen">
+    <div className="flex h-full flex-1 flex-col justify-center px-6 py-12 sm:h-screen lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h1 className='text-center text-4xl font-bold text-[var(--color-01)]'>
+        <h1 className="text-center text-4xl font-bold text-[var(--color-01)]">
           CNC BLOG
         </h1>
       </div>
@@ -55,7 +53,7 @@ export default function LoginPage() {
                   placeholder="Email"
                   autoComplete="email"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
                 />
               </div>
@@ -68,10 +66,7 @@ export default function LoginPage() {
           </CardContent>
         </Card>
       </div>
-      <BaseDialog
-        dialogList={dialogList}
-        onSubmit={handleSubmit}
-      />
+      <BaseDialog dialogList={dialogList} onSubmit={handleSubmit} />
     </div>
-  )
+  );
 }

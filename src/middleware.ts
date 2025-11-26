@@ -1,21 +1,29 @@
-import type { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export function middleware(req: NextRequest) {
   // Kiểm tra accessToken hoặc thông tin xác thực
   const accessToken = req.cookies.get('accessToken');
-   const refreshToken = req.cookies.get('refreshToken');
-   
-  const authScreens = ['/login', '/create-account', '/forgot-password']
-  const noAlowAccess = ['/new-post']
-  const { pathname } = req.nextUrl
+  const refreshToken = req.cookies.get('refreshToken');
+
+  const authScreens = ['/login', '/create-account', '/forgot-password'];
+  const noAlowAccess = ['/new-post'];
+  const { pathname } = req.nextUrl;
   // Nếu không có accessToken và người dùng đang cố truy cập vào các trang không phải trang auth
-  if (!accessToken && !refreshToken && !authScreens.includes(pathname) && noAlowAccess.includes(pathname)) {
+  if (
+    !accessToken?.value &&
+    !authScreens.includes(pathname) &&
+    noAlowAccess.includes(pathname)
+  ) {
     // Chuyển hướng về trang đăng nhập
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  if (accessToken && refreshToken && authScreens.includes(pathname) && !noAlowAccess.includes(pathname)) {
+  if (
+    accessToken?.value &&
+    authScreens.includes(pathname) &&
+    !noAlowAccess.includes(pathname)
+  ) {
     return NextResponse.redirect(new URL('/', req.url)); // Chuyển hướng về trang chính
   }
 
@@ -25,5 +33,7 @@ export function middleware(req: NextRequest) {
 
 // Định nghĩa các route mà middleware sẽ áp dụng
 export const config = {
-  matcher: ['/((?!api|_next/static|.*\svg|.*\png|.*\jpg|.*\jpeg|.*\gif|.*\webp|_next/image|favicon.ico).*)',],
+  matcher: [
+    '/((?!api|_next/static|.*\svg|.*\png|.*\jpg|.*\jpeg|.*\gif|.*\webp|_next/image|favicon.ico).*)',
+  ],
 };

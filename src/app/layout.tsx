@@ -1,50 +1,52 @@
 'use client';
-import { Lora } from 'next/font/google'
+import { Lora } from 'next/font/google';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import '@/styles/globals.scss'
-import '@/styles/_variable.scss'
+import '@/styles/globals.scss';
+import '@/styles/_variable.scss';
 
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from '@/components/theme-provider';
 
 import { persistor, store } from '@/store/auth';
 
-import Footer from "@/app/templates/Footer"
-import Header from "@/app/templates/Header"
-const inter = Lora({ subsets: ['latin'] })
+import { I18nProviders } from '@/providers/i18n-provider';
+import Footer from '@/templates/Footer';
+import Header from '@/templates/Header';
 
-interface RootLayoutProps {
-  children: React.ReactNode,
-}
+import { IRootLayoutProps } from '@/types/layout';
+const inter = Lora({ subsets: ['latin'] });
 
-export default function RootLayout({
-  children,
-}: Readonly<RootLayoutProps>) {
-  const router = usePathname()
-  const listNoHeader = ['/new-post', '/login', '/create-account', '/forgot-password']
+export default function RootLayout({ children }: Readonly<IRootLayoutProps>) {
+  const router = usePathname();
+  const listNoHeader = [
+    '/new-post',
+    '/login',
+    '/create-account',
+    '/forgot-password',
+  ];
   const checkLayout = () => {
-    return !listNoHeader.includes(router)
-  }
+    return !listNoHeader.includes(router);
+  };
 
   const [width, setWidth] = useState(0);
   const layoutClass = () => {
     if (width < 800) {
-      return 'layout-mobile'
+      return 'layout-mobile';
     } else if (width < 1180 && width > 799) {
-      return 'layout-tablet'
+      return 'layout-tablet';
     } else {
-      return 'layout-desktop'
+      return 'layout-desktop';
     }
-  }
+  };
   const handleResize = () => {
     // Perform actions on window resize
     setWidth(window.innerWidth);
   };
   useEffect(() => {
-    handleResize()
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -63,17 +65,19 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <div className={`${layoutClass()}`}>
-                {checkLayout() && <Header />}
-                {children}
-                {checkLayout() && <Footer />}
-              </div>
-            </PersistGate>
-          </Provider>
+          <I18nProviders>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistor}>
+                <div className={`${layoutClass()}`}>
+                  {checkLayout() && <Header />}
+                  {children}
+                  {checkLayout() && <Footer />}
+                </div>
+              </PersistGate>
+            </Provider>
+          </I18nProviders>
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

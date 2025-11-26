@@ -10,11 +10,11 @@ import {
   PURGE,
   REGISTER,
   REHYDRATE,
-} from 'redux-persist'
-import createWebStorage from "redux-persist/es/storage/createWebStorage";
+} from 'redux-persist';
+import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 
 export function createPersistStore() {
-  const isServer = typeof window === "undefined";
+  const isServer = typeof window === 'undefined';
   if (isServer) {
     return {
       getItem() {
@@ -28,11 +28,12 @@ export function createPersistStore() {
       },
     };
   }
-  return createWebStorage("local");
+  return createWebStorage('local');
 }
-const storage = typeof window !== "undefined"
-  ? createWebStorage("local")
-  : createPersistStore();
+const storage =
+  typeof window !== 'undefined'
+    ? createWebStorage('local')
+    : createPersistStore();
 
 const persistConfig = {
   key: 'root',
@@ -45,8 +46,8 @@ const userSlice = createSlice({
     userId: null as string | null,
     postId: {
       id: null as string | null,
-      name: null as string | null
-    }
+      name: null as string | null,
+    },
   },
   reducers: {
     login: (state, action) => {
@@ -57,7 +58,7 @@ const userSlice = createSlice({
     },
     updatePostId: (state, action) => {
       state.postId = action.payload;
-    }
+    },
   },
 });
 
