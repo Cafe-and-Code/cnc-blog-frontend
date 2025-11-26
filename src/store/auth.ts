@@ -43,10 +43,10 @@ const persistConfig = {
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    userId: null as string | null,
+    userId: null,
     postId: {
-      id: null as string | null,
-      name: null as string | null,
+      id: null,
+      name: null,
     },
   },
   reducers: {

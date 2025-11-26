@@ -7,19 +7,15 @@ import axios from '@/lib/axios';
 import BaseDialog from '@/components/base/BaseDialog';
 import { Input } from '@/components/ui/input';
 
+import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
 
-type uploadImageType = {
-  isAvatar?: boolean;
-  classCustom?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
+import { IUploadImageType } from '@/types/common/upload-image';
 export default function uploadImage({
   isAvatar,
   classCustom,
   onChange,
-}: uploadImageType) {
+}: IUploadImageType) {
   const [avatar, setAvatar] = useState('');
   const [image, setImage] = useState('');
   const [dialogList, setDialogList] = useState({
@@ -59,13 +55,15 @@ export default function uploadImage({
         if (onChange) {
           onChange(response?.data?.filePath);
         }
-      } catch (error: any) {
-        const data = error?.response?.data;
-        const messages = data?.message;
+      } catch (error: unknown) {
+        let message = '';
+        if (isApiError(error)) {
+          message = error.message;
+        }
         setDialogList((prev) => ({
           ...prev,
           visible: true,
-          message: messages,
+          message,
           title: 'Error',
           submitBtn: 'Submit',
         }));

@@ -14,34 +14,19 @@ import PostBlog from '@/components/post-blog';
 
 import { updatePostId } from '@/store/auth';
 
+import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
 
-interface PostItem {
-  id: number;
-  createdAt: string;
-  title: string;
-  description: string;
-  titleImageUrl: string;
-  categories: string[];
-}
-interface PostItemDetail {
-  id: number;
-  author: string;
-  createdAt: string;
-  title: string;
-  description: string;
-  titleImageUrl: string;
-  categories: string[];
-  content: string;
-}
+import { IPostItem, IPostItemDetail } from '@/types/model/posts';
+import { IUserState } from '@/types/store';
 
 export default function BlogDetail() {
   const router = useRouter();
   const parrams = useParams();
   const dispatch = useDispatch();
   const [listPost, setListPost] = useState([]);
-  const postBlogId = useSelector((state: any) => state.user.postId);
-  const [listPostDetail, setListPostDetail] = useState<PostItemDetail>();
+  const postBlogId = useSelector((state: IUserState) => state.user.postId);
+  const [listPostDetail, setListPostDetail] = useState<IPostItemDetail>();
   const [dialogList, setDialogList] = useState({
     visible: false,
     message: '',
@@ -58,18 +43,20 @@ export default function BlogDetail() {
     try {
       const response = await axios.get(API_URL.POSTS);
       setListPost(response?.data?.posts);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
         visible: false,
       }));
-      const data = error?.response?.data;
-      const messages = data.errors.join('\n');
+      let message = '';
+      if (isApiError(error)) {
+        message = error.message;
+      }
       setDialogList((prev) => ({
         ...prev,
         title: 'Error',
         visible: true,
-        message: messages,
+        message,
       }));
     }
   };
@@ -83,18 +70,20 @@ export default function BlogDetail() {
       const api = `${API_URL.POSTS}/${parramDetail}`;
       const response = await axios.get(api);
       setListPostDetail(response.data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
         visible: false,
       }));
-      const data = error?.response?.data;
-      const messages = data.errors.join('\n');
+      let message = '';
+      if (isApiError(error)) {
+        message = error.message;
+      }
       setDialogList((prev) => ({
         ...prev,
         title: 'Error',
         visible: true,
-        message: messages,
+        message,
       }));
     }
   }, [postBlogId.name, parrams.blogId]);
@@ -122,7 +111,7 @@ export default function BlogDetail() {
         <div className="title">Recent blog posts</div>
         <div className="recent-content">
           {listPost?.map(
-            (item: PostItem, index: number) =>
+            (item: IPostItem, index: number) =>
               index < 4 && (
                 <PostBlog
                   key={index}

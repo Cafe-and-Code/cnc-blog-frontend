@@ -22,6 +22,7 @@ import {
 
 import { updatePostId } from '@/store/auth';
 
+import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
 
 import { IPostItem } from '@/types/model/posts';
@@ -46,18 +47,20 @@ export default function Home() {
     try {
       const response = await axios.get(API_URL.POSTS);
       setRecentPots(response?.data?.posts);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
         visible: false,
       }));
-      const data = error?.response?.data;
-      const messages = data.errors.join('\n');
+      let message = '';
+      if (isApiError(error)) {
+        message = error.message;
+      }
       setDialogList((prev) => ({
         ...prev,
         title: 'Error',
         visible: true,
-        message: messages,
+        message,
       }));
     }
   };
@@ -70,18 +73,20 @@ export default function Home() {
       setListPost(response?.data?.posts);
       const mathPerpage = Math.ceil(response?.data?.totalPosts / 6);
       setTotalPage(mathPerpage);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
         visible: false,
       }));
-      const data = error?.response?.data;
-      const messages = data.errors.join('\n');
+      let message = '';
+      if (isApiError(error)) {
+        message = error.message;
+      }
       setDialogList((prev) => ({
         ...prev,
         title: 'Error',
         visible: true,
-        message: messages,
+        message,
       }));
     }
   };

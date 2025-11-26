@@ -2,8 +2,10 @@
 import { useSelector } from 'react-redux';
 
 import '@/styles/about.scss';
+
+import { IUserState } from '@/types/store';
 export default function About() {
-  const userId = useSelector((state: any) => state.user.userId);
+  const userId = useSelector((state: IUserState) => state.user.userId);
 
   return (
     <div className="text-center">

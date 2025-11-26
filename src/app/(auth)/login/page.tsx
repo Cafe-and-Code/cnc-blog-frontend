@@ -23,18 +23,14 @@ import { Input } from '@/components/ui/input';
 
 import { login } from '@/store/auth';
 
+import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
+import { loginRequest } from '@/requests/auth/loginRequest';
 
-import { IErrorResponse } from '@/types/error';
-
-type loginType = {
-  username: string;
-  password: string;
-  //checkAgree: boolean;
-};
+import { ILoginType } from '@/types/model/auth';
 
 export default function LoginPage() {
-  const [dataLogin, setDataLogin] = useState<loginType>({
+  const [dataLogin, setDataLogin] = useState<ILoginType>({
     username: '',
     password: '',
     //checkAgree: false,
@@ -70,10 +66,9 @@ export default function LoginPage() {
       password: dataLogin.password,
     };
     try {
-      const response = await axios.post(API_URL.LOGIN, payload);
-      const data = response.data;
-      const userId = data.userId;
-      const userRole = data.userRole;
+      const response = await loginRequest(payload);
+      const userId = response.userId;
+      const userRole = response.userRole;
 
       setCookie('userId', userId);
       setCookie('userRole', userRole);
@@ -85,12 +80,15 @@ export default function LoginPage() {
       });
 
       dispatch(login(userId));
-    } catch (error: any) {
-      const messages = error?.message;
+    } catch (error: unknown) {
+      let message = '';
+      if (isApiError(error)) {
+        message = error.message;
+      }
       setDialogList((prev) => ({
         ...prev,
         visible: true,
-        message: messages,
+        message,
         title: 'Error',
         submitBtn: 'Submit',
       }));

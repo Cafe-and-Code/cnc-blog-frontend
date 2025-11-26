@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import UploadImage from '@/components/uploadImage';
 
+import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
 import HeaderNewPost from '@/templates/HeaderNewPost';
 const ReactQuill = dynamic(() => import('react-quill'), {
@@ -89,7 +90,7 @@ export default function NewsLetter() {
     };
   };
 
-  const quillModules: any = useMemo(
+  const quillModules = useMemo(
     () => ({
       toolbar: {
         container: [
@@ -142,14 +143,16 @@ export default function NewsLetter() {
   const postCategory = async () => {
     try {
       await axios.post(API_URL.CATEGORIES, { name: itemModal.categoryList });
-    } catch (error: any) {
-      const data = error?.response?.data;
-      const messages = data?.message;
+    } catch (error: unknown) {
+      let message = '';
+      if (isApiError(error)) {
+        message = error.message;
+      }
       setDialogList((prev) => ({
         ...prev,
         title: 'Error',
         visible: true,
-        message: messages,
+        message,
       }));
     }
   };
@@ -179,18 +182,20 @@ export default function NewsLetter() {
       }));
       clearModalItem();
       setContent('');
-    } catch (error: any) {
+    } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
         visible: false,
       }));
-      const data = error?.response?.data;
-      const messages = data?.message;
+      let message = '';
+      if (isApiError(error)) {
+        message = error.message;
+      }
       setDialogList((prev) => ({
         ...prev,
         title: 'Error',
         visible: true,
-        message: messages,
+        message,
       }));
     }
   };

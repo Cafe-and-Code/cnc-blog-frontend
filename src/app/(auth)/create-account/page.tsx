@@ -28,24 +28,11 @@ import {
 } from '@/components/ui/select';
 import UploadImage from '@/components/uploadImage';
 
+import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
 import { DATE_FORMAT } from '@/constants/date-format';
 
-type CreateAccountType = {
-  username: string;
-  password: string | number;
-  confirmPassword: string | number;
-  fullName: string;
-  email: string;
-  dateOfBirth: string;
-  avatarImageUrl: string;
-  //checkAgree: boolean;
-};
-
-type GenderType = {
-  name: string;
-  value: string;
-};
+import { ICreateAccountType, IGenderType } from '@/types/model/auth';
 
 export default function CreateAccountPage() {
   const [dialogList, setDialogList] = useState({
@@ -71,9 +58,8 @@ export default function CreateAccountPage() {
     { name: 'LGBT', value: 'LGBT' },
   ];
 
-  const [dataCreateAccount, setDataCreateAccount] = useState<CreateAccountType>(
-    { ...cloneCreateAccount },
-  );
+  const [dataCreateAccount, setDataCreateAccount] =
+    useState<ICreateAccountType>({ ...cloneCreateAccount });
 
   const handleChangeInput = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -118,13 +104,15 @@ export default function CreateAccountPage() {
         dateOfBirth: '',
         avatarImageUrl: '',
       });
-    } catch (error: any) {
-      const data = error?.response?.data;
-      const messages = data?.message;
+    } catch (error: unknown) {
+      let message = '';
+      if (isApiError(error)) {
+        message = error.message;
+      }
       setDialogList((prev) => ({
         ...prev,
         visible: true,
-        message: messages,
+        message,
         title: 'Error',
         submitBtn: 'Submit',
       }));
@@ -176,7 +164,7 @@ export default function CreateAccountPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {listGender.map((item: GenderType, index) => (
+                      {listGender.map((item: IGenderType, index) => (
                         <SelectItem key={index} value={item.value}>
                           {item.name}
                         </SelectItem>
