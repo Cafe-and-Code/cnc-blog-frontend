@@ -3,23 +3,14 @@ import dayjs from 'dayjs';
 import '@/styles/components/post-blog.scss';
 
 import BaseTab from './base/BaseTab';
-interface PostType {
-  postItems: {
-    id?: number | string;
-    createdAt?: string;
-    title?: string;
-    description?: string;
-    image?: string;
-    categories?: string[];
-  };
-  customClass?: string;
-  onClick?: () => void;
-}
+
+import { IPostType } from '@/types/model/posts';
+
 export default function PostBlog({
   postItems,
   customClass,
   onClick = () => {},
-}: PostType) {
+}: IPostType) {
   const formatDate = (date: string) => {
     return dayjs(date).format('dddd, D MMM YYYY');
   };

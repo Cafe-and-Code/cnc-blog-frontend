@@ -3,7 +3,7 @@ export interface IPostItem {
   createdAt: string;
   title: string;
   description: string;
-  titleImageUrl: string;
+  image: string;
   categories: string[];
 }
 
@@ -13,7 +13,7 @@ export interface IPostItemDetail {
   createdAt: string;
   title: string;
   description: string;
-  titleImageUrl: string;
+  image: string;
   categories: string[];
   content: string;
 }
@@ -29,4 +29,11 @@ export interface IPostType {
   };
   customClass?: string;
   onClick?: () => void;
+}
+
+export interface IPostList {
+  currentPage: number;
+  posts: IPostItem[];
+  totalPage: number;
+  totalPosts: number;
 }

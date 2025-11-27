@@ -20,10 +20,11 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
-import { updatePostId } from '@/store/auth';
+import { updatePostId } from '@/store/auth.store';
 
 import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
+import { getPostsRequest } from '@/requests/posts';
 
 import { IPostItem } from '@/types/model/posts';
 
@@ -31,8 +32,8 @@ export default function Home() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
-  const [recentPosts, setRecentPots] = useState([]);
-  const [listPost, setListPost] = useState([]);
+  const [recentPosts, setRecentPots] = useState<IPostItem[]>([]);
+  const [listPost, setListPost] = useState<IPostItem[]>([]);
   const [activeCurrentPage, setActiveCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [dialogList, setDialogList] = useState({
@@ -45,8 +46,8 @@ export default function Home() {
 
   const getRecentPosts = async () => {
     try {
-      const response = await axios.get(API_URL.POSTS);
-      setRecentPots(response?.data?.posts);
+      const response = await getPostsRequest(1, 3);
+      setRecentPots(response?.posts);
     } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
@@ -67,11 +68,9 @@ export default function Home() {
 
   const getPosts = async (page = 1, perPage = 6) => {
     try {
-      const response = await axios.get(API_URL.POSTS, {
-        params: { pageNumber: page, pageSize: perPage },
-      });
-      setListPost(response?.data?.posts);
-      const mathPerpage = Math.ceil(response?.data?.totalPosts / 6);
+      const response = await getPostsRequest(page, perPage);
+      setListPost(response?.posts);
+      const mathPerpage = Math.ceil(response?.totalPosts / 6);
       setTotalPage(mathPerpage);
     } catch (error: unknown) {
       setDialogList((prev) => ({
@@ -136,17 +135,14 @@ export default function Home() {
         <div className="recent-blog-post">
           <div className="title">{t('pages.posts.recent_blog_posts')}</div>
           <div className="recent-content">
-            {recentPosts?.map(
-              (item: IPostItem, index: number) =>
-                index < 3 && (
-                  <PostBlog
-                    key={index}
-                    postItems={item}
-                    customClass={`post-${index}`}
-                    onClick={() => handleBlogDetail(item.title, item.id)}
-                  />
-                ),
-            )}
+            {recentPosts?.map((item: IPostItem, index: number) => (
+              <PostBlog
+                key={index}
+                postItems={item}
+                customClass={`post-${index}`}
+                onClick={() => handleBlogDetail(item.title, item.id)}
+              />
+            ))}
           </div>
         </div>
         <div className="all-blog-post">

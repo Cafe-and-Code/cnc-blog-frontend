@@ -12,7 +12,7 @@ import axios from '@/lib/axios';
 import BaseTab from '@/components/base/BaseTab';
 import PostBlog from '@/components/post-blog';
 
-import { updatePostId } from '@/store/auth';
+import { updatePostId } from '@/store/auth.store';
 
 import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';

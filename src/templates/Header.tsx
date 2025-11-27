@@ -8,14 +8,12 @@ import { useSelector } from 'react-redux';
 
 import '@/styles/components/header.scss';
 
-import axios from '@/lib/axios';
-
 import ToggleMode from '@/components/toggle-mode';
 import { Button } from '@/components/ui/button';
 
-import { logout } from '@/store/auth';
+import { logout } from '@/store/auth.store';
 
-import { API_URL } from '@/constants/api-config';
+import { logoutRequest } from '@/requests/auth/logoutRequest';
 
 import { IPathType } from '@/types/layout';
 import { IUserState } from '@/types/store';
@@ -46,13 +44,17 @@ export default function Header() {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
-  const logOut = async () => {
+  const onLogin = () => {
+    router.push('/login');
+  };
+
+  const onLogout = async () => {
     try {
-      await axios.post(API_URL.LOG_OUT);
+      await logoutRequest();
       removeCookie('userId', { path: '/' });
       removeCookie('userRole', { path: '/' });
       dispatch(logout());
-      window.location.href = '/login';
+      router.push('/login');
     } catch (error: any) {
       const data = error?.response?.data;
       const messages = data?.message;
@@ -67,10 +69,6 @@ export default function Header() {
     setShowMenu(false);
   };
 
-  const handleChangePath = async (path: any) => {
-    router.push(path);
-  };
-
   useEffect(() => {
     setActiveLink(pathName);
     setShowMenu(false);
@@ -82,7 +80,7 @@ export default function Header() {
 
   return (
     <div className="header-cnc">
-      <div className="cnc-logo-area" onClick={() => handleChangePath('/')}>
+      <div className="cnc-logo-area" onClick={() => router.push('/')}>
         Cnc Blog
       </div>
       <div className="cnc-navigation">
@@ -90,14 +88,20 @@ export default function Header() {
           <div
             key={index}
             className={`cnc-item ${activeLink === item.path ? 'active-navigation' : ''}`}
-            onClick={() => handleChangePath(item.path)}
+            onClick={() => router.push(item.path)}
           >
             <div className="cnc-navigator">{item.name}</div>
           </div>
         ))}
-        <Button variant="outline" onClick={logOut}>
-          {userId ? 'Log out' : 'Log In'}
-        </Button>
+        {userId ? (
+          <Button variant="outline" onClick={onLogout}>
+            Log out
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={onLogin}>
+            Log In
+          </Button>
+        )}
         <ToggleMode value={mode} onChange={onToggle} />
       </div>
       {/* menu nav */}
@@ -114,14 +118,20 @@ export default function Header() {
             <div
               key={index}
               className={`cnc-item-mobile ${activeLink === item.path ? 'active-navigation' : ''}`}
-              onClick={() => handleChangePath(item.path)}
+              onClick={() => router.push(item.path)}
             >
               <div className="cnc-navigator-mobile">{item.name}</div>
             </div>
           ))}
-          <Button variant="outline" onClick={logOut}>
-            {userId ? 'Log out' : 'Log In'}
-          </Button>
+          {userId ? (
+            <Button variant="outline" onClick={onLogout}>
+              Log out
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={onLogin}>
+              Log In
+            </Button>
+          )}
           <ToggleMode value={mode} onChange={onToggle} />
           <img
             className="close-nav"

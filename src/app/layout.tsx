@@ -8,7 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import '@/styles/globals.scss';
 import '@/styles/_variable.scss';
 
-import { persistor, store } from '@/store/auth';
+import { persistor, store } from '@/store/auth.store';
 
 import { I18nProviders } from '@/providers/i18n-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
@@ -64,17 +64,17 @@ export default function RootLayout({ children }: Readonly<IRootLayoutProps>) {
           enableSystem
           disableTransitionOnChange
         >
-          <I18nProviders>
-            <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <I18nProviders>
                 <div className={`${layoutClass()}`}>
                   {checkLayout() && <Header />}
                   {children}
                   {checkLayout() && <Footer />}
                 </div>
-              </PersistGate>
-            </Provider>
-          </I18nProviders>
+              </I18nProviders>
+            </PersistGate>
+          </Provider>
         </ThemeProvider>
       </body>
     </html>

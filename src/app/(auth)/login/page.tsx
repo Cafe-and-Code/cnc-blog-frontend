@@ -9,8 +9,6 @@ import { useDispatch } from 'react-redux';
 
 import '@/styles/components/login-form.scss';
 
-import axios from '@/lib/axios';
-
 import BaseDialog from '@/components/base/BaseDialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,13 +18,21 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-import { login } from '@/store/auth';
+import { login } from '@/store/auth.store';
 
 import { isApiError } from '@/app/utils/error';
-import { API_URL } from '@/constants/api-config';
 import { loginRequest } from '@/requests/auth/loginRequest';
 
+import { ISelect } from '@/types/common/components';
 import { ILoginType } from '@/types/model/auth';
 
 export default function LoginPage() {
@@ -41,9 +47,17 @@ export default function LoginPage() {
     title: '',
     submitBtn: 'Submit',
   });
+  const [language, setLanguage] = useState('en');
+  const languageList = [
+    { name: 'EngLish', value: 'en' },
+    { name: 'Viet Nam', value: 'vi' },
+    { name: 'Japan', value: 'ja' },
+  ];
   const dispatch = useDispatch();
 
   const [cookies, setCookie] = useCookies(['userId', 'userRole']);
+
+  const selectedStatus = languageList.find((item) => item.value === language);
 
   const handleChangeInput = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -146,9 +160,34 @@ export default function LoginPage() {
                 </Button>
               </div>
             </form>
+            <div className="mt-6 flex items-center justify-center gap-4">
+              <div className="mb-2 text-sm text-[var(--color-01)]">
+                Language
+              </div>
+              <Select value={language} onValueChange={setLanguage}>
+                <SelectTrigger className="w-full">
+                  <SelectValue>
+                    {selectedStatus && (
+                      <div className="flex items-center gap-2">
+                        <span>{selectedStatus.name}</span>
+                      </div>
+                    )}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {languageList.map((item: ISelect, index) => (
+                      <SelectItem key={index} value={item.value}>
+                        {item.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </CardContent>
           <CardFooter>
-            <div className="justify-center">
+            <div>
               <Link
                 href={{ pathname: '/forgot-password' }}
                 className="mt-10 text-center text-sm text-[var(--color-01)] hover:underline"

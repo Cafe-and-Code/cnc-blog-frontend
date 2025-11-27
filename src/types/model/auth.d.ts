@@ -24,3 +24,7 @@ export interface ILoginResponse {
   userId: number;
   userRole: string;
 }
+
+export interface ILogoutResponse {
+  message: string;
+}

@@ -11,7 +11,9 @@ import '@/styles/components/header-new-post.scss';
 import ToggleMode from '@/components/toggle-mode';
 import { Button } from '@/components/ui/button';
 
-import { logout } from '@/store/auth';
+import { logout } from '@/store/auth.store';
+
+import { logoutRequest } from '@/requests/auth/logoutRequest';
 
 import { IHeaderOtherType, IPathType } from '@/types/layout';
 import { IUserState } from '@/types/store';
@@ -40,11 +42,21 @@ export default function HeaderNewPost({
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
-  const onLogoutLogIn = () => {
-    removeCookie('userId', { path: '/' });
-    removeCookie('userRole', { path: '/' });
-    dispatch(logout());
-    window.location.href = '/login';
+  const onLogin = () => {
+    router.push('/login');
+  };
+
+  const onLogout = async () => {
+    try {
+      await logoutRequest();
+      removeCookie('userId', { path: '/' });
+      removeCookie('userRole', { path: '/' });
+      dispatch(logout());
+      router.push('/login');
+    } catch (error: any) {
+      const data = error?.response?.data;
+      const messages = data?.message;
+    }
   };
 
   const handleOpenMenu = () => {
@@ -53,10 +65,6 @@ export default function HeaderNewPost({
 
   const handleCloseMenu = () => {
     setShowMenu(false);
-  };
-
-  const handleChangePath = async (path: any) => {
-    router.push(path);
   };
 
   useEffect(() => {
@@ -69,7 +77,7 @@ export default function HeaderNewPost({
   }, [mode, setTheme]);
   return (
     <div className="header-new-post-cnc">
-      <div className="cnc-logo-area" onClick={() => handleChangePath('/')}>
+      <div className="cnc-logo-area" onClick={() => router.push('/')}>
         Cnc Blog
       </div>
       <div className="cnc-navigation">
@@ -79,9 +87,15 @@ export default function HeaderNewPost({
         >
           Publish
         </Button>
-        <Button variant="outline" onClick={onLogoutLogIn}>
-          {userId ? 'Log out' : 'Log In'}
-        </Button>
+        {userId ? (
+          <Button variant="outline" onClick={onLogout}>
+            Log out
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={onLogin}>
+            Log In
+          </Button>
+        )}
         <ToggleMode value={mode} onChange={onToggle} />
       </div>
       {/* menu nav */}
@@ -107,14 +121,20 @@ export default function HeaderNewPost({
             <div
               key={index}
               className={`cnc-item-mobile ${activeLink === item.path ? 'active-navigation' : ''}`}
-              onClick={() => handleChangePath(item.path)}
+              onClick={() => router.push(item.path)}
             >
               <div className="cnc-navigator-mobile">{item.name}</div>
             </div>
           ))}
-          <Button variant="outline" onClick={onLogoutLogIn}>
-            {userId ? 'Log out' : 'Log In'}
-          </Button>
+          {userId ? (
+            <Button variant="outline" onClick={onLogout}>
+              Log out
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={onLogin}>
+              Log In
+            </Button>
+          )}
           <ToggleMode value={mode} onChange={onToggle} />
           <img
             className="close-nav"

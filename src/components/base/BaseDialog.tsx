@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
-import { IDialogType } from '@/types/common/dialog';
+import { IDialogType } from '@/types/common/components';
 
 export default function BaseDialog({
   dialogList,
