@@ -157,42 +157,49 @@ export default function Home() {
               />
             ))}
           </div>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  className={
-                    activeCurrentPage <= 1
-                      ? 'pointer-events-none opacity-50'
-                      : undefined
-                  }
-                  onClick={prevPage}
-                />
-              </PaginationItem>
-              <div className="pagination">
-                {Array.from({ length: totalPage }).map((_, index) => (
-                  <PaginationItem key={index}>
-                    <PaginationLink
-                      isActive={activeCurrentPage === index + 1 ? true : false}
-                      onClick={() => changePage(index)}
-                    >
-                      {index + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-              </div>
-              <PaginationItem>
-                <PaginationNext
-                  className={
-                    activeCurrentPage >= totalPage
-                      ? 'pointer-events-none opacity-50'
-                      : undefined
-                  }
-                  onClick={nextPage}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          {!listPost.length && (
+            <div className="text-center text-lg font-medium">No posts</div>
+          )}
+          {!!listPost.length && (
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    className={
+                      activeCurrentPage <= 1
+                        ? 'pointer-events-none opacity-50'
+                        : undefined
+                    }
+                    onClick={prevPage}
+                  />
+                </PaginationItem>
+                <div className="pagination">
+                  {Array.from({ length: totalPage }).map((_, index) => (
+                    <PaginationItem key={index}>
+                      <PaginationLink
+                        isActive={
+                          activeCurrentPage === index + 1 ? true : false
+                        }
+                        onClick={() => changePage(index)}
+                      >
+                        {index + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                </div>
+                <PaginationItem>
+                  <PaginationNext
+                    className={
+                      activeCurrentPage >= totalPage
+                        ? 'pointer-events-none opacity-50'
+                        : undefined
+                    }
+                    onClick={nextPage}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
         </div>
       </div>
     </div>

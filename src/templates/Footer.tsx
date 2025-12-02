@@ -1,10 +1,8 @@
-import '@/styles/components/footer.scss';
-
 export default function Footer() {
   return (
-    <div className="cnc-footer">
+    <div className="p-2">
       <span className="footer-item">Cnc Blog</span>
-      <span className="footer-item">© 2024</span>
+      <span className="footer-item">© 2025</span>
     </div>
   );
 }

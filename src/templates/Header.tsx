@@ -6,8 +6,6 @@ import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import '@/styles/components/header.scss';
-
 import ToggleMode from '@/components/toggle-mode';
 import { Button } from '@/components/ui/button';
 
@@ -79,18 +77,22 @@ export default function Header() {
   }, [mode, setTheme]);
 
   return (
-    <div className="header-cnc">
-      <div className="cnc-logo-area" onClick={() => router.push('/')}>
+    <div className="sticky top-0 z-10 flex items-center justify-between bg-[var(--color-11)] p-5">
+      <div className="cursor-pointer text-3xl" onClick={() => router.push('/')}>
         Cnc Blog
       </div>
-      <div className="cnc-navigation">
+      <div className="hidden flex-1 justify-end gap-5 md:flex">
         {menuList.map((item: IPathType, index: number) => (
           <div
             key={index}
-            className={`cnc-item ${activeLink === item.path ? 'active-navigation' : ''}`}
+            className="group cursor-pointer p-2 text-[var(--color-01)]"
             onClick={() => router.push(item.path)}
           >
-            <div className="cnc-navigator">{item.name}</div>
+            <div
+              className={`relative inline-block before:absolute before:left-0 before:top-[4px] before:h-full before:w-0 before:border-b before:border-[var(--color-01)] before:transition-all before:duration-500 before:content-[''] group-hover:before:w-full ${activeLink === item.path ? 'before:!w-full' : ''} `}
+            >
+              {item.name}
+            </div>
           </div>
         ))}
         {userId ? (
@@ -106,21 +108,25 @@ export default function Header() {
       </div>
       {/* menu nav */}
       <img
-        className="menu-nav"
+        className="cursor-pointer md:hidden"
         src="/images/icon/menu-nav.svg"
         alt=""
         onClick={handleOpenMenu}
       />
       {showMenu && (
-        <div className="cnc-navigation-mobile">
-          <div className="cnc-logo-area-mobile">Cnc Blog</div>
+        <div className="fixed left-0 top-0 flex h-screen w-screen flex-col items-center justify-center gap-[30px] bg-[var(--color-11)] transition-all duration-100 ease-linear md:hidden">
+          <div className="text-[color: var(--color-12)] text-3xl">Cnc Blog</div>
           {menuMobileList.map((item: IPathType, index: number) => (
             <div
               key={index}
-              className={`cnc-item-mobile ${activeLink === item.path ? 'active-navigation' : ''}`}
+              className="text-[color: var(--color-12)] group text-lg font-normal"
               onClick={() => router.push(item.path)}
             >
-              <div className="cnc-navigator-mobile">{item.name}</div>
+              <div
+                className={`relative before:absolute before:left-0 before:top-[4px] before:h-full before:w-0 before:border-b before:border-[var(--color-01)] before:transition-all before:duration-500 before:content-[''] group-hover:before:w-full ${activeLink === item.path ? 'before:!w-full' : ''} `}
+              >
+                {item.name}
+              </div>
             </div>
           ))}
           {userId ? (
@@ -134,7 +140,7 @@ export default function Header() {
           )}
           <ToggleMode value={mode} onChange={onToggle} />
           <img
-            className="close-nav"
+            className="close-nav filter-[var(--filter-03)]"
             src="/images/icon/close.svg"
             alt=""
             onClick={handleCloseMenu}

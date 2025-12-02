@@ -67,9 +67,9 @@ export default function RootLayout({ children }: Readonly<IRootLayoutProps>) {
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <I18nProviders>
-                <div className={`${layoutClass()}`}>
+                <div className={`${layoutClass()} flex min-h-screen flex-col`}>
                   {checkLayout() && <Header />}
-                  {children}
+                  <div className="flex flex-1 flex-col">{children}</div>
                   {checkLayout() && <Footer />}
                 </div>
               </I18nProviders>
