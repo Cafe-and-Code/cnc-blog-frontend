@@ -2,7 +2,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import React, { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 
 import { logout } from '@/store/auth.store';
 
+import { logoutAndRedirect } from '@/app/utils/auth';
 import { logoutRequest } from '@/requests/auth/logoutRequest';
 
 import { IPathType } from '@/types/layout';
@@ -23,7 +24,11 @@ export default function Header() {
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');
   const userId = useSelector((state: IUserState) => state.user.userId);
-  const [cookies, setCookie, removeCookie] = useCookies(['userId', 'userRole']);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'userId',
+    'userRole',
+    'isLoggedIn',
+  ]);
   const [showMenu, setShowMenu] = useState(false);
   const [activeLink, setActiveLink] = useState(pathName);
 
@@ -108,14 +113,14 @@ export default function Header() {
       </div>
       {/* menu nav */}
       <img
-        className="cursor-pointer md:hidden"
+        className="cursor-pointer brightness-[--brightness-03] md:hidden"
         src="/images/icon/menu-nav.svg"
         alt=""
         onClick={handleOpenMenu}
       />
       {showMenu && (
         <div className="fixed left-0 top-0 flex h-screen w-screen flex-col items-center justify-center gap-[30px] bg-[var(--color-11)] transition-all duration-100 ease-linear md:hidden">
-          <div className="text-[color: var(--color-12)] text-3xl">Cnc Blog</div>
+          <div className="text-3xl text-[var(--color-12)]">Cnc Blog</div>
           {menuMobileList.map((item: IPathType, index: number) => (
             <div
               key={index}
@@ -129,7 +134,7 @@ export default function Header() {
               </div>
             </div>
           ))}
-          {userId ? (
+          {cookies.isLoggedIn ? (
             <Button variant="outline" onClick={onLogout}>
               Log out
             </Button>
@@ -140,7 +145,7 @@ export default function Header() {
           )}
           <ToggleMode value={mode} onChange={onToggle} />
           <img
-            className="close-nav filter-[var(--filter-03)]"
+            className="brightness-[--brightness-03]"
             src="/images/icon/close.svg"
             alt=""
             onClick={handleCloseMenu}

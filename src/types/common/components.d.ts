@@ -31,3 +31,8 @@ export interface ISelect {
   name: string;
   value: string;
 }
+
+export interface ToggleType {
+  value: string;
+  onChange: () => void;
+}
