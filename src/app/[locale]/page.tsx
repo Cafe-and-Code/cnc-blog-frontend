@@ -7,13 +7,10 @@ import { useDispatch } from 'react-redux';
 
 import '@/styles/home.scss';
 
-import axios from '@/lib/axios';
-
 import PostBlog from '@/components/post-blog';
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -22,9 +19,8 @@ import {
 
 import { updatePostId } from '@/store/auth.store';
 
-import { isApiError } from '@/app/utils/error';
-import { API_URL } from '@/constants/api-config';
 import { getPostsRequest } from '@/requests/posts';
+import { isApiError } from '@/utils/error';
 
 import { IPostItem } from '@/types/model/posts';
 
@@ -125,7 +121,7 @@ export default function Home() {
       name: title,
     };
     dispatch(updatePostId(updatedUserInfo));
-    router.push(`/${title}`);
+    router.push(`blogs/${title}`);
   };
 
   return (

@@ -28,9 +28,9 @@ import {
 } from '@/components/ui/select';
 import UploadImage from '@/components/uploadImage';
 
-import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
 import { DATE_FORMAT } from '@/constants/date-format';
+import { isApiError } from '@/utils/error';
 
 import { ICreateAccountType, IGenderType } from '@/types/model/auth';
 

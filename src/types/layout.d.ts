@@ -1,5 +1,8 @@
 export interface IRootLayoutProps {
   children: React.ReactNode;
+  params: {
+    locale: string;
+  };
 }
 
 export interface IHeaderOtherType {

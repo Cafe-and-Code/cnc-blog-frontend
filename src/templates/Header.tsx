@@ -4,18 +4,15 @@ import { useTheme } from 'next-themes';
 import React, { useEffect, useState } from 'react';
 import { Cookies, useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 
 import ToggleMode from '@/components/toggle-mode';
 import { Button } from '@/components/ui/button';
 
 import { logout } from '@/store/auth.store';
 
-import { logoutAndRedirect } from '@/app/utils/auth';
 import { logoutRequest } from '@/requests/auth/logoutRequest';
 
 import { IPathType } from '@/types/layout';
-import { IUserState } from '@/types/store';
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -23,7 +20,6 @@ export default function Header() {
   const router = useRouter();
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');
-  const userId = useSelector((state: IUserState) => state.user.userId);
   const [cookies, setCookie, removeCookie] = useCookies([
     'userId',
     'userRole',
@@ -100,7 +96,7 @@ export default function Header() {
             </div>
           </div>
         ))}
-        {userId ? (
+        {cookies.isLoggedIn ? (
           <Button variant="outline" onClick={onLogout}>
             Log out
           </Button>

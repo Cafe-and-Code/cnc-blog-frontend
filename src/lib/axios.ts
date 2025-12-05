@@ -45,7 +45,6 @@ axiosInstance.interceptors.response.use(
     if (status === httpCode.UNAUTHENTICATED && originalRequest) {
       // Prevent infinite loop (call back hell) if refresh_token request itself gets 401
       if (originalRequest.url === API_URL.REFRESH_TOKEN) {
-        window.location.href = '/login';
         return Promise.reject(error);
       }
 

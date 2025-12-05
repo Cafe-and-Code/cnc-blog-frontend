@@ -6,8 +6,6 @@ import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import '@/styles/components/header-new-post.scss';
-
 import ToggleMode from '@/components/toggle-mode';
 import { Button } from '@/components/ui/button';
 
@@ -28,9 +26,18 @@ export default function HeaderNewPost({
   const userId = useSelector((state: IUserState) => state.user.userId);
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');
-  const [cookies, setCookie, removeCookie] = useCookies(['userId', 'userRole']);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'userId',
+    'userRole',
+    'isLoggedIn',
+  ]);
   const [showMenu, setShowMenu] = useState(false);
   const [activeLink, setActiveLink] = useState(pathName);
+
+  const menuList = [
+    { name: 'About', path: '/about' },
+    { name: 'Newsletter', path: '/new-post' },
+  ];
 
   const menuMobileList = [
     { name: 'Home', path: '/' },
@@ -76,18 +83,33 @@ export default function HeaderNewPost({
     setTheme(mode);
   }, [mode, setTheme]);
   return (
-    <div className="header-new-post-cnc">
-      <div className="cnc-logo-area" onClick={() => router.push('/')}>
+    <div className="sticky top-0 z-10 flex items-center justify-between gap-8 bg-[var(--color-11)] p-5">
+      <div className="cursor-pointer text-3xl" onClick={() => router.push('/')}>
         Cnc Blog
       </div>
-      <div className="cnc-navigation">
+      <div className="hidden flex-1 gap-5 md:flex">
+        {menuList.map((item: IPathType, index: number) => (
+          <div
+            key={index}
+            className="group cursor-pointer p-2 text-[var(--color-01)]"
+            onClick={() => router.push(item.path)}
+          >
+            <div
+              className={`relative inline-block before:absolute before:left-0 before:top-[4px] before:h-full before:w-0 before:border-b before:border-[var(--color-01)] before:transition-all before:duration-500 before:content-[''] group-hover:before:w-full ${activeLink === item.path ? 'before:!w-full' : ''} `}
+            >
+              {item.name}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="hidden flex-1 justify-end gap-5 md:flex">
         <Button
           variant={disabledPublish ? 'disabled' : 'default'}
           onClick={onPost}
         >
           Publish
         </Button>
-        {userId ? (
+        {cookies.isLoggedIn ? (
           <Button variant="outline" onClick={onLogout}>
             Log out
           </Button>
@@ -99,34 +121,37 @@ export default function HeaderNewPost({
         <ToggleMode value={mode} onChange={onToggle} />
       </div>
       {/* menu nav */}
-      <div className="menu-nav">
+      <div className="flex flex-1 justify-end gap-5 md:hidden">
         <Button
-          className="publish-mobile"
           variant={disabledPublish ? 'disabled' : 'default'}
           onClick={onPost}
         >
           Publish
         </Button>
         <img
-          className="icon-menu"
+          className="cursor-pointer brightness-[--brightness-03]"
           src="/images/icon/menu-nav.svg"
           alt=""
           onClick={handleOpenMenu}
         />
       </div>
       {showMenu && (
-        <div className="cnc-navigation-mobile">
-          <div className="cnc-logo-area-mobile">Cnc Blog</div>
+        <div className="fixed left-0 top-0 flex h-screen w-screen flex-col items-center justify-center gap-[30px] bg-[var(--color-11)] transition-all duration-100 ease-linear md:hidden">
+          <div className="text-3xl text-[var(--color-12)]">Cnc Blog</div>
           {menuMobileList.map((item: IPathType, index: number) => (
             <div
               key={index}
-              className={`cnc-item-mobile ${activeLink === item.path ? 'active-navigation' : ''}`}
+              className="text-[color: var(--color-12)] group text-lg font-normal"
               onClick={() => router.push(item.path)}
             >
-              <div className="cnc-navigator-mobile">{item.name}</div>
+              <div
+                className={`relative before:absolute before:left-0 before:top-[4px] before:h-full before:w-0 before:border-b before:border-[var(--color-01)] before:transition-all before:duration-500 before:content-[''] group-hover:before:w-full ${activeLink === item.path ? 'before:!w-full' : ''} `}
+              >
+                {item.name}
+              </div>
             </div>
           ))}
-          {userId ? (
+          {cookies.isLoggedIn ? (
             <Button variant="outline" onClick={onLogout}>
               Log out
             </Button>
@@ -137,7 +162,7 @@ export default function HeaderNewPost({
           )}
           <ToggleMode value={mode} onChange={onToggle} />
           <img
-            className="close-nav"
+            className="brightness-[--brightness-03]"
             src="/images/icon/close.svg"
             alt=""
             onClick={handleCloseMenu}

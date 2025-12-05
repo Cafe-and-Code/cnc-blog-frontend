@@ -29,8 +29,8 @@ import {
 
 import { login } from '@/store/auth.store';
 
-import { isApiError } from '@/app/utils/error';
 import { loginRequest } from '@/requests/auth/loginRequest';
+import { isApiError } from '@/utils/error';
 
 import { ISelect } from '@/types/common/components';
 import { ILoginType } from '@/types/model/auth';

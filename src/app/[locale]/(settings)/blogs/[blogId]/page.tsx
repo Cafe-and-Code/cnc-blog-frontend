@@ -14,8 +14,8 @@ import PostBlog from '@/components/post-blog';
 
 import { updatePostId } from '@/store/auth.store';
 
-import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
+import { isApiError } from '@/utils/error';
 
 import { IPostItem, IPostItemDetail } from '@/types/model/posts';
 import { IUserState } from '@/types/store';
@@ -94,7 +94,9 @@ export default function BlogDetail() {
       name: title,
     };
     dispatch(updatePostId({ ...updatedUserInfo }));
-    router.push(`/${title}`);
+    console.log(router);
+
+    router.push(`/blogs/${title}`);
   };
 
   useEffect(() => {
