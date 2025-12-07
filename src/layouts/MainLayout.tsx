@@ -13,8 +13,11 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   const router = usePathname();
-
-  const showLayout = useMemo(() => !LIST_NO_HEADER.includes(router), [router]);
+  const pathName = router.split('/')[2] ? `/${router.split('/')[2]}` : '/';
+  const showLayout = useMemo(
+    () => !LIST_NO_HEADER.includes(pathName),
+    [pathName],
+  );
 
   const [width, setWidth] = useState(0);
   const layoutClass = () => {
@@ -41,7 +44,7 @@ export default function MainLayout({
     <div className={`${layoutClass()} flex min-h-screen flex-col`}>
       {showLayout && <Header />}
       <div className="flex flex-1 flex-col">{children}</div>
-      {showLayout && <Footer />}
+      <Footer />
     </div>
   );
 }

@@ -5,7 +5,6 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios';
 import axios from 'axios';
-import { Cookies } from 'react-cookie';
 
 import { API_URL } from '@/constants/api-config';
 import * as httpCode from '@/constants/enum/httpStatus';

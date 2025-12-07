@@ -17,6 +17,8 @@ import { IPathType } from '@/types/layout';
 export default function Header() {
   const dispatch = useDispatch();
   const pathName = usePathname();
+  console.log(pathName);
+
   const router = useRouter();
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');

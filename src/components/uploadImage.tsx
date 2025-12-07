@@ -7,8 +7,8 @@ import axios from '@/lib/axios';
 import BaseDialog from '@/components/base/BaseDialog';
 import { Input } from '@/components/ui/input';
 
-import { isApiError } from '@/app/utils/error';
 import { API_URL } from '@/constants/api-config';
+import { isApiError } from '@/utils/error';
 
 import { IUploadImageType } from '@/types/common/components';
 export default function uploadImage({
