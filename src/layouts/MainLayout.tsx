@@ -7,11 +7,7 @@ import { LIST_NO_HEADER } from '@/constants/layout';
 import Footer from '@/templates/Footer';
 import Header from '@/templates/Header';
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MainLayout({ ...props }) {
   const router = usePathname();
   const pathName = router.split('/')[2] ? `/${router.split('/')[2]}` : '/';
   const showLayout = useMemo(
@@ -43,7 +39,7 @@ export default function MainLayout({
   return (
     <div className={`${layoutClass()} flex min-h-screen flex-col`}>
       {showLayout && <Header />}
-      <div className="flex flex-1 flex-col">{children}</div>
+      <div className="flex flex-1 flex-col" {...props} />
       <Footer />
     </div>
   );

@@ -15,6 +15,7 @@ import PostBlog from '@/components/post-blog';
 import { updatePostId } from '@/store/auth.store';
 
 import { API_URL } from '@/constants/api-config';
+import { getPostDetailRequest, getPostsRequest } from '@/requests/posts';
 import { isApiError } from '@/utils/error';
 
 import { IPostItem, IPostItemDetail } from '@/types/model/posts';
@@ -24,7 +25,7 @@ export default function BlogDetail() {
   const router = useRouter();
   const parrams = useParams();
   const dispatch = useDispatch();
-  const [listPost, setListPost] = useState([]);
+  const [listPost, setListPost] = useState<IPostItem[]>([]);
   const postBlogId = useSelector((state: IUserState) => state.user.postId);
   const [listPostDetail, setListPostDetail] = useState<IPostItemDetail>();
   const [dialogList, setDialogList] = useState({
@@ -41,8 +42,8 @@ export default function BlogDetail() {
 
   const getPosts = async () => {
     try {
-      const response = await axios.get(API_URL.POSTS);
-      setListPost(response?.data?.posts);
+      const response = await getPostsRequest(1, 3);
+      setListPost(response?.posts);
     } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
@@ -65,11 +66,8 @@ export default function BlogDetail() {
     try {
       const parramDetail =
         postBlogId.name !== parrams?.blogId ? parrams?.blogId : postBlogId.name;
-      console.log(parramDetail);
-
-      const api = `${API_URL.POSTS}/${parramDetail}`;
-      const response = await axios.get(api);
-      setListPostDetail(response.data);
+      const response = await getPostDetailRequest(parramDetail);
+      setListPostDetail(response);
     } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
@@ -112,17 +110,14 @@ export default function BlogDetail() {
       <div className="recent-post">
         <div className="title">Recent blog posts</div>
         <div className="recent-content">
-          {listPost?.map(
-            (item: IPostItem, index: number) =>
-              index < 4 && (
-                <PostBlog
-                  key={index}
-                  postItems={item}
-                  customClass={`post-${index}`}
-                  onClick={() => handleBlogDetail(item.title, item.id)}
-                />
-              ),
-          )}
+          {listPost?.map((item: IPostItem, index: number) => (
+            <PostBlog
+              key={index}
+              postItems={item}
+              customClass={`post-${index}`}
+              onClick={() => handleBlogDetail(item.title, item.id)}
+            />
+          ))}
         </div>
       </div>
       {listPostDetail && (

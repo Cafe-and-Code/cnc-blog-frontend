@@ -2,6 +2,7 @@
 
 import { Lock, UserRound } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
@@ -36,6 +37,11 @@ import { ISelect } from '@/types/common/components';
 import { ILoginType } from '@/types/model/auth';
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
+  const [cookies, setCookie] = useCookies(['userId', 'userRole']);
+
   const [dataLogin, setDataLogin] = useState<ILoginType>({
     username: '',
     password: '',
@@ -47,15 +53,13 @@ export default function LoginPage() {
     title: '',
     submitBtn: 'Submit',
   });
-  const [language, setLanguage] = useState('en');
+  const savedLocale = localStorage.getItem('locale') || 'en';
+  const [language, setLanguage] = useState(savedLocale);
   const languageList = [
     { name: 'EngLish', value: 'en' },
     { name: 'Viet Nam', value: 'vi' },
     { name: 'Japan', value: 'ja' },
   ];
-  const dispatch = useDispatch();
-
-  const [cookies, setCookie] = useCookies(['userId', 'userRole']);
 
   const selectedStatus = languageList.find((item) => item.value === language);
 
@@ -71,6 +75,12 @@ export default function LoginPage() {
       ...prev,
       visible: false,
     }));
+  };
+
+  const changeLanguage = (value: string) => {
+    const path = pathname.split('/').slice(2).join('/');
+    router.replace(`/${value}/${path}`);
+    setLanguage(value);
   };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -164,7 +174,7 @@ export default function LoginPage() {
               <div className="mb-2 text-sm text-[var(--color-01)]">
                 Language
               </div>
-              <Select value={language} onValueChange={setLanguage}>
+              <Select value={language} onValueChange={changeLanguage}>
                 <SelectTrigger className="w-full">
                   <SelectValue>
                     {selectedStatus && (

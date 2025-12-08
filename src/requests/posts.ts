@@ -11,3 +11,7 @@ export const getPostsRequest = (pageNumber: number, pageSize: number) => {
     })
     .then((res) => res.data);
 };
+
+export const getPostDetailRequest = (parramDetail: string | string[]) => {
+  return axios.get(`${API_URL.POSTS}/${parramDetail}`).then((res) => res.data);
+};

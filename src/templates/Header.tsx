@@ -17,8 +17,6 @@ import { IPathType } from '@/types/layout';
 export default function Header() {
   const dispatch = useDispatch();
   const pathName = usePathname();
-  console.log(pathName);
-
   const router = useRouter();
   const { setTheme, resolvedTheme } = useTheme();
   const [mode, setMode] = useState(resolvedTheme || 'light');
@@ -30,15 +28,17 @@ export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const [activeLink, setActiveLink] = useState(pathName);
 
+  const savedLocale = localStorage.getItem('locale') || 'en';
+
   const menuList = [
-    { name: 'About', path: '/about' },
-    { name: 'Newsletter', path: '/new-post' },
+    { name: 'About', path: `/${savedLocale}/about` },
+    { name: 'Newsletter', path: `/${savedLocale}/new-post` },
   ];
 
   const menuMobileList = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Newsletter', path: '/new-post' },
+    { name: 'Home', path: `/${savedLocale}` },
+    { name: 'About', path: `/${savedLocale}/about` },
+    { name: 'Newsletter', path: `/${savedLocale}/new-post` },
   ];
 
   const onToggle = () => {
