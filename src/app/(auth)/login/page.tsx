@@ -43,7 +43,7 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(['userId', 'userRole']);
+  const [cookies, setCookie] = useCookies(['userId', 'userRole', 'locale']);
   const { t, i18n } = useTranslation();
   const { changeLanguage, currentLocale } = useLocale();
 
@@ -59,9 +59,7 @@ export default function LoginPage() {
     submitBtn: 'Submit',
   });
 
-  const locale = pathname.split('/')[1];
-
-  const [language, setLanguage] = useState(locale || 'en');
+  const [language, setLanguage] = useState(cookies.locale || 'en');
   const languageList = useMemo(
     () => [
       { name: t('common.language.en'), value: 'en' },
@@ -78,6 +76,11 @@ export default function LoginPage() {
     field: string,
   ) => {
     setDataLogin((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const onChangeLanguage = (value: string) => {
+    setLanguage(value);
+    changeLanguage(value);
   };
 
   const handleSubmit = () => {
@@ -178,7 +181,7 @@ export default function LoginPage() {
               <div className="mb-2 whitespace-nowrap text-sm text-[var(--color-01)]">
                 {t('pages.login.language')}
               </div>
-              <Select value={language} onValueChange={changeLanguage}>
+              <Select value={language} onValueChange={onChangeLanguage}>
                 <SelectTrigger className="w-full">
                   <SelectValue>
                     {selectedStatus && (

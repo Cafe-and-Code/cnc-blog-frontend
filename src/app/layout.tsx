@@ -17,16 +17,12 @@ export const metadata: Metadata = {
   description: 'cnc-blog',
 };
 
-export default function RootLayout({
-  children,
-  params,
-}: Readonly<IRootLayoutProps>) {
-  const { locale } = params;
+export default function RootLayout({ children }: Readonly<IRootLayoutProps>) {
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body className={inter.className}>
         <AppProviders>
-          <I18nClient locale={locale}>
+          <I18nClient>
             <MainLayout>{children}</MainLayout>
           </I18nClient>
         </AppProviders>

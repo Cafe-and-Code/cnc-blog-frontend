@@ -13,11 +13,11 @@ export async function middleware(req: NextRequest) {
   const noAlowAccess = ['/new-post'];
   const { pathname } = req.nextUrl;
 
-  // nếu không có locale -> redirect sang /en hoặc /vi
-  const pathLocale = pathname.split('/')[1];
-  if (!i18nConfig.locales.includes(pathLocale)) {
-    return NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
-  }
+  // // nếu không có locale -> redirect sang /en hoặc /vi
+  // const pathLocale = pathname.split('/')[1];
+  // if (!i18nConfig.locales.includes(pathLocale)) {
+  //   return NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
+  // }
 
   // Nếu không có accessToken và người dùng đang cố truy cập vào các trang không phải trang auth
   if (
