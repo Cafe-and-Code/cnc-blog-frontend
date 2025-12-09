@@ -10,14 +10,9 @@ const i18n = initI18n();
 
 export function I18nClient({ children, locale }: II18nClient) {
   useEffect(() => {
-    const savedLang = localStorage.getItem('locale');
-    const finalLang = savedLang || locale;
-    if (i18n.language !== finalLang) {
-      i18n.changeLanguage(finalLang);
+    if (i18n.language !== locale) {
+      i18n.changeLanguage(locale);
     }
-    console.log(finalLang);
-
-    localStorage.setItem('locale', finalLang);
   }, [locale]);
 
   return children;

@@ -7,6 +7,7 @@ export async function middleware(req: NextRequest) {
   // Kiểm tra accessToken hoặc thông tin xác thực
   const accessToken = req.cookies.get('accessToken');
   const refreshToken = req.cookies.get('refreshToken');
+  const locale = req.cookies.get('locale')?.value || 'en';
 
   const authScreens = ['/login', '/create-account', '/forgot-password'];
   const noAlowAccess = ['/new-post'];
@@ -15,9 +16,7 @@ export async function middleware(req: NextRequest) {
   // nếu không có locale -> redirect sang /en hoặc /vi
   const pathLocale = pathname.split('/')[1];
   if (!i18nConfig.locales.includes(pathLocale)) {
-    return NextResponse.redirect(
-      new URL(`/${i18nConfig.defaultLocale}${pathname}`, req.url),
-    );
+    return NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
   }
 
   // Nếu không có accessToken và người dùng đang cố truy cập vào các trang không phải trang auth

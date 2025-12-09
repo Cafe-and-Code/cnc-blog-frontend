@@ -4,11 +4,14 @@ import { Lock, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import '@/styles/components/login-form.scss';
+
+import { useLocale } from '@/hooks/useLocale';
 
 import BaseDialog from '@/components/base/BaseDialog';
 import { Button } from '@/components/ui/button';
@@ -41,6 +44,8 @@ export default function LoginPage() {
   const pathname = usePathname();
   const router = useRouter();
   const [cookies, setCookie] = useCookies(['userId', 'userRole']);
+  const { t, i18n } = useTranslation();
+  const { changeLanguage, currentLocale } = useLocale();
 
   const [dataLogin, setDataLogin] = useState<ILoginType>({
     username: '',
@@ -53,13 +58,18 @@ export default function LoginPage() {
     title: '',
     submitBtn: 'Submit',
   });
-  const savedLocale = localStorage.getItem('locale') || 'en';
-  const [language, setLanguage] = useState(savedLocale);
-  const languageList = [
-    { name: 'EngLish', value: 'en' },
-    { name: 'Viet Nam', value: 'vi' },
-    { name: 'Japan', value: 'ja' },
-  ];
+
+  const locale = pathname.split('/')[1];
+
+  const [language, setLanguage] = useState(locale || 'en');
+  const languageList = useMemo(
+    () => [
+      { name: t('common.language.en'), value: 'en' },
+      { name: t('common.language.vi'), value: 'vi' },
+      { name: t('common.language.ja'), value: 'ja' },
+    ],
+    [t],
+  );
 
   const selectedStatus = languageList.find((item) => item.value === language);
 
@@ -77,12 +87,6 @@ export default function LoginPage() {
     }));
   };
 
-  const changeLanguage = (value: string) => {
-    const path = pathname.split('/').slice(2).join('/');
-    router.replace(`/${value}/${path}`);
-    setLanguage(value);
-  };
-
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const payload = {
@@ -94,8 +98,8 @@ export default function LoginPage() {
       const userId = response.userId;
       const userRole = response.userRole;
 
-      setCookie('userId', userId);
-      setCookie('userRole', userRole);
+      setCookie('userId', userId, { path: '/' });
+      setCookie('userRole', userRole, { path: '/' });
 
       window.location.href = '/';
       setDataLogin({
@@ -131,7 +135,7 @@ export default function LoginPage() {
         <Card className="shadow-2xl backdrop-blur-md">
           <CardHeader>
             <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-[var(--color-01)]">
-              Sign in to your account
+              {t('pages.login.title')}
             </h2>
           </CardHeader>
           <CardContent>
@@ -143,7 +147,7 @@ export default function LoginPage() {
                   name="username"
                   type="text"
                   required
-                  placeholder="Username"
+                  placeholder={t('pages.login.user_name')}
                   autoComplete="username"
                   value={dataLogin.username}
                   onChange={(e) => handleChangeInput(e, 'username')}
@@ -157,7 +161,7 @@ export default function LoginPage() {
                   name="password"
                   type="password"
                   required
-                  placeholder="Password"
+                  placeholder={t('pages.login.password')}
                   autoComplete="current-password"
                   value={dataLogin.password}
                   onChange={(e) => handleChangeInput(e, 'password')}
@@ -166,13 +170,13 @@ export default function LoginPage() {
               </div>
               <div>
                 <Button type="submit" size="full">
-                  Sign in
+                  {t('pages.login.submitBtn')}
                 </Button>
               </div>
             </form>
             <div className="mt-6 flex items-center justify-center gap-4">
-              <div className="mb-2 text-sm text-[var(--color-01)]">
-                Language
+              <div className="mb-2 whitespace-nowrap text-sm text-[var(--color-01)]">
+                {t('pages.login.language')}
               </div>
               <Select value={language} onValueChange={changeLanguage}>
                 <SelectTrigger className="w-full">
@@ -202,15 +206,15 @@ export default function LoginPage() {
                 href={{ pathname: '/forgot-password' }}
                 className="mt-10 text-center text-sm text-[var(--color-01)] hover:underline"
               >
-                Forget Password?
+                {t('pages.login.forgot_password')}
               </Link>
               <p className="dark:text-dark-6 text-sm text-gray-500">
-                <span className="pr-0.5">Not a member yet? </span>
+                <span className="pr-0.5">{t('pages.login.no_account')}</span>
                 <Link
                   href={{ pathname: '/create-account' }}
                   className="text-primary hover:underline"
                 >
-                  Sign Up
+                  {t('pages.login.sign_up')}
                 </Link>
               </p>
             </div>

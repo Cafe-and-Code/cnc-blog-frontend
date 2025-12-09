@@ -1,8 +1,24 @@
 {
-  "common": {},
+  "common": {
+    "language": {
+      "en": "Tiếng Anh",
+      "vi": "Tiếng Việt",
+      "ja": "Tiếng Nhật"
+    }
+  },
   "pages": {
     "posts": {
       "recent_blog_posts": "Bài viết đã đăng gần đây"
+    },
+    "login": {
+      "title": "Đăng nhập vào tài khoản của bạn",
+      "submitBtn": "Đăng nhập",
+      "language": "Ngôn ngữ",
+      "user_name": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "forgot_password": "Quên mật khẩu",
+      "no_account": "Chưa có tài khoản?",
+      "sign_up": "Đăng ký"
     }
   }
 }
