@@ -28,17 +28,15 @@ export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const [activeLink, setActiveLink] = useState(pathName);
 
-  const savedLocale = localStorage.getItem('locale') || 'en';
-
   const menuList = [
-    { name: 'About', path: `/${savedLocale}/about` },
-    { name: 'Newsletter', path: `/${savedLocale}/new-post` },
+    { name: 'About', path: '/about' },
+    { name: 'Newsletter', path: '/new-post' },
   ];
 
   const menuMobileList = [
-    { name: 'Home', path: `/${savedLocale}` },
-    { name: 'About', path: `/${savedLocale}/about` },
-    { name: 'Newsletter', path: `/${savedLocale}/new-post` },
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Newsletter', path: '/new-post' },
   ];
 
   const onToggle = () => {

@@ -9,11 +9,7 @@ import Header from '@/templates/Header';
 
 export default function MainLayout({ ...props }) {
   const router = usePathname();
-  const pathName = router.split('/')[2] ? `/${router.split('/')[2]}` : '/';
-  const showLayout = useMemo(
-    () => !LIST_NO_HEADER.includes(pathName),
-    [pathName],
-  );
+  const showLayout = useMemo(() => !LIST_NO_HEADER.includes(router), [router]);
 
   const [width, setWidth] = useState(0);
   const layoutClass = () => {
