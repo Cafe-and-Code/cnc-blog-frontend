@@ -27,19 +27,21 @@ export default function uploadImage({
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleUploadImage = (event: any) => {
+  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target;
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        getUploadImage(input.files);
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
+    const files = input.files;
+
+    if (!files || files.length === 0) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      getUploadImage(files);
+    };
+    reader.readAsDataURL(files[0]);
   };
 
-  const getUploadImage = async (files: any) => {
-    const file = files[0];
+  const getUploadImage = async (files: FileList) => {
+    if (files.length === 0) return;
+    const file: File = files[0];
     if (file) {
       try {
         const dataBody = new FormData();

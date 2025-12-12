@@ -11,12 +11,14 @@ import '@/styles/new-post.scss';
 import axios from '@/lib/axios';
 
 import BaseDialog from '@/components/base/BaseDialog';
+import NewBaseDialog from '@/components/base/NewBaseDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import UploadImage from '@/components/uploadImage';
 
 import { API_URL } from '@/constants/api-config';
+import { createPostRequest } from '@/requests/posts';
 import HeaderNewPost from '@/templates/HeaderNewPost';
 import { isApiError } from '@/utils/error';
 const ReactQuill = dynamic(() => import('react-quill'), {
@@ -47,6 +49,8 @@ export default function NewsLetter() {
     title: '',
     submitBtn: 'OK',
     cancelBtn: 'Cancel',
+    onSubmit: () => {},
+    onCancel: () => {},
   });
   const [modalList, setModalList] = useState({
     visible: false,
@@ -55,7 +59,7 @@ export default function NewsLetter() {
     cancelBtn: 'Cancel',
   });
 
-  const handleContentChange = async (value: any) => {
+  const handleContentChange = async (value: string) => {
     if (value === '<p><br></p>' || value === '') {
       setContent('');
     } else {
@@ -64,13 +68,14 @@ export default function NewsLetter() {
   };
 
   const getImage = () => {
-    const input: any = document.createElement('input');
+    const input: HTMLInputElement = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
     input.click();
 
     input.onchange = async () => {
-      const file = input?.files[0];
+      if (!input.files || input.files.length === 0) return;
+      const file: File | undefined = input?.files[0];
       if (file) {
         const dataBody = new FormData();
         dataBody.append('file', file);
@@ -140,24 +145,7 @@ export default function NewsLetter() {
     clearModalItem();
   };
 
-  const postCategory = async () => {
-    try {
-      await axios.post(API_URL.CATEGORIES, { name: itemModal.categoryList });
-    } catch (error: unknown) {
-      let message = '';
-      if (isApiError(error)) {
-        message = error.message;
-      }
-      setDialogList((prev) => ({
-        ...prev,
-        title: 'Error',
-        visible: true,
-        message,
-      }));
-    }
-  };
-
-  const postNewBlog = () => {
+  const postNewBlog = async () => {
     const cookies = new Cookies();
     const payload = {
       user_id: cookies.get('userId'),
@@ -168,25 +156,24 @@ export default function NewsLetter() {
       image: itemModal.image,
       status: 1,
     };
-    console.log(payload);
 
     try {
-      axios.post(API_URL.POSTS, payload);
-      setDialogList((prev) => ({
-        ...prev,
-        visible: false,
-      }));
+      const response = await createPostRequest(payload);
       setModalList((prev) => ({
         ...prev,
         visible: false,
       }));
       clearModalItem();
       setContent('');
-    } catch (error: unknown) {
       setDialogList((prev) => ({
         ...prev,
-        visible: false,
+        title: 'Confirm',
+        visible: true,
+        message: response.message,
+        cancelBtn: '',
+        onSubmit: handleCancelDialog,
       }));
+    } catch (error: unknown) {
       let message = '';
       if (isApiError(error)) {
         message = error.message;
@@ -196,12 +183,18 @@ export default function NewsLetter() {
         title: 'Error',
         visible: true,
         message,
+        cancelBtn: '',
+        onSubmit: handleCancelDialog,
       }));
     }
   };
 
   const handleSubmitDialog = () => {
     if (!validatePayload(itemModal)) {
+      setDialogList((prev) => ({
+        ...prev,
+        visible: false,
+      }));
       postNewBlog();
     } else {
       setDialogList((prev) => ({
@@ -252,6 +245,8 @@ export default function NewsLetter() {
         message: 'Are you sure, create new blog.',
         cancelBtn: 'Cancel',
         submitBtn: 'OK',
+        onSubmit: handleSubmitDialog,
+        onCancel: handleCancelDialog,
       }));
     } else {
       setDialogList((prev) => ({
@@ -260,19 +255,20 @@ export default function NewsLetter() {
         visible: true,
         message: `${validatePayload(itemModal)}`,
         cancelBtn: '',
+        onSubmit: handleCancelDialog,
       }));
     }
   };
 
-  const handleChangeTitle = (e: any) => {
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setItemModal((prev) => ({ ...prev, title: e.target.value }));
   };
 
-  const handleDescription = (e: any) => {
+  const handleDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setItemModal((prev) => ({ ...prev, description: e.target.value }));
   };
 
-  const handleCategory = (e: any) => {
+  const handleCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
   };
 
@@ -300,23 +296,20 @@ export default function NewsLetter() {
     setItemModal((prev) => ({ ...prev, categoryList: updatedCategoryList }));
   };
 
-  const handleUploadImage = async (file: any) => {
+  const handleUploadImage = async (file: string) => {
     setItemModal((prev) => ({ ...prev, image: file }));
   };
 
   useEffect(() => {
-    // Đặt focus cho input khi component được render
     inputRef?.current?.focus();
     textAreaRef?.current?.focus();
   }, []);
 
   useEffect(() => {
-    // Đặt focus cho input khi component được render
     setDisabledPublish(content.length > 0 ? false : true);
   }, [content]);
 
   useEffect(() => {
-    // Đặt focus cho input khi component được render
     setCategoryDisable(itemModal.categoryList?.length >= 5 ? true : false);
   }, [itemModal.categoryList]);
 
@@ -435,11 +428,7 @@ export default function NewsLetter() {
           </div>
         </div>
       </BaseDialog>
-      <BaseDialog
-        dialogList={dialogList}
-        onSubmit={handleSubmitDialog}
-        onCancel={handleCancelDialog}
-      />
+      <NewBaseDialog dialogList={dialogList} />
     </div>
   );
 }

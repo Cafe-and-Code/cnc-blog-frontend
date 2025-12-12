@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { logout } from '@/store/auth.store';
 
 import { logoutRequest } from '@/requests/auth/logoutRequest';
+import { isApiError } from '@/utils/error';
 
 import { IPathType } from '@/types/layout';
 
@@ -54,9 +55,12 @@ export default function Header() {
       removeCookie('userRole', { path: '/' });
       dispatch(logout());
       router.push('/login');
-    } catch (error: any) {
-      const data = error?.response?.data;
-      const messages = data?.message;
+    } catch (error: unknown) {
+      let message;
+      if (isApiError(error)) {
+        message = error.message;
+      }
+      console.log('Logout error:', message);
     }
   };
 

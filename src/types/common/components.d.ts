@@ -12,6 +12,20 @@ export interface IDialogType {
   onSubmit?: () => void;
 }
 
+export interface INewDialogType {
+  dialogList: {
+    visible: boolean;
+    message?: string;
+    title: string;
+    cancelBtn?: string;
+    submitBtn?: string;
+    onCancel: () => void;
+    onSubmit: () => void;
+  };
+  customClass?: string;
+  children?: ReactNode;
+}
+
 export interface ITabType {
   name: string;
 }
@@ -24,7 +38,7 @@ export interface IToggleType {
 export interface IUploadImageType {
   isAvatar?: boolean;
   classCustom?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: string) => void;
 }
 
 export interface ISelect {

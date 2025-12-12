@@ -37,3 +37,13 @@ export interface IPostList {
   totalPage: number;
   totalPosts: number;
 }
+
+export interface ICreatePostPayload {
+  title: string;
+  description: string;
+  image: string;
+  categories: string[];
+  content: string;
+  user_id: number;
+  status: number;
+}

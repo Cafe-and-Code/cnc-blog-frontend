@@ -75,7 +75,7 @@ export default function CreateAccountPage() {
     }));
   };
 
-  const handleUploadImage = async (file: any) => {
+  const handleUploadImage = async (file: string) => {
     setDataCreateAccount((prev) => ({ ...prev, avatarImageUrl: file }));
   };
 
