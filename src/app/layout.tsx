@@ -4,8 +4,6 @@ import { Lora } from 'next/font/google';
 import '@/styles/globals.scss';
 import '@/styles/_variable.scss';
 
-import { I18nClient } from '@/components/I18nClient';
-
 import MainLayout from '@/layouts/MainLayout';
 import { AppProviders } from '@/providers/providers';
 
@@ -22,9 +20,7 @@ export default function RootLayout({ children }: Readonly<IRootLayoutProps>) {
     <html suppressHydrationWarning>
       <body className={inter.className}>
         <AppProviders>
-          <I18nClient>
-            <MainLayout>{children}</MainLayout>
-          </I18nClient>
+          <MainLayout>{children}</MainLayout>
         </AppProviders>
       </body>
     </html>
