@@ -2,28 +2,33 @@
 
 import { X } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Cookies } from 'react-cookie';
 
 import 'react-quill/dist/quill.snow.css';
 import '@/styles/new-post.scss';
 
-import axios from '@/lib/axios';
-
 import BaseDialog from '@/components/base/BaseDialog';
 import NewBaseDialog from '@/components/base/NewBaseDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import UploadImage from '@/components/uploadImage';
 
-import { API_URL } from '@/constants/api-config';
+import { getCategoriesRequest } from '@/requests/common/categories';
+import { uploadImageRequest } from '@/requests/common/uploadImg';
 import { createPostRequest } from '@/requests/posts';
 import HeaderNewPost from '@/templates/HeaderNewPost';
 import { isApiError } from '@/utils/error';
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
-  loading: () => <p>Loading ...</p>,
+  loading: () => (
+    <div className="flex w-full items-center justify-center p-20">
+      <Spinner />
+      Loading
+    </div>
+  ),
 });
 
 export default function NewsLetter() {
@@ -67,7 +72,7 @@ export default function NewsLetter() {
     }
   };
 
-  const getImage = () => {
+  const getImage = useCallback(() => {
     const input: HTMLInputElement = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
@@ -80,11 +85,7 @@ export default function NewsLetter() {
         const dataBody = new FormData();
         dataBody.append('file', file);
         dataBody.append('FileName', file.name);
-        const response = await axios.post(API_URL.UPLOAD_IMAGE, dataBody, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        const response = await uploadImageRequest(dataBody);
         const editor = document.querySelector(
           '#quillId .ql-container .ql-editor',
         );
@@ -93,7 +94,7 @@ export default function NewsLetter() {
         editor?.appendChild(imageElement);
       }
     };
-  };
+  }, []);
 
   const quillModules = useMemo(
     () => ({
@@ -122,7 +123,7 @@ export default function NewsLetter() {
         matchVisual: false,
       },
     }),
-    [],
+    [getImage],
   );
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -318,10 +319,10 @@ export default function NewsLetter() {
       setCategorymenu([]);
     } else {
       try {
-        axios.get(`${API_URL.CATEGORIES}/${category}`).then((response) => {
-          setCategorymenu(response?.data);
+        getCategoriesRequest(category).then((response) => {
+          setCategorymenu(response);
           if (itemModal.categoryList.length > 0) {
-            const filterCategory = response?.data?.filter(
+            const filterCategory = response?.filter(
               (item: string) => !itemModal.categoryList.includes(item),
             );
             setCategorymenu(filterCategory);
