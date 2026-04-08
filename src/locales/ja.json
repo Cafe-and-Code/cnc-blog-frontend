@@ -1,0 +1,24 @@
+{
+  "common": {
+    "language": {
+      "en": "英語",
+      "vi": "ベトナム語",
+      "ja": "日本語"
+    }
+  },
+  "pages": {
+    "posts": {
+      "recent_blog_posts": "最近投稿された記事"
+    },
+    "login": {
+      "title": "アカウントにサインイン",
+      "submitBtn": "送信",
+      "language": "言語",
+      "user_name": "ユーザー名",
+      "password": "パスワード",
+      "forgot_password": "パスワードをお忘れですか？",
+      "no_account": "まだ会員ではありませんか？",
+      "sign_up": "サインアップ"
+    }
+  }
+}

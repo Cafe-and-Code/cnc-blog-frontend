@@ -1,0 +1,24 @@
+{
+  "common": {
+    "language": {
+      "en": "English",
+      "vi": "Vietnamese",
+      "ja": "Japanese"
+    }
+  },
+  "pages": {
+    "posts": {
+      "recent_blog_posts": "Recent blog posts"
+    },
+    "login": {
+      "title": "Sign in to your account",
+      "submitBtn": "Sign In",
+      "language": "Language",
+      "user_name": "Username",
+      "password": "Password",
+      "forgot_password": "Forget Password",
+      "no_account": "Not a member yet?",
+      "sign_up": "Sign Up"
+    }
+  }
+}
