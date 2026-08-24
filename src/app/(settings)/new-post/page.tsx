@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Cookies } from 'react-cookie';
 
 import 'react-quill/dist/quill.snow.css';
-import '@/styles/new-post.scss';
 
 import BaseDialog from '@/components/base/BaseDialog';
 import NewBaseDialog from '@/components/base/NewBaseDialog';
@@ -335,19 +334,47 @@ export default function NewsLetter() {
   }, [category, itemModal.categoryList]);
 
   return (
-    <div className="new-post">
+    <div>
+      <style>{`
+        .quill-editor .ql-toolbar.ql-snow {
+          position: sticky;
+          top: 85px;
+          background: var(--color-11);
+          z-index: 2;
+          box-shadow: 1px 1px 10px -5px var(--color-01);
+          border: none;
+        }
+        .quill-editor .ql-toolbar.ql-snow .ql-formats svg {
+          filter: var(--filter-01);
+        }
+        .quill-editor .ql-toolbar.ql-snow .ql-picker .ql-picker-label::before {
+          color: var(--color-01);
+        }
+        .quill-editor .ql-toolbar.ql-snow .ql-picker-options svg {
+          filter: unset;
+        }
+        .quill-editor .ql-container.ql-snow {
+          border: none;
+          height: auto;
+        }
+        .quill-editor .ql-container.ql-snow .ql-editor {
+          min-height: 50vh;
+        }
+      `}</style>
       <HeaderNewPost disabledPublish={disabledPublish} onPost={submitHandler} />
-      <div className="editor-newsletter">
-        <div className="edit-post">
-          <ReactQuill
-            id="quillId"
-            value={content}
-            onChange={handleContentChange}
-            modules={quillModules}
-            scrollingContainer="html"
-            theme="snow"
-          />
-          <div className="ql-snow editor-content">
+      <div className="border border-[var(--color-01)]">
+        <div className="flex">
+          <div className="quill-editor w-1/2 border-r border-[var(--color-01)]">
+            <ReactQuill
+              id="quillId"
+              value={content}
+              onChange={handleContentChange}
+              modules={quillModules}
+              scrollingContainer="html"
+              theme="snow"
+            />
+          </div>
+          <div className="ql-snow w-1/2 [&_pre]:min-h-[28px] [&_pre]:bg-[#23241f] [&_pre]:text-[#f8f8f2] [&_pre]:overflow-visible [&_pre]:whitespace-pre-wrap [&_pre]:mb-[5px] [&_pre]:mt-[5px] [&_pre]:p-[5px_10px]">
             <div
               className="ql-editor w-full"
               dangerouslySetInnerHTML={{ __html: content }}
@@ -361,27 +388,27 @@ export default function NewsLetter() {
         onCancel={handleCancelModal}
         customClass="w-[80%] h-[80%]"
       >
-        <div className="new-post-modal">
-          <div className="content">
+        <div className="flex flex-col gap-[30px] pb-[30px]">
+          <div className="flex flex-col gap-[30px] px-5">
             <div className="title">Blog Name</div>
             <Textarea
               ref={textAreaRef}
               value={itemModal.title}
               placeholder="Title"
               onChange={handleChangeTitle}
-              className="title-input"
+              className="w-full text-xl font-medium bg-[var(--color-11)] focus-visible:outline-none"
             />
           </div>
-          <div className="content">
+          <div className="flex flex-col gap-[30px] px-5">
             <div className="title">Blog Description</div>
             <Textarea
               value={itemModal.description}
               placeholder="Description"
               onChange={handleDescription}
-              className="title-input text-area"
+              className="w-full text-xl font-medium bg-[var(--color-11)] focus-visible:outline-none"
             />
           </div>
-          <div className="content">
+          <div className="flex flex-col gap-[30px] px-5">
             <div className="title">Blog Category</div>
             <Input
               ref={categoryRef}
@@ -390,12 +417,12 @@ export default function NewsLetter() {
               placeholder="Category"
               onChange={handleCategory}
               onKeyDown={handleCategoryKeyDown}
-              className="title-input text-area"
+              className="w-full text-xl font-medium bg-[var(--color-11)] focus-visible:outline-none"
             />
             {categoryMenu.length > 0 && (
-              <div className="category-menu">
+              <div className="flex gap-2 flex-wrap">
                 {categoryMenu?.map((item, index) => (
-                  <div className="category-menu-item" key={index}>
+                  <div className="cursor-pointer" key={index}>
                     <Button
                       variant="outline"
                       onClick={() => handleAddItemCategoryMenu(item)}
@@ -407,9 +434,12 @@ export default function NewsLetter() {
               </div>
             )}
             {itemModal.categoryList.length > 0 && (
-              <div className="category-list">
+              <div className="flex items-center gap-2">
                 {itemModal.categoryList?.map((item, index) => (
-                  <div className="category-item" key={index}>
+                  <div
+                    className="py-1 px-2 flex items-center gap-2 bg-[var(--color-12)] text-[var(--color-11)] rounded-lg"
+                    key={index}
+                  >
                     <span>{item}</span>
                     <X
                       className="h-4 w-4 rounded-full bg-[var(--color-13)] text-[var(--color-04)]"
@@ -420,7 +450,7 @@ export default function NewsLetter() {
               </div>
             )}
           </div>
-          <div className="content">
+          <div className="flex flex-col gap-[30px] px-5">
             <div className="title">Blog Image</div>
             <UploadImage
               classCustom="w-[400px] h-[250px]"

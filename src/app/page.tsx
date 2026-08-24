@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import '@/styles/home.scss';
-
 import PostBlog from '@/components/post-blog';
 import {
   Pagination,
@@ -124,31 +122,54 @@ export default function Home() {
     router.push(`blogs/${title}`);
   };
 
+  const recentCustomClasses = [
+    { customClass: 'xl:row-span-2 flex-col justify-start' },
+    {
+      customClass: 'xl:items-center',
+      imageClass: 'xl:max-w-[320px] xl:w-auto xl:h-fit',
+      titleClass: 'xl:w-[300px]',
+    },
+    {
+      customClass: 'xl:items-center',
+      imageClass: 'xl:max-w-[320px] xl:w-auto xl:h-fit',
+      titleClass: 'xl:w-[300px]',
+    },
+  ];
+
   return (
-    <div className="blog-page">
-      <div className="blog-header">THE BLOG</div>
-      <div className="blog-body">
-        <div className="recent-blog-post">
-          <div className="title">{t('pages.posts.recent_blog_posts')}</div>
-          <div className="recent-content">
+    <div>
+      <div className="flex items-center justify-center text-[var(--color-12)] text-[65px] font-bold border-y border-[var(--border-color-01)] my-[30px] md:text-[110px] xl:text-[180px]">
+        THE BLOG
+      </div>
+      <div>
+        <div className="flex flex-col gap-[30px] px-5 py-[30px] md:px-8 xl:px-20">
+          <div className="text-2xl font-semibold leading-8 text-center md:text-left">
+            {t('pages.posts.recent_blog_posts')}
+          </div>
+          <div className="mx-auto grid gap-8 grid-cols-1 xl:grid-cols-2 xl:grid-rows-2">
             {recentPosts?.map((item: IPostItem, index: number) => (
               <PostBlog
                 key={index}
                 postItems={item}
-                customClass={`post-${index}`}
+                customClass={recentCustomClasses[index]?.customClass}
+                imageClass={recentCustomClasses[index]?.imageClass}
+                titleClass={recentCustomClasses[index]?.titleClass}
                 onClick={() => handleBlogDetail(item.title, item.id)}
               />
             ))}
           </div>
         </div>
-        <div className="all-blog-post">
-          <div className="title">All blog posts</div>
-          <div className="all-content">
+        <div className="border-t border-[var(--border-color-01)] px-5 py-[30px] flex flex-col gap-[30px] md:px-8 xl:px-20">
+          <div className="text-2xl font-semibold leading-8 text-center md:text-left">
+            All blog posts
+          </div>
+          <div className="mx-auto grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
             {listPost?.map((item: IPostItem, index: number) => (
               <PostBlog
                 key={index}
                 postItems={item}
-                customClass={`post-${index}`}
+                customClass="xl:max-w-[440px] flex-col"
+                imageClass="xl:max-w-[400px] xl:h-[240px]"
                 onClick={() => handleBlogDetail(item.title, item.id)}
               />
             ))}
@@ -169,7 +190,7 @@ export default function Home() {
                     onClick={prevPage}
                   />
                 </PaginationItem>
-                <div className="pagination">
+                <div className="flex flex-wrap justify-center">
                   {Array.from({ length: totalPage }).map((_, index) => (
                     <PaginationItem key={index}>
                       <PaginationLink

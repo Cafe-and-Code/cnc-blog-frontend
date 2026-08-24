@@ -9,8 +9,6 @@ import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-import '@/styles/components/login-form.scss';
-
 import { useLocale } from '@/hooks/useLocale';
 
 import BaseDialog from '@/components/base/BaseDialog';

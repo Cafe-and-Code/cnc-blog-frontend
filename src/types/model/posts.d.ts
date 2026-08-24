@@ -28,6 +28,8 @@ export interface IPostType {
     categories?: string[];
   };
   customClass?: string;
+  imageClass?: string;
+  titleClass?: string;
   onClick?: () => void;
 }
 

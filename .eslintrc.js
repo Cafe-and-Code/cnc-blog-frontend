@@ -26,6 +26,7 @@ module.exports = {
     //#region  //*=========== Unused Import ===========
     '@typescript-eslint/no-unused-vars': 'off',
     'unused-imports/no-unused-imports': 'off',
+    '@typescript-eslint/no-require-imports': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     'unused-imports/no-unused-vars': 'off',
     'react-hooks/rules-of-hooks': 'off',

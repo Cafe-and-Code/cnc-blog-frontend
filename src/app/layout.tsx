@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { Lora } from 'next/font/google';
 
-import '@/styles/globals.scss';
-import '@/styles/_variable.scss';
+import '@/globals.css';
 
 import MainLayout from '@/layouts/MainLayout';
 import { AppProviders } from '@/providers/providers';

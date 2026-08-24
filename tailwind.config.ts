@@ -1,12 +1,10 @@
 import type { Config } from 'tailwindcss';
-const defaultTheme = require('tailwindcss/defaultTheme');
+import defaultTheme from 'tailwindcss/defaultTheme';
+import tailwindcssAnimate from 'tailwindcss-animate';
 
 const config = {
   darkMode: ['class'],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
   ],
   prefix: '',
@@ -68,10 +66,15 @@ const config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        'loading-move': {
+          '0%, 100%': { left: '0' },
+          '50%': { left: 'calc(100% - 100px)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'loading-move': 'loading-move 4s linear infinite',
       },
     },
     screens: {
@@ -94,7 +97,7 @@ const config = {
       sans: ['"Inter"', ...defaultTheme.fontFamily.sans],
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;
 
 export default config;

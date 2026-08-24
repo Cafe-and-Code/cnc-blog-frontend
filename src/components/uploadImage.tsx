@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react';
 
-import '@/styles/components/upload-image.scss';
-
 import axios from '@/lib/axios';
 
 import BaseDialog from '@/components/base/BaseDialog';
@@ -84,24 +82,42 @@ export default function uploadImage({
     inputRef.current?.click();
   };
   return (
-    <div className={`avatar-wrapper ${classCustom}`}>
-      {isAvatar && (
+    <div
+      className={`relative overflow-hidden shadow-[1px_1px_15px_-5px_black] transition-all duration-300 hover:scale-105 hover:cursor-pointer ${classCustom}`}
+    >
+      {isAvatar && avatar && (
         <img
           onClick={handleClick}
-          className="avatar-pic"
+          className="h-full w-full transition-all duration-300 object-cover"
           alt=""
           src={avatar}
           rel="preload"
         />
       )}
-      {!isAvatar && (
+      {isAvatar && !avatar && (
+        <div
+          onClick={handleClick}
+          className="h-full w-full flex items-center justify-center bg-[var(--color-13)] cursor-pointer"
+        >
+          <img src="/images/icon/user.svg" alt="upload avatar" />
+        </div>
+      )}
+      {!isAvatar && image && (
         <img
           onClick={handleClick}
-          className="image-pic"
+          className="relative rounded w-full h-full transition-all duration-300 object-cover"
           alt=""
           src={image}
           rel="preload"
         />
+      )}
+      {!isAvatar && !image && (
+        <div
+          onClick={handleClick}
+          className="relative rounded w-full h-full flex items-center justify-center bg-[#ecf0f1] cursor-pointer"
+        >
+          <img src="/images/icon/add-pic.svg" alt="upload image" />
+        </div>
       )}
       <Input
         ref={inputRef}
